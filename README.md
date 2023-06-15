@@ -10,7 +10,7 @@
 
 1. Install PostgreSQL
 2. `create database myeasylabs;`
-3. `psql -d avonehr -f postgres_start.txt`
+3. `psql -d myeasylabs -f postgres_start.txt`
 
 ## Frontend
 
