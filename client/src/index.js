@@ -5,9 +5,11 @@ import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import store from "./store";
+import configureStore from "./store/configureStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const store = configureStore();
+
 root.render(
     <React.StrictMode store={store}>
         <Provider>
