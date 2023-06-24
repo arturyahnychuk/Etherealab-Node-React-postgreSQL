@@ -9,9 +9,7 @@ export default function configureStore(preloadedState) {
     const middlewares = [thunkMiddleware];
     const middlewareEnhancer = applyMiddleware(...middlewares);
 
-    const enhancers = [middlewareEnhancer, monitorReducersEnhancer];
-
-    const store = createStore(rootReducer, preloadedState, enhancers);
+    const store = createStore(rootReducer, preloadedState, middlewareEnhancer);
 
     return store;
 }
