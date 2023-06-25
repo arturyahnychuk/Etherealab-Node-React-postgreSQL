@@ -1,19 +1,14 @@
-import {
-    Button,
-    Container,
-    CssBaseline,
-    TextField,
-    Typography,
-} from "@mui/material";
-import Error from "../components/common/Error";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
 
-import useAuth from "../hooks/useAuth";
 import authService from "../services/auth.service";
 import TextFieldWithError from "./Auth/components/TextFieldWithError";
+import myselfService from "../services/myself.service";
+import useAuth from "../hooks/useAuth";
+import Error from "../components/common/Error";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -46,25 +41,49 @@ const useStyles = makeStyles((theme) => ({
 function MySelf() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
+    const { user } = useAuth();
 
-    const [apiErrors, setApiErrors] = useState([]);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
+    const [apiErrors, setApiErrors] = useState([]);
 
     const handleFormSubmission = (e) => {
         e.preventDefault();
+        try {
+            const payload = {
+                data: {
+                    firstname: firstName.trim(),
+                    lastname: lastName.trim(),
+                    email: email.trim(),
+                    password: password.trim(),
+                },
+            };
 
-        const formData = {
-            firstname: firstName.trim(),
-            lastname: lastName.trim(),
-            email: email.trim(),
-            password: password.trim(),
-        };
-
-        // onFormSubmit(formData);
+            myselfService.updateProfile(payload, user.id).then(
+                (res) => {
+                    enqueueSnackbar(res.data.message, {
+                        variant: "success",
+                    });
+                },
+                () => {
+                    enqueueSnackbar("Unable to update profile", {
+                        variant: "error",
+                    });
+                }
+            );
+        } catch (error) {
+            enqueueSnackbar("Unable to login", {
+                variant: "error",
+            });
+            setApiErrors([
+                {
+                    msg: error.message,
+                },
+            ]);
+        }
     };
 
     const validatePassword = (event) => {
@@ -133,7 +152,6 @@ function MySelf() {
     };
     return (
         <Container>
-            {/* <CssBaseline />s */}
             <Typography
                 component="h5"
                 variant="h5"
@@ -141,13 +159,12 @@ function MySelf() {
             >
                 Myself
             </Typography>
+            <Error errors={apiErrors} />
             <form
                 className={classes.form}
                 noValidate
                 onSubmit={(event) => handleFormSubmission(event)}
             >
-                <Error errors={apiErrors} />
-
                 <TextField
                     value={firstName}
                     variant="outlined"

@@ -17,30 +17,6 @@ class MySelfService {
             headers: authHeader(),
         });
     }
-
-    getForwardEmail(userId) {
-        return axios
-            .get(`${API_BASE}/myself/forward-email/${userId}`, {
-                headers: authHeader(),
-            })
-            .then((res) => res.data);
-    }
-
-    getLogins(userId) {
-        return axios
-            .get(`${API_BASE}/myself/logins/${userId}`, {
-                headers: authHeader(),
-            })
-            .then((res) => res.data);
-    }
-
-    getActivityHistory(userId) {
-        return axios
-            .get(`${API_BASE}/myself/activity-history/${userId}`, {
-                headers: authHeader(),
-            })
-            .then((res) => res.data);
-    }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

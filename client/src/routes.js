@@ -90,7 +90,7 @@ const routes = [
     },
     {
         path: "*",
-        layout: MainLayout,
+        layout: DashboardLayout,
         routes: [
             {
                 exact: true,

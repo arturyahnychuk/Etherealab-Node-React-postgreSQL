@@ -108,7 +108,6 @@ export const AuthProvider = ({ children }) => {
                 const accessToken = window.localStorage.getItem("accessToken");
                 if (accessToken && isValidToken(accessToken)) {
                     setSession(accessToken);
-                    const decoded = jwtDecode(accessToken);
 
                     let fetchURL = `${API_BASE}/auth/user`;
 

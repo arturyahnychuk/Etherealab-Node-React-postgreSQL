@@ -33,13 +33,8 @@ const Dashboard = (props) => {
     const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
         defaultMatches: true,
     });
-    const [openSidebar, setOpenSidebar] = useState(false);
+    const [openSidebar, setOpenSidebar] = useState(true);
 
-    const shouldOpenSidebar = isDesktop ? false : openSidebar;
-
-    const handleSidebarOpen = () => {
-        setOpenSidebar(true);
-    };
     const handleSidebarClose = () => {
         setOpenSidebar(false);
     };
@@ -58,7 +53,7 @@ const Dashboard = (props) => {
         >
             <Sidebar
                 onClose={handleSidebarClose}
-                open={true}
+                open={openSidebar}
                 variant={"persistent"}
             />
 

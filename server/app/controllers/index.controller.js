@@ -49,49 +49,9 @@ const getClient = async (req, res) => {
     }
 };
 
-const getUserByEmail = async (req, res) => {
-    try {
-        const response = await db.query(
-            `select id, client_id, firstname, lastname, password
-            from users
-            where email = ${req.body.email}`
-        );
-        const user = response.rows[0];
-        if (user) {
-            errorMessage.message =
-                "Email is already in our system. Try different values";
-            return res.status(status.inValid).send(errorMessage);
-        }
-        errorMessage.message = "Email is Available";
-        return res.status(status.success).send(errorMessage);
-    } catch (error) {
-        errorMessage.message = "Select not successful";
-        return res.status(status.error).send(errorMessage);
-    }
-};
-
-const getClientByName = async (req, res) => {
-    try {
-        const response = await db.query(
-            `select 1 from client where name = ${req.body.clientName} limit 1`
-        );
-        if (response.length > 1) {
-            errorMessage.message =
-                "Client Name is already in our system. Try different values";
-            return res.status(status.inValid).send(errorMessage);
-        }
-        errorMessage.message = "Client Name is Available";
-        return res.status(status.success).send(errorMessage);
-    } catch (error) {
-        errorMessage.message = "Select not successful";
-        return res.status(status.error).send(errorMessage);
-    }
-};
 const users = {
     getUser,
     getClient,
-    getUserByEmail,
-    getClientByName,
 };
 
 module.exports = users;

@@ -50,7 +50,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
             email: email.trim(),
             password: password.trim(),
         };
-
         onFormSubmit(formData);
     };
 
@@ -132,7 +131,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
                 ))}
 
             <TextFieldWithError
-                fieldName="name"
+                fieldName="clientName"
                 label="Client Name"
                 value={clientName}
                 autoFocus

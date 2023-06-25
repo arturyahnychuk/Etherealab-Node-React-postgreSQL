@@ -86,7 +86,7 @@ function Login() {
                 </Typography>
                 <Typography component="h6">
                     Don't have an account? Sign up{" "}
-                    <Link href="/forgot-password" variant="body2">
+                    <Link href="/signup_client" variant="body2">
                         here
                     </Link>
                 </Typography>

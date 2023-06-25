@@ -65,11 +65,12 @@ const Home = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     // TODO: This might be changed as per requirements
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
         return <Redirect to="/login_client" />;
     }
 
     const searchPatientHandler = (searchText) => {
+        setIsLoading(true);
         const payload = {
             data: {
                 text: searchText,
@@ -78,6 +79,7 @@ const Home = () => {
         SearchPatient.search(payload).then((res) => {
             setSearchResults(res.data.data);
         });
+        setIsLoading(false);
     };
 
     const onFormSubmit = (e) => {

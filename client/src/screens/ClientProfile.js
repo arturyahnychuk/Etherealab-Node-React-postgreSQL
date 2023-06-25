@@ -9,8 +9,9 @@ import Error from "../components/common/Error";
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
-import useAuth from "../hooks/useAuth";
 import SaveIcon from "@mui/icons-material/Save";
+import clientService from "../services/client.service";
+import useAuth from "../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -46,16 +47,31 @@ const useStyles = makeStyles((theme) => ({
 function ClientProfile() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const { login } = useAuth();
+    const { user } = useAuth();
 
     const [apiErrors, setApiErrors] = useState([]);
-    const [clinicName, setClinicName] = useState("");
+    const [name, setName] = useState("");
     const [license, setLicense] = useState("");
 
     const onFormSubmit = async (event) => {
         event.preventDefault();
         try {
-            // TODO: Call AuthProvider login
+            const payload = {
+                name: name.trim(),
+                license: setLicense.trim(),
+            };
+            clientService.updateClient(payload, user.client_id).then(
+                (res) => {
+                    enqueueSnackbar(res.data.message, {
+                        variant: "success",
+                    });
+                },
+                () => {
+                    enqueueSnackbar("Unable to update Client", {
+                        variant: "error",
+                    });
+                }
+            );
         } catch (error) {
             console.error(error);
             enqueueSnackbar("Unable to login", {
@@ -87,7 +103,7 @@ function ClientProfile() {
                 onSubmit={(event) => onFormSubmit(event)}
             >
                 <TextField
-                    value={clinicName}
+                    value={name}
                     variant="outlined"
                     margin="dense"
                     required
@@ -97,10 +113,10 @@ function ClientProfile() {
                     name="clinicName"
                     autoComplete="clinicName"
                     autoFocus
-                    onChange={(event) => setClinicName(event.target.value)}
+                    onChange={(event) => setName(event.target.value)}
                     inputProps={{ maxLength: 255 }}
                     helperText={`${
-                        clinicName.length >= 255
+                        name.length >= 255
                             ? "Enter an name between 255 character"
                             : ""
                     }`}
@@ -126,7 +142,7 @@ function ClientProfile() {
                 />
                 <Button
                     type="submit"
-                    disabled={!clinicName || !license}
+                    disabled={!name || !license}
                     fullWidth
                     variant="contained"
                     color="primary"
