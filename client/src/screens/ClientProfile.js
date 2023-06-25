@@ -17,8 +17,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow:
-            "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
+
         padding: theme.spacing(2),
     },
     marginTop: {
@@ -29,7 +28,12 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         width: "50%", // Fix IE 11 issue.
+        textAlign: "center",
         marginTop: theme.spacing(1),
+        border: "1px solid",
+        borderColor: theme.borderColor,
+        borderRadius: "2px",
+        padding: theme.spacing(4),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
