@@ -67,7 +67,7 @@ function Login() {
             });
             setApiErrors([
                 {
-                    msg: error.message,
+                    msg: error.message || "Something went wrong",
                 },
             ]);
         }

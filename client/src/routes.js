@@ -8,8 +8,9 @@ import ForgetPassword from "./screens/ForgetPassword";
 import ResetPassword from "./screens/ResetPassword";
 import Home from "./screens/Home";
 import DashboardLayout from "./layouts/Dashboard";
-import ClientProfile from "./screens/ClientProfile";
+import ClientProfile from "./screens/Client/ClientProfile";
 import MySelf from "./screens/MySelf";
+import Patient from "./screens/Patient/Patient";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -71,10 +72,9 @@ const routes = [
     },
     {
         exact: true,
-        // guard: ClientPortalGuard,
         layout: DashboardLayout,
         path: "/dashboard",
-        component: Home,
+        component: Patient,
     },
     {
         exact: true,
@@ -90,7 +90,7 @@ const routes = [
     },
     {
         path: "*",
-        layout: DashboardLayout,
+        layout: MainLayout,
         routes: [
             {
                 exact: true,

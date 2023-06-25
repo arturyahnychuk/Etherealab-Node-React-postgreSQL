@@ -5,13 +5,13 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import Error from "../components/common/Error";
+import Error from "../../components/common/Error";
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
-import clientService from "../services/client.service";
-import useAuth from "../hooks/useAuth";
+import clientService from "../../services/client.service";
+import useAuth from "../../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

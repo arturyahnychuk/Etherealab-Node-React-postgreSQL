@@ -1,11 +1,12 @@
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-const getResult = async (req, res) => {
-    const { query } = req.query;
+const search = async (req, res) => {
+    const { searchTerm } = req.body;
+
     let $sql;
+
     try {
-        // if (query.search)
         $sql = `
         select p.firstname, p.lastname, o.status, o.updated
         from orders o
@@ -13,9 +14,18 @@ const getResult = async (req, res) => {
         left join users u on u.id = o.updated_user_id
         where o.client_id = ${req.client_id}
         `;
+        if (searchTerm) {
+            $sql += `
+            and (p.firstname like '%${searchTerm}%' or p.lastname like '%${searchTerm}%')
+            `;
+        }
+
+        $sql += `
+        order by o.updated desc
+        limit 20
+        `;
 
         const dbResponse = await db.query($sql);
-
         if (!dbResponse) {
             errorMessage.message = "None found";
             return res.status(status.notfound).send(errorMessage);
@@ -23,14 +33,14 @@ const getResult = async (req, res) => {
         successMessage.data = dbResponse.rows;
         return res.status(status.created).send(successMessage);
     } catch (err) {
-        console.error("err:", err);
+        console.log("err", err);
         errorMessage.message = "Select not successful";
         return res.status(status.error).send(errorMessage);
     }
 };
 
-const Search = {
-    getResult,
+const PatientSearch = {
+    search,
 };
 
-module.exports = Search;
+module.exports = PatientSearch;
