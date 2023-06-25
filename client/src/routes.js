@@ -8,6 +8,8 @@ import ForgetPassword from "./screens/ForgetPassword";
 import ResetPassword from "./screens/ResetPassword";
 import Home from "./screens/Home";
 import DashboardLayout from "./layouts/Dashboard";
+import ClientProfile from "./screens/ClientProfile";
+import MySelf from "./screens/MySelf";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -73,6 +75,18 @@ const routes = [
         layout: DashboardLayout,
         path: "/dashboard",
         component: Home,
+    },
+    {
+        exact: true,
+        layout: DashboardLayout,
+        path: "/myself",
+        component: MySelf,
+    },
+    {
+        exact: true,
+        layout: DashboardLayout,
+        path: "/client-profile",
+        component: ClientProfile,
     },
     {
         path: "*",

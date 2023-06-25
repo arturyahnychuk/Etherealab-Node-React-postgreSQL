@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import useAuth from "../hooks/useAuth";
+import SaveIcon from "@mui/icons-material/Save";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -130,7 +131,7 @@ function ClientProfile() {
                     color="primary"
                     className={classes.submit}
                 >
-                    Save
+                    <SaveIcon /> Save
                 </Button>
             </form>
         </Container>
