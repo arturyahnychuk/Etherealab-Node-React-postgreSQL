@@ -32,14 +32,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: {
         marginTop: theme.spacing(16),
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: "transparent",
-        color: theme.palette.text.secondary,
-    },
-    lockIcon: {
-        fontSize: "40px",
-    },
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
@@ -52,13 +44,6 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
-    meta: {
-        textAlign: "right",
-        "& a": {
-            color: theme.palette.text.secondary,
-            fontSize: 12,
-        },
     },
     Logo: {
         maxWidth: "180px",
@@ -135,11 +120,11 @@ const ForgetPassword = () => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Grid className={classes.marginTop}>
-                <img src={Logo} alt="Logo" className={classes.Logo} />
                 <div className={classes.paper}>
+                    <img src={Logo} alt="Logo" className={classes.Logo} />
                     <Typography
                         component="h1"
-                        variant="h2"
+                        variant="h5"
                         className={classes.pageTitle}
                     >
                         Forgot Password
@@ -183,7 +168,7 @@ const ForgetPassword = () => {
                                     inputProps={{ maxLength: 255 }}
                                     helperText={`${
                                         email.length >= 255
-                                            ? "Enter an email between 255 charecter"
+                                            ? "Enter an email between 255 character"
                                             : ""
                                     }`}
                                 />

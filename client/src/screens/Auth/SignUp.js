@@ -4,11 +4,9 @@ import { useSnackbar } from "notistack";
 
 import Logo from "../../assets/img/logo.svg";
 import AuthService from "../../services/auth.service";
-import EmailService from "../../services/email.service";
 import PracticeForm from "./components/PracticeForm";
-import Success from "./components/Success";
 import { makeStyles } from "@mui/styles";
-import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import { Container, CssBaseline, Link, Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -22,14 +20,6 @@ const useStyles = makeStyles((theme) => ({
             "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
         padding: theme.spacing(2),
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: "transparent",
-        color: theme.palette.text.secondary,
-    },
-    lockIcon: {
-        fontSize: "40px",
-    },
     Logo: {
         maxWidth: "180px",
         width: 170,
@@ -41,32 +31,11 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = () => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const [signedUpUser, setSignedUpUser] = useState([]);
     const [errors, setErrors] = useState([]);
-    const [success, setSuccess] = useState(false);
-
-    const sendVerificationEmail = (data) => {
-        EmailService.sendEmailVerification(data).then(
-            () => {
-                setSuccess(true);
-            },
-            (error) => {
-                setSuccess(false);
-                enqueueSnackbar(`${error.response.data}`, {
-                    variant: "error",
-                });
-            }
-        );
-    };
 
     const handleFormSubmit = (data) => {
         AuthService.register(data).then(
             (response) => {
-                if (response.data) {
-                    setSuccess(true);
-                    sendVerificationEmail(response.data.data.user);
-                    setSignedUpUser(response.data.data.user);
-                }
                 enqueueSnackbar(`${response.data.message}`, {
                     variant: "success",
                 });
@@ -82,23 +51,20 @@ const SignUp = () => {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <img src={Logo} alt="Logo" className={classes.Logo} />
             <div className={classes.paper}>
+                <img src={Logo} alt="Logo" className={classes.Logo} />
                 <Typography
                     component="h1"
-                    variant="h2"
+                    variant="h5"
                     className={classes.pageTitle}
                 >
-                    Sign Up
+                    Sign Up for a new account
                 </Typography>
-                {success ? (
-                    <Success user={signedUpUser} />
-                ) : (
-                    <PracticeForm
-                        onFormSubmit={handleFormSubmit}
-                        errors={errors}
-                    />
-                )}
+                <Link href="/login_client" variant="body2">
+                    Already a member? Login here
+                </Link>
+
+                <PracticeForm onFormSubmit={handleFormSubmit} errors={errors} />
             </div>
         </Container>
     );

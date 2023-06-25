@@ -2,6 +2,7 @@ import palette from "./palette";
 
 // https://material-ui.com/customization/color/#color-palette
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     h1: {
         color: palette.text.primary,

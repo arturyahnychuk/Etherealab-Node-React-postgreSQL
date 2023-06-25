@@ -8,8 +8,14 @@ import Error from "../components/common/Error";
 import AuthService from "../services/auth.service";
 import Success from "./ForgetPassword/Success";
 import { makeStyles } from "@mui/styles";
-import { Button, Container, CssBaseline, Grid, TextField } from "@mui/material";
-import Typography from "../theme/typography";
+import {
+    Button,
+    Container,
+    CssBaseline,
+    Grid,
+    TextField,
+    Typography,
+} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,14 +31,6 @@ const useStyles = makeStyles((theme) => ({
     },
     marginTop: {
         marginTop: theme.spacing(16),
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: "transparent",
-        color: theme.palette.text.secondary,
-    },
-    lockIcon: {
-        fontSize: "40px",
     },
     pageTitle: {
         marginBottom: theme.spacing(3),
@@ -79,7 +77,7 @@ const ResetPassword = () => {
         setConfirmPassword("");
     };
 
-    const validatePasswod = (event) => {
+    const validatePassword = (event) => {
         if (event.target.value.length < 8) {
             setFieldErrors([
                 {
@@ -92,7 +90,8 @@ const ResetPassword = () => {
             setFieldErrors([]);
         }
     };
-    const validatePasswodConfirm = () => {
+
+    const validatePasswordConfirm = () => {
         if (confirmPassword !== password) {
             setFieldErrors([
                 {
@@ -109,12 +108,12 @@ const ResetPassword = () => {
     return (
         <Container component="main" maxWidth="xs" className={classes.root}>
             <Grid className={classes.marginTop}>
-                <img src={Logo} alt="Logo" className={classes.Logo} />
                 <CssBaseline />
                 <div className={classes.paper}>
+                    <img src={Logo} alt="Logo" className={classes.Logo} />
                     <Typography
                         component="h1"
-                        variant="h2"
+                        variant="h5"
                         className={classes.pageTitle}
                     >
                         Update Your Password
@@ -144,7 +143,7 @@ const ResetPassword = () => {
                                     onChange={(event) =>
                                         setPassword(event.target.value)
                                     }
-                                    onBlur={(event) => validatePasswod(event)}
+                                    onBlur={(event) => validatePassword(event)}
                                 />
                                 <TextField
                                     value={confirmPassword}
@@ -161,7 +160,7 @@ const ResetPassword = () => {
                                         setConfirmPassword(event.target.value)
                                     }
                                     onBlur={(event) =>
-                                        validatePasswodConfirm(event)
+                                        validatePasswordConfirm(event)
                                     }
                                 />
                                 <Button

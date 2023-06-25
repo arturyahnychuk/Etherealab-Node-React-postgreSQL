@@ -5,9 +5,7 @@ import { ReactComponent as LogoSvg } from "../../assets/img/logo.svg";
 import {
     Button,
     CssBaseline,
-    Grid,
     Link,
-    Paper,
     TextField,
     Typography,
 } from "@mui/material";
@@ -28,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: {
         marginTop: theme.spacing(16),
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: "transparent",
-        color: theme.palette.text.secondary,
-    },
-    lockIcon: {
-        fontSize: "40px",
-    },
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
@@ -51,12 +41,6 @@ const useStyles = makeStyles((theme) => ({
         width: 170,
         height: 65,
         objectFit: "contain",
-    },
-    meta: {
-        "& a": {
-            color: theme.palette.text.secondary,
-            fontSize: "12px",
-        },
     },
 }));
 

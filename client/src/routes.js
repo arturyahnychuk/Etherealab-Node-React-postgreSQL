@@ -1,12 +1,11 @@
 import { Fragment } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import GuestGuard from "./components/GuestGuard";
 import Login from "./screens/Auth/Login";
 import SignUp from "./screens/Auth/SignUp";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import ForgetPassword from "./screens/ForgetPassword";
 import ResetPassword from "./screens/ResetPassword";
-import EmailConfirmation from "./screens/EmailConfirmation/EmailConfirmation";
 import Home from "./screens/Home";
 
 export const renderRoutes = (routes = []) => (
@@ -39,8 +38,6 @@ export const renderRoutes = (routes = []) => (
 );
 
 const routes = [
-    // { exact: true, path: "/", guard: GuestGuard, component:  },
-
     {
         exact: true,
         path: "/login_client",
@@ -60,13 +57,6 @@ const routes = [
         layout: MainLayout,
         path: "/password/reset/:userId/:token",
         component: ResetPassword,
-    },
-    {
-        exact: true,
-        guard: GuestGuard,
-        layout: MainLayout,
-        path: "/email/confirmation/:userId/:token",
-        component: EmailConfirmation,
     },
     {
         exact: true,
