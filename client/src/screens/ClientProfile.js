@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
     },
     form: {
-        width: "100%", // Fix IE 11 issue.
+        width: "50%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -69,14 +69,14 @@ function ClientProfile() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
             <CssBaseline />
             <Typography
                 component="h5"
                 variant="h5"
                 className={classes.pageTitle}
             >
-                Login To your account
+                Client Profile
             </Typography>
             <Error errors={apiErrors} />
 

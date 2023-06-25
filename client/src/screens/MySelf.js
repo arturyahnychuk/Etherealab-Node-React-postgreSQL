@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
     },
     form: {
-        width: "100%", // Fix IE 11 issue.
+        width: "50%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 function MySelf() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const { login } = useAuth();
 
     const [apiErrors, setApiErrors] = useState([]);
     const [firstName, setFirstName] = useState("");
@@ -120,8 +119,10 @@ function MySelf() {
                         // network error
                         console.error(error);
                     } else {
+                        // eslint-disable-next-line no-undef
                         const uniqueFieldErrors = _.uniqWith(
                             [...fieldErrors, error.response.data.message],
+                            // eslint-disable-next-line no-undef
                             _.isEqual
                         );
                         setFieldErrors(uniqueFieldErrors);
@@ -133,7 +134,7 @@ function MySelf() {
             });
     };
     return (
-        <Container maxWidth="xs">
+        <Container>
             {/* <CssBaseline />s */}
             <Typography
                 component="h5"
