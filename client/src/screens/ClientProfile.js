@@ -30,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
         width: "50%", // Fix IE 11 issue.
         textAlign: "center",
         marginTop: theme.spacing(1),
-        border: "1px solid",
-        borderColor: theme.borderColor,
-        borderRadius: "2px",
         padding: theme.spacing(4),
     },
     submit: {

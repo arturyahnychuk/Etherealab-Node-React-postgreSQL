@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
         // flexDirection: "column",
         display: "block",
         textAlign: "center",
-        margin: "auto 0",
         width: "100%",
         height: "100%",
         padding: 0,
@@ -41,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         backgroundColor: theme.Colors.black,
         objectFit: "cover",
+        padding: theme.spacing(4),
     },
 }));
 

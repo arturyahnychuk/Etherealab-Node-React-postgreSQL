@@ -18,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
         "& hr": {
             display: "none",
         },
+        "& ul": {
+            padding: 0,
+        },
+        "& li": {
+            margin: 0,
+        },
     },
     item: {
         display: "flex",
@@ -142,7 +148,6 @@ const SidebarNav = (props) => {
                 pages.map((page) => (
                     <List
                         key={page.href}
-                        component="nav"
                         subheader={
                             page.subMenus ? (
                                 <ListSubheader disableGutters disableSticky>
