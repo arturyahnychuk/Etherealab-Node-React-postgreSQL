@@ -25,8 +25,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow:
-            "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
+
         padding: theme.spacing(2),
     },
     marginTop: {
@@ -38,10 +37,17 @@ const useStyles = makeStyles((theme) => ({
     Error: {
         marginTop: theme.spacing(2),
     },
+
     form: {
         width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        textAlign: "center",
+        marginTop: theme.spacing(3),
+        border: "1px solid",
+        borderColor: theme.borderColor,
+        borderRadius: "2px",
+        padding: theme.spacing(4),
     },
+
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
@@ -143,10 +149,7 @@ const ForgetPassword = () => {
                     )}
                     {!success && (
                         <>
-                            <p>
-                                Enter your email and we will send you reset
-                                instructions.
-                            </p>
+                            <p>Login to account</p>
                             <form
                                 className={classes.form}
                                 noValidate
@@ -180,18 +183,8 @@ const ForgetPassword = () => {
                                     className={classes.submit}
                                     disabled={!email}
                                 >
-                                    Reset
+                                    Send Password
                                 </Button>
-                                <Grid container className={classes.meta}>
-                                    <Grid item xs>
-                                        <Link
-                                            href="/login_client"
-                                            variant="body2"
-                                        >
-                                            Login
-                                        </Link>
-                                    </Grid>
-                                </Grid>
                             </form>
                         </>
                     )}

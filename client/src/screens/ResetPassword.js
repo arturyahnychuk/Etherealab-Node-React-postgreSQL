@@ -25,8 +25,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow:
-            "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
+
         padding: theme.spacing(2),
     },
     marginTop: {
@@ -35,10 +34,25 @@ const useStyles = makeStyles((theme) => ({
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        textAlign: "center",
+        marginTop: theme.spacing(3),
+        border: "1px solid",
+        borderColor: theme.borderColor,
+        borderRadius: "2px",
+        padding: theme.spacing(4),
+    },
     resetPasswordFormSentWrapper: {},
     resetPasswordFormWrapper: {},
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: " theme.spacing(3, 0, 2)",
+    },
+    Logo: {
+        maxWidth: "180px",
+        width: 170,
+        height: 65,
+        objectFit: "contain",
     },
 }));
 
@@ -116,9 +130,8 @@ const ResetPassword = () => {
                         variant="h5"
                         className={classes.pageTitle}
                     >
-                        Update Your Password
+                        Reset Password
                     </Typography>
-                    <Error errors={fieldErrors} />
                     {success && (
                         <Success
                             header="Your password has been saved."
@@ -127,6 +140,7 @@ const ResetPassword = () => {
                     )}
                     {!success && (
                         <div className={classes.resetPasswordFormWrapper}>
+                            <Error errors={fieldErrors} />
                             <form className={classes.form} noValidate>
                                 <TextField
                                     value={password}
@@ -177,7 +191,7 @@ const ResetPassword = () => {
                                         handlePasswordReset(event)
                                     }
                                 >
-                                    Submit
+                                    Reset
                                 </Button>
                             </form>
                         </div>
