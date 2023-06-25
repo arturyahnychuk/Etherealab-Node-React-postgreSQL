@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow:
-            "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
+
         padding: theme.spacing(2),
     },
     marginTop: {
@@ -30,8 +29,13 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
     },
     form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        width: "50%", // Fix IE 11 issue.
+        textAlign: "center",
+        marginTop: theme.spacing(3),
+        border: "1px solid",
+        borderColor: theme.borderColor,
+        borderRadius: "2px",
+        padding: theme.spacing(4),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -69,7 +73,7 @@ function Login() {
         }
     };
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
             <CssBaseline />
             <div className={classes.paper}>
                 <LogoSvg width={170} height={65} />
@@ -78,15 +82,20 @@ function Login() {
                     variant="h5"
                     className={classes.pageTitle}
                 >
-                    Login To your account
+                    Login to your account
                 </Typography>
-                <Error errors={apiErrors} />
-
+                <Typography component="h6">
+                    Don't have an account? Sign up{" "}
+                    <Link href="/forgot-password" variant="body2">
+                        here
+                    </Link>
+                </Typography>
                 <form
                     className={classes.form}
                     noValidate
                     onSubmit={(event) => onFormSubmit(event)}
                 >
+                    <Error errors={apiErrors} />
                     <TextField
                         value={email}
                         variant="outlined"
@@ -94,7 +103,7 @@ function Login() {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="Email"
                         name="email"
                         autoComplete="email"
                         autoFocus

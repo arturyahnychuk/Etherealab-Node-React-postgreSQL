@@ -87,12 +87,14 @@ const Home = () => {
 
     return (
         <Container>
+            <Typography component="h5" variant="h5">
+                Dashboard
+            </Typography>
             <form onSubmit={onFormSubmit}>
                 <Grid container spacing={2} alignItems="center">
-                    <Grid item sm={9} xs={9}>
+                    <Grid item>
                         <TextField
                             autoFocus
-                            fullWidth
                             size="small"
                             variant="outlined"
                             value={searchText}

@@ -44,7 +44,7 @@ const routes = [
     {
         exact: true,
         path: "/login_client",
-        layout: DashboardLayout,
+        layout: MainLayout,
         guard: GuestGuard,
         component: Login,
     },

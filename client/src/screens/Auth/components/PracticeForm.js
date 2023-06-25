@@ -15,7 +15,12 @@ import { Alert, Button, TextField } from "@mui/material";
 const useStyles = makeStyles((theme) => ({
     form: {
         width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        textAlign: "center",
+        marginTop: theme.spacing(3),
+        border: "1px solid",
+        borderColor: theme.borderColor,
+        borderRadius: "2px",
+        padding: theme.spacing(4),
     },
     checkbox: {
         marginTop: theme.spacing(1),
