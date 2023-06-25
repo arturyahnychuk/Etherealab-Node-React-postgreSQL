@@ -1,12 +1,162 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Container from "@mui/material/Container";
 import { ReactComponent as LogoSvg } from "../../assets/img/logo.svg";
+import {
+    Button,
+    CssBaseline,
+    Grid,
+    Link,
+    Paper,
+    TextField,
+    Typography,
+} from "@mui/material";
+import { useSnackbar } from "notistack";
+import useAuth from "../../hooks/useAuth";
+import { makeStyles } from "@mui/styles";
+import Error from "../../components/common/Error";
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        boxShadow:
+            "0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%)",
+        padding: theme.spacing(2),
+    },
+    marginTop: {
+        marginTop: theme.spacing(16),
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: "transparent",
+        color: theme.palette.text.secondary,
+    },
+    lockIcon: {
+        fontSize: "40px",
+    },
+    pageTitle: {
+        marginBottom: theme.spacing(3),
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    Logo: {
+        maxWidth: "180px",
+        width: 170,
+        height: 65,
+        objectFit: "contain",
+    },
+    meta: {
+        "& a": {
+            color: theme.palette.text.secondary,
+            fontSize: "12px",
+        },
+    },
+}));
 
 function Login() {
+    const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
+    const { login } = useAuth();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [apiErrors, setApiErrors] = useState([]);
+
+    const onFormSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            await login(email.trim(), password.trim()); // Call AuthProvider login
+        } catch (error) {
+            console.error(error);
+            enqueueSnackbar("Unable to login", {
+                variant: "error",
+            });
+            setApiErrors([
+                {
+                    msg: error.message,
+                },
+            ]);
+        }
+    };
     return (
-        <Container>
-            <LogoSvg />
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <LogoSvg width={170} height={65} />
+                <Typography
+                    component="h5"
+                    variant="h5"
+                    className={classes.pageTitle}
+                >
+                    Login To your account
+                </Typography>
+                <Error errors={apiErrors} />
+
+                <form
+                    className={classes.form}
+                    noValidate
+                    onSubmit={(event) => onFormSubmit(event)}
+                >
+                    <TextField
+                        value={email}
+                        variant="outlined"
+                        margin="dense"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        onChange={(event) => setEmail(event.target.value)}
+                        inputProps={{ maxLength: 255 }}
+                        helperText={`${
+                            email.length >= 255
+                                ? "Enter an email between 255 character"
+                                : ""
+                        }`}
+                    />
+                    <TextField
+                        value={password}
+                        variant="outlined"
+                        margin="dense"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={(event) => setPassword(event.target.value)}
+                        inputProps={{ maxLength: 128 }}
+                        helperText={`${
+                            password.length >= 128
+                                ? "Enter a password between 128 character"
+                                : ""
+                        }`}
+                    />
+                    <Button
+                        type="submit"
+                        disabled={!email || !password}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sign In
+                    </Button>
+
+                    <Link href="/forgot-password" variant="body2">
+                        Forgot password?
+                    </Link>
+                </form>
+            </div>
         </Container>
     );
 }
