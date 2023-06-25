@@ -1,0 +1,295 @@
+drop table if exists client cascade;
+    create table client (
+      id serial primary key,
+      name varchar(255),
+      address varchar(100),
+      address2 varchar(100),
+      city varchar(50),
+      state varchar(2),
+      postal varchar(10), --zipcode
+      country varchar(2),
+      phone varchar(50),
+      website varchar(50), --url
+      license varchar(50),
+      note varchar(1000),
+      created TIMESTAMP WITHOUT TIME ZONE,
+      created_user_id int,
+      updated TIMESTAMP WITHOUT TIME ZONE,
+      updated_user_id int
+    );
+
+    create unique index on client (name);
+    create unique index on client (phone);
+    create unique index on client (website);
+
+    insert into client values(1, 'The Center For Functional Medicine', '100 Main St', 'Suite #100', 'Annapolis', 'MD', '94521', 'US', '800-555-1212', 'www.functionalmedicine.com', '#MD1234', 'note', now(), null, now(), null);
+
+    select setval(pg_get_serial_sequence('client', 'id'), (select max(id) from client)); --fix primary key sequence
+    
+    --alter table client add foreign key (updated_user_id) references users(id);
+
+
+--users are the many employees of a doctors office
+drop table if exists users cascade; /*user is a reserved word and does not work*/
+    create table users (
+      id serial primary key,
+      client_id int,
+      firstname varchar(255),
+      lastname varchar(255),
+      email varchar(255),
+      phone varchar(25),
+      note varchar(1000),
+      status char(1),    --A=Active, I=Inactive, D=Deleted
+      admin boolean,
+      password varchar(255),
+      reset_password_token varchar(255),
+      reset_password_expires TIMESTAMP WITHOUT TIME ZONE,
+      sign_dt TIMESTAMP WITHOUT TIME ZONE,   --date accepted terms and conditions with e-signature
+      sign_ip_address varchar(20),  --IP address when signed terms and conditions with e-signature
+      login_dt date,   --date last logged into site
+      created TIMESTAMP WITHOUT TIME ZONE,
+      created_user_id int,
+      updated TIMESTAMP WITHOUT TIME ZONE,
+      updated_user_id int
+    );
+
+    create index on users using btree (client_id); --so client can select their list of users
+    create unique index on users (email);
+
+    insert into users values(1, 1, 'Mark', 'Hyman MD', 'dr@test.com', '818 415 9596', 'note', 'A', true, '$2a$08$j9tLFDe2qULcezPfM2AUbuuicNBBKB/Gw1VE1GXuoxXx85w7uYX/u', null, null, null, null, now(), now(), 1, now(), 1);
+
+    select setval(pg_get_serial_sequence('users', 'id'), (select max(id) from users)); --fix primary key sequence
+
+    --alter table users add foreign key (client_id) references client(id);
+    --alter table users add foreign key (created_user_id) references users(id);
+    --alter table users add foreign key (updated_user_id) references users(id);
+
+
+drop table if exists patient cascade;
+    create table patient (
+      id serial primary key,
+      client_id int,
+      firstname varchar(30),
+      middlename varchar(20),
+      lastname varchar(30),
+      address varchar(100),
+      address2 varchar(100),
+      city varchar(50),
+      state varchar(3), --country AU has a state with 3 characters
+      postal varchar(10),
+      country varchar(255),
+      phone varchar(50),
+      email varchar(40),
+      dob date,
+      gender char(1), 
+      login_dt date,    --date last logged into site
+      note text,
+      reset_password_token varchar(255),
+      reset_password_expires TIMESTAMP WITHOUT TIME ZONE,
+      created TIMESTAMP WITHOUT TIME ZONE,
+      created_user_id int,
+      updated TIMESTAMP WITHOUT TIME ZONE,
+      updated_user_id int
+    );
+
+    create index on patient using btree (client_id, firstname); 
+    create index on patient using btree (client_id, lastname); 
+    create index on patient using btree (client_id, phone); 
+    create unique index on patient (client_id, email);	--one patients email can be used at several clients
+
+    insert into patient values(1, 1, 'John', '', 'Doe', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
+    insert into patient values(2, 1, 'Joe', '', 'Does', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt2@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
+
+    select setval(pg_get_serial_sequence('patient', 'id'), (select max(id) from patient)); --fix primary key sequence
+    --alter table patient add foreign key (created_user_id) references users(id);
+    --alter table patient add foreign key (updated_user_id) references users(id);
+    --alter table patient add foreign key (client_id) references client(id);
+
+
+drop table if exists lab_company cascade;
+    create table lab_company (
+      id serial primary key,
+      name varchar(100),
+      status boolean
+    );
+
+    create unique index on lab_company using btree (name);
+
+    insert into lab_company values (1, 'Access Medical Labs', True);
+    insert into lab_company values (2, 'Alletess', True);
+    insert into lab_company values (3, 'Ayumetrix', True);
+    insert into lab_company values (4, 'BostonHeart', True);
+    insert into lab_company values (5, 'Cell Science Systems', True);
+    insert into lab_company values (6, 'Cyrex Labs', True);
+    insert into lab_company values (7, 'Dutch/Precision Analytical', True);
+    insert into lab_company values (8, 'Diagnostic Solutions', True);
+    insert into lab_company values (9, 'Doctors Data', True);
+    insert into lab_company values (10, 'ELISA/ACT Biotech', True);
+    insert into lab_company values (11, 'Genova Diagnostics', True);
+    insert into lab_company values (12, 'Great Plains Laboratory', True);
+    insert into lab_company values (13, 'IGeneX', True);
+    insert into lab_company values (14, 'KBMO', True);
+    insert into lab_company values (15, 'Labrix by Doctors Data', True);
+    insert into lab_company values (16, 'Precision Point', True);
+    insert into lab_company values (17, 'Quicksilver Scientific', True);
+    insert into lab_company values (18, 'Sanesco & NeuroLab', True);
+    insert into lab_company values (19, 'SpectraCell', True);
+    insert into lab_company values (20, 'US Biotek', True);
+    insert into lab_company values (21, 'Vibrant America', True);
+    insert into lab_company values (22, 'Vibrant Wellness', True);
+    insert into lab_company values (23, 'ZRT', True);
+    --New
+    insert into lab_company values (24, 'Prodrome Sciences', True);
+    insert into lab_company values (25, 'Immunosciences Lab', True);
+    insert into lab_company values (26, 'DiagnosTechs', True);
+
+    select setval(pg_get_serial_sequence('lab_company', 'id'), (select max(id) from lab_company)); --fix primary key sequence
+
+
+drop table if exists lab_company_test cascade;
+    create table lab_company_test (
+      id serial primary key,
+      lab_company_id int, --fk to lab_company.id
+      name varchar(100),
+      sample_type_id int, --fk to sample_type.id
+      phlebotomy boolean,
+      msrp decimal(6,2), --the higher price
+      price decimal(6,2), --the real price
+      notes varchar(1000),
+      status char(1), --A=Active, I=Inactive
+      created TIMESTAMP WITHOUT TIME ZONE,
+      updated TIMESTAMP WITHOUT TIME ZONE
+    );
+
+    create unique index on lab_company_test using btree (lab_company_id, name);
+
+    insert into lab_company_test values (1, 11, 'GI Effects', null, null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (2, 11, 'SIBO', null, null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (3, 11, 'NutrEval', null, null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (4, 11, 'Metabolomix+', null, null, 500.00, 400.00, null, 'A', now(), now());
+
+    select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
+
+    --alter table lab_company_test add foreign key (lab_company_id) references lab_company(id);
+    --alter table lab_company_test add foreign key (sample_type_id) references sample_type(id);
+
+
+drop table if exists lab_company_test_favorite cascade;
+    create table lab_company_test_favorite (
+      client_id int,
+      lab_company_test_id int,
+      created TIMESTAMP WITHOUT TIME ZONE,
+      created_user_id int
+    );
+
+    create unique index on lab_company_test_favorite using btree (client_id, lab_company_test_id);
+
+    insert into lab_company_test_favorite values (1, 1, now(), 1);
+
+    --alter table lab_company_test_favorite add foreign key (client_id) references client(id);
+    --alter table lab_company_test_favorite add foreign key (lab_company_test_id) references lab_company_test(id);
+    --alter table lab_company_test_favorite add foreign key (created_user_id) references created_user(id);
+
+
+drop table if exists sample_type cascade;
+    create table sample_type (
+      id int primary key,
+      name char(30)
+    );
+
+    create unique index on sample_type using btree (name);
+    
+    insert into sample_type values (1, 'Stool');
+    insert into sample_type values (2, 'Saliva');
+    insert into sample_type values (3, 'Blood');
+    insert into sample_type values (4, 'Blood Spot');
+    insert into sample_type values (5, 'Finger Stick');
+    insert into sample_type values (6, 'Plasma');
+    insert into sample_type values (7, 'Serum');
+    insert into sample_type values (8, 'Whole Blood');
+    insert into sample_type values (9, 'Hair');
+    insert into sample_type values (10, 'Urine');
+    insert into sample_type values (11, 'Biopsy');
+    insert into sample_type values (12, 'Blood Nanocontainer');
+    insert into sample_type values (13, 'Breath');
+    insert into sample_type values (14, 'Cerebral Spinal Fluid');
+    insert into sample_type values (15, 'Multiple');
+    insert into sample_type values (16, 'Swab');
+    insert into sample_type values (17, 'Water');
+
+    select setval(pg_get_serial_sequence('sample_type', 'id'), (select max(id) from sample_type)); --fix primary key sequence
+
+
+drop table if exists orders cascade; /*order is a reserved word and does not work*/
+    create table orders (
+        id serial primary key,
+        patient_id int,
+        client_id int,
+        price decimal(9,2),
+        status char(3),  --STP=Sent To Patient, IP=In Progress, ARI=All Results In, C=Cancelled
+        note varchar(1000),
+        created TIMESTAMP WITHOUT TIME ZONE,
+        created_user_id int,
+        updated TIMESTAMP WITHOUT TIME ZONE,
+        updated_user_id int
+    );
+
+    create index on orders (patient_id);
+    create index on orders (client_id);
+    create index on orders (status);  -- for cron job to send invoice emails to patients
+
+    insert into orders values(1, 1, 1, 500.00, 'IP', null, now(), null, now(), null);
+
+    select setval(pg_get_serial_sequence('orders', 'id'), (select max(id) from orders)); --fix primary key sequence
+    
+    --alter table orders add foreign key (created_user_id) references users(id);
+    --alter table orders add foreign key (updated_user_id) references users(id);
+    --alter table orders add foreign key (patient_id) references patient(id);
+    --alter table orders add foreign key (client_id) references client(id);
+    
+
+drop table if exists order_item cascade;
+    create table order_item (
+        order_id int,
+        lab_company_test_id int,        
+        lab_company_id int,
+        price decimal(9,2),
+        status char(3),
+        note varchar(1000),
+        created TIMESTAMP WITHOUT TIME ZONE,
+        created_user_id int,
+        updated TIMESTAMP WITHOUT TIME ZONE,
+        updated_user_id int
+    );
+
+    create unique index on order_item (order_id, lab_company_test_id);
+
+    insert into order_item values(1, 1, 11, 500.00, 'IP', null, now(), null, now(), null);
+    
+    --alter table order_item add foreign key (created_user_id) references users(id);
+    --alter table order_item add foreign key (updated_user_id) references users(id);
+    --alter table order_item add foreign key (lab_company_test_id) references lab_company_test(id);
+    --alter table order_item add foreign key (lab_company_id) references lab_company(id);
+  
+
+drop table if exists message cascade;
+    create table message (
+      id serial primary key,
+      client_id int,
+      content varchar(1000),
+      created TIMESTAMP WITHOUT TIME ZONE,
+      created_user_id int,
+      updated TIMESTAMP WITHOUT TIME ZONE,
+      updated_user_id int
+    );
+
+    insert into message values(1, 1, 'Help me', now(), 1, now(), 1);
+
+    select setval(pg_get_serial_sequence('message', 'id'), (select max(id) from message)); --fix primary key sequence
+    
+    --alter table client add foreign key (created_user_id) references users(id);
+    --alter table client add foreign key (updated_user_id) references users(id);
+    --alter table client add foreign key (client_id) references client(id);
+
+  
+-- **** bookmark add foreign keys
