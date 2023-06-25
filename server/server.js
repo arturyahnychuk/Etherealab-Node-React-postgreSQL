@@ -27,6 +27,13 @@ app.get("/", (req, res) => {
 const baseAPIPath = "/api/v1";
 app.use(baseAPIPath, require("./app/routes/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/login.routes"));
+app.use(baseAPIPath, require("./app/routes/client.routes"));
+app.use(baseAPIPath, require("./app/routes/auth-email.routes"));
+app.use(baseAPIPath, require("./app/routes/database-status.routes")); //testing
+app.use(baseAPIPath, require("./app/routes/myself.routes"));
+app.use(baseAPIPath, require("./app/routes/password-reset.routes"));
+app.use(baseAPIPath, require("./app/routes/index.routes"));
+
 // Database Status
 app.use(baseAPIPath, require("./app/routes/database-status.routes"));
 
