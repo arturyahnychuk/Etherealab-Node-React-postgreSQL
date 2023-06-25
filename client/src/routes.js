@@ -1,10 +1,16 @@
-import { Routes } from "react-router-dom";
+import { Fragment } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import GuestGuard from "./components/GuestGuard";
 import Login from "./screens/Auth/Login";
 import SignUp from "./screens/Auth/SignUp";
+import MainLayout from "./layouts/MainLayout/MainLayout";
+import ForgetPassword from "./screens/ForgetPassword";
+import ResetPassword from "./screens/ResetPassword";
+import EmailConfirmation from "./screens/EmailConfirmation/EmailConfirmation";
+import Home from "./screens/Home";
 
 export const renderRoutes = (routes = []) => (
-    <Routes>
+    <Switch>
         {routes.map((route, i) => {
             const Guard = route.guard || Fragment;
             const Layout = route.layout || Fragment;
@@ -12,26 +18,81 @@ export const renderRoutes = (routes = []) => (
 
             return (
                 <Route
-                    // eslint-disable-next-line react/no-array-index-key
                     key={i}
                     path={route.path}
                     exact={route.exact}
                     render={(props) => (
                         <Guard>
                             <Layout>
-                                <Component {...props} />
+                                {route.routes ? (
+                                    renderRoutes(route.routes)
+                                ) : (
+                                    <Component {...props} />
+                                )}
                             </Layout>
                         </Guard>
                     )}
                 />
             );
         })}
-    </Routes>
+    </Switch>
 );
 
 const routes = [
-    { exact: true, path: "/login", guard: GuestGuard, component: Login },
-    { exact: true, path: "/signup", guard: GuestGuard, component: SignUp },
+    // { exact: true, path: "/", guard: GuestGuard, component:  },
+
+    {
+        exact: true,
+        path: "/login_client",
+        guard: GuestGuard,
+        component: Login,
+    },
+    {
+        exact: true,
+        guard: GuestGuard,
+        layout: MainLayout,
+        path: "/forgot-password",
+        component: ForgetPassword,
+    },
+    {
+        exact: true,
+        guard: GuestGuard,
+        layout: MainLayout,
+        path: "/password/reset/:userId/:token",
+        component: ResetPassword,
+    },
+    {
+        exact: true,
+        guard: GuestGuard,
+        layout: MainLayout,
+        path: "/email/confirmation/:userId/:token",
+        component: EmailConfirmation,
+    },
+    {
+        exact: true,
+        guard: GuestGuard,
+        layout: MainLayout,
+        path: "/signup_client",
+        component: SignUp,
+    },
+    {
+        exact: true,
+        // guard: ClientPortalGuard,
+        // layout: DashboardLayout,
+        path: "/dashboard",
+        component: Home,
+    },
+    {
+        path: "*",
+        layout: MainLayout,
+        routes: [
+            {
+                exact: true,
+                path: "/",
+                component: Home,
+            },
+        ],
+    },
 ];
 
 export default routes;
