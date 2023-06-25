@@ -9,8 +9,12 @@ import axios from "../utils/axios";
 
 const initialAuthState = {
     isAuthenticated: false,
-    isInitialised: false,
-    user: null,
+    isInitialized: false,
+    user: {
+        firstname: "martin",
+        lastname: "karani",
+        login_url: "/login_client",
+    },
     lastVisitedPatient: null,
 };
 
@@ -36,12 +40,12 @@ const setSession = (accessToken) => {
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "INITIALISE": {
+        case "INITIALIZE": {
             const { isAuthenticated, user } = action.payload;
             return {
                 ...state,
                 isAuthenticated,
-                isInitialised: true,
+                isINITIALIZEd: true,
                 user,
             };
         }
@@ -83,7 +87,6 @@ export const AuthProvider = ({ children }) => {
         });
         const { accessToken, user } = response.data.data;
         setSession(accessToken);
-        const patientId = "";
 
         dispatch({
             type: "LOGIN",
@@ -97,12 +100,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.clear();
         setSession(null);
         dispatch({ type: "LOGOUT" });
-
-        // removeCookie("last_viewed_patient_id");
     };
 
     useEffect(() => {
-        const initialise = async () => {
+        const initialize = async () => {
             try {
                 const accessToken = window.localStorage.getItem("accessToken");
                 if (accessToken && isValidToken(accessToken)) {
@@ -117,7 +118,7 @@ export const AuthProvider = ({ children }) => {
                     const { user } = response.data.data;
 
                     dispatch({
-                        type: "INITIALISE",
+                        type: "INITIALIZE",
                         payload: {
                             ...state,
                             isAuthenticated: true,
@@ -126,7 +127,7 @@ export const AuthProvider = ({ children }) => {
                     });
                 } else {
                     dispatch({
-                        type: "INITIALISE",
+                        type: "INITIALIZE",
                         payload: {
                             isAuthenticated: false,
                             user: null,
@@ -135,7 +136,7 @@ export const AuthProvider = ({ children }) => {
                 }
             } catch (err) {
                 dispatch({
-                    type: "INITIALISE",
+                    type: "INITIALIZE",
                     payload: {
                         isAuthenticated: false,
                         user: null,
@@ -144,11 +145,11 @@ export const AuthProvider = ({ children }) => {
             }
         };
 
-        initialise();
+        initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!state.isInitialised) {
+    if (!state.isINITIALIZEd) {
         return <SplashScreen />;
     }
 

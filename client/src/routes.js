@@ -7,6 +7,7 @@ import MainLayout from "./layouts/MainLayout/MainLayout";
 import ForgetPassword from "./screens/ForgetPassword";
 import ResetPassword from "./screens/ResetPassword";
 import Home from "./screens/Home";
+import DashboardLayout from "./layouts/Dashboard";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -41,6 +42,7 @@ const routes = [
     {
         exact: true,
         path: "/login_client",
+        layout: DashboardLayout,
         guard: GuestGuard,
         component: Login,
     },
@@ -68,7 +70,7 @@ const routes = [
     {
         exact: true,
         // guard: ClientPortalGuard,
-        // layout: DashboardLayout,
+        layout: DashboardLayout,
         path: "/dashboard",
         component: Home,
     },

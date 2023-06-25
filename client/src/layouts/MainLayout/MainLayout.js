@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import clsx from "clsx";
 
-import { /* Header, */ Footer, Sidebar } from "./components";
+import { Sidebar } from "./components";
 import { makeStyles } from "@mui/styles";
 import { Container, useMediaQuery, useTheme } from "@mui/material";
 
@@ -54,7 +54,6 @@ const MainLayout = ({ children }) => {
             <Container maxWidth="lg" className={classes.content}>
                 {children}
             </Container>
-            <Footer />
         </div>
     );
 };
