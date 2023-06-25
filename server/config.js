@@ -1,8 +1,6 @@
 const dotenv = require("dotenv");
 
-const envFilePath = `${process.cwd()}/.env.dev`;
-
-dotenv.config({ debug: true, override: true, path: envFilePath });
+dotenv.config({ debug: true, override: true });
 
 module.exports = {
     port: process.env.PORT,
