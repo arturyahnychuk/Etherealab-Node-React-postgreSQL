@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
 
-// import commonReducer from "./common";
+import commonReducer from "./common";
 import notificationsReducer from "./notifications";
-// import patientReducer from "./patient";
 
 const appReducer = combineReducers({
-    // common: commonReducer,
-    // patient: patientReducer,
+    common: commonReducer,
     notifications: notificationsReducer,
 });
 
