@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     resetPasswordFormSentWrapper: {},
     resetPasswordFormWrapper: {},
     submit: {
-        margin: " theme.spacing(3, 0, 2)",
+        margin: theme.spacing(3, 0, 2),
     },
     Logo: {
         maxWidth: "180px",

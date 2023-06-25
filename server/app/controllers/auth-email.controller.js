@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
-const { validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 const db = require("../db");
 
@@ -24,13 +23,6 @@ const usePasswordHashToMakeToken = (user) => {
 };
 
 exports.verifyConfirmation = async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        errorMessage.message = errors.array();
-        return res.status(status.error).send(errorMessage);
-    }
-
     try {
         // Check if user is already verified
         const userRows = await db.query(

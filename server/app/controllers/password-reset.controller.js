@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 const db = require("../db");
 

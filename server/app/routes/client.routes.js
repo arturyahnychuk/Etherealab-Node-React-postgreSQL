@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.put(
     "/client/profile/:id",
-    [authJwt.verifyToken, authorization.isReadOnly],
+    [authJwt.verifyToken],
     Client.updateClientProfile
 );
 
