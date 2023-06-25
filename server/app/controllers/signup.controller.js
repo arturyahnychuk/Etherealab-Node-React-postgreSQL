@@ -3,7 +3,7 @@ const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 // const { signupPDF } = require("../helpers/signupPDF");
 
-exports.fieldValiate = async (req, res) => {
+exports.fieldValidate = async (req, res) => {
     if (!req.body.fieldName && !req.body.value) {
         errorMessage.message = "body content must be provided!";
         return res.status(status.error).send(errorMessage);

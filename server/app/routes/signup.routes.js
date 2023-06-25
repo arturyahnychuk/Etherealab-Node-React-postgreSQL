@@ -6,11 +6,7 @@ const router = express.Router();
 
 // auth Routes
 
-router.post(
-    "/auth/signup",
-    // fieldValidation.validate("createUser"),
-    controller.signup
-);
-router.post("/auth/field/validate", controller.fieldValiate);
+router.post("/auth/signup", controller.signup);
+router.post("/auth/field/validate", controller.fieldValidate);
 
 module.exports = router;

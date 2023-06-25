@@ -4,9 +4,9 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const updateClientProfile = async (req, res) => {
     const { id } = req.params;
     try {
-        const clientProfile = await db.query(`select name, license
-        from client
-        where id =${id}`);
+        const clientProfile = await db.query(
+            `select name, license from client where id =${id}`
+        );
 
         if (clientProfile.rows < 1) {
             errorMessage.message = "Client not found";
@@ -14,10 +14,7 @@ const updateClientProfile = async (req, res) => {
         }
 
         const updateResponse = await db.query(
-            ` update client
-            set name = ${req.body.name}
-            , license = ${req.body.license}
-            where id = ${id}`
+            `update client set name = ${req.body.name}, license = ${req.body.license} where id = ${id}`
         );
 
         if (!updateResponse.rowCount) {

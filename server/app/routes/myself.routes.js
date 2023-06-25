@@ -9,5 +9,9 @@ router.get(
     [authJwt.verifyToken],
     controller.getProfile
 );
-router.put("/myself/profile/", [authJwt.verifyToken], controller.updateProfile);
+router.put(
+    "/myself/profile/:userId",
+    [authJwt.verifyToken],
+    controller.updateProfile
+);
 module.exports = router;
