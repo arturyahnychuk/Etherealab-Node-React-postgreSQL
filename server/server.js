@@ -27,6 +27,8 @@ app.get("/", (req, res) => {
 const baseAPIPath = "/api/v1";
 app.use(baseAPIPath, require("./app/routes/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/login.routes"));
+// Database Status
+app.use(baseAPIPath, require("./app/routes/database-status.routes"));
 
 app.listen(config.port).on("listening", () => {
     console.log(`API is live on ${config.port}`);
