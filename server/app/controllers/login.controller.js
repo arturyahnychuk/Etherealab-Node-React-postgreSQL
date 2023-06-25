@@ -4,21 +4,11 @@ const db = require("../db");
 const config = require("../../config");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-/**
- * This function let user to signin into the system.
- * @param {object} req
- * @param {object} res
- * @returns {object} response
- */
 exports.signin = async (req, res) => {
     const response = await db.query(
-        `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email,
-   u.password, u.sign_dt, u.email_confirm_dt, c.name, c.calendar_start_time, c.calendar_end_time
-   from users u
-   left join client c on c.id=u.client_id 
-   where u.email=$1
-   and client_id is not null`,
-        [req.body.email]
+        `select id, client_id, firstname, lastname, password
+        from users
+        where email = ${req.body.email}`
     ); // client_id is not null to prevent corp logins
 
     const user = response.rows[0];
