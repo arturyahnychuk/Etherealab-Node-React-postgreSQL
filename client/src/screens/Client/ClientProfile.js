@@ -90,7 +90,7 @@ function ClientProfile() {
             clientService.getClient(user.client_id).then(
                 (res) => {
                     setName(res.data.data.name);
-                    setLicense(res.data.data.license);
+                    setLicense(res.data.data.license || "");
                 },
                 () => {
                     setName("");
