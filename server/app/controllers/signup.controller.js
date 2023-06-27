@@ -44,27 +44,21 @@ exports.signup = async (req, res) => {
         const clientResponse = await pgClient.query(
             `INSERT INTO client(name, created) VALUES ('${clientName}', now()) RETURNING id`
         );
-
         if (!clientResponse.rowCount) {
             errorMessage.message = "Client Cannot be registered";
             res.status(status.notfound).send(errorMessage);
         }
 
         if (clientResponse.rowCount) {
-            user.client_id = clientResponse.rows[0].id; // add user foreign key client_id from clientResponse
-            user.admin = 1;
-            user.sign_dt = new Date();
             const forwarded = req.headers["x-forwarded-for"];
             const userIP = forwarded
                 ? forwarded.split(/, /)[0]
                 : req.connection.remoteAddress;
-            // TODO: for localhost ::1 might be taken. Need further test
-            user.sign_ip_address = userIP;
             const userResponse =
                 await pgClient.query(`INSERT INTO users(firstname, lastname, client_id, email, password, admin, sign_dt, sign_ip_address, created) 
         VALUES ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', true, now(), '${userIP}', now()) RETURNING id`);
             const clientRows = await pgClient.query(
-                "SELECT id, name, email FROM client WHERE id = $1",
+                "SELECT id, name FROM client WHERE id = $1",
                 [clientResponse.rows[0].id]
             );
             const userRows = await pgClient.query(

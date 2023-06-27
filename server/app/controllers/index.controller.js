@@ -3,11 +3,11 @@ const db = require("../db");
 
 const getUser = async (req, res) => {
     try {
-        const $sql = `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email, u.sign_dt, u.email_confirm_dt, c.name, c.calendar_start_time, c.calendar_end_time 
-    from users u
-    left join client c on c.id=u.client_id 
-    where u.id=${req.user_id}
-    `;
+        const $sql = `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email, u.sign_dt,  c.name
+        from users u
+        left join client c on c.id=u.client_id 
+        where u.id=${req.user_id}
+        `;
 
         const dbResponse = await db.query($sql);
 

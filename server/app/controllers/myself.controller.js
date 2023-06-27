@@ -1,4 +1,6 @@
 const db = require("../db");
+const bcrypt = require("bcryptjs");
+const moment = require("moment");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
 const getProfile = async (req, res) => {
@@ -25,25 +27,26 @@ const updateProfile = async (req, res) => {
     const { firstname, lastname, email, password } = req.body.data;
 
     try {
-        const userProfile = await db.query(`select name, license
-        from users
-        where id =${id}`);
+        const clientProfile = await db.query(
+            "SELECT name, license FROM client WHERE id = $1",
+            [req.client_id]
+        );
 
-        if (userProfile.rows < 1) {
+        if (clientProfile.rows < 1) {
             errorMessage.message = "Client not found";
             return res.status(status.inValid).send(errorMessage);
         }
-
+        console.log({ userProfile: clientProfile });
         let $sql;
-        $sql = `update users set firstname='${firstname}', lastname='${lastname}', email='${email}''`;
+        $sql = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', email='${email}'`;
 
         if (password) {
-            $sql += `, password=${bcrypt.hashSync(password, 8)}`;
+            $sql += `, password='${bcrypt.hashSync(password, 8)}'`;
         }
 
         $sql += `, updated='${moment().format(
             "YYYY-MM-DD hh:ss"
-        )}', updated_user_id=${req.user_id} where id =${
+        )}', updated_user_id=${req.user_id} WHERE id=${
             req.user_id
         } RETURNING id`;
 

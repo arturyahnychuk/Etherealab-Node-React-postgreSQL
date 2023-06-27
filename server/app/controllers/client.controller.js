@@ -7,14 +7,14 @@ const updateClientProfile = async (req, res) => {
         const clientProfile = await db.query(
             `select name, license from client where id =${id}`
         );
-
-        if (clientProfile.rows < 1) {
+        if (!clientProfile.rowCount) {
             errorMessage.message = "Client not found";
             return res.status(status.inValid).send(errorMessage);
         }
 
         const updateResponse = await db.query(
-            `update client set name = ${req.body.name}, license = ${req.body.license} where id = ${id}`
+            "UPDATE client SET name = $1, license = $2 WHERE id = $3",
+            [req.body.name, req.body.license, id]
         );
 
         if (!updateResponse.rowCount) {
