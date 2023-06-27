@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
             marginRight: 0,
         },
     },
-    container:{
-        marginLeft:theme.spacing(2) + '!important'
+    container: {
+        marginLeft: theme.spacing(2) + "!important",
     },
     link: {
         color: theme.palette.text.primary,
@@ -150,13 +150,13 @@ const Patient = () => {
                                         {item.status}
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        {item.createdAt}
+                                        {item.created || ""}
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        {item.updatedAt}
+                                        {item.updated}
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        {item.view}
+                                        {item.view || ""}
                                     </StyledTableCellSm>
                                 </StyledTableRowSm>
                             ))
