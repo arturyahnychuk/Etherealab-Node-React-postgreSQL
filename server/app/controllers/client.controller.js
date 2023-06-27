@@ -24,7 +24,7 @@ const updateClientProfile = async (req, res) => {
     const { id } = req.params;
     try {
         const clientProfile = await db.query(
-            `select name, license from client where id = ${id}`
+            `select name, license from client where id = '${id}'`
         );
         if (!clientProfile.rowCount) {
             errorMessage.message = "Client not found";
@@ -32,7 +32,7 @@ const updateClientProfile = async (req, res) => {
         }
 
         const updateResponse = await db.query(
-            `update client set name = ${req.body.name}, license = '${req.body.license}' where id = ${id}`
+            `update client set name = '${req.body.name}', license = '${req.body.license}' where id = '${id}'`
         );
 
         if (!updateResponse.rowCount) {
@@ -44,6 +44,7 @@ const updateClientProfile = async (req, res) => {
         successMessage.message = "Update successful";
         return res.status(status.created).send(successMessage);
     } catch (err) {
+        console.log(err);
         errorMessage.message = "Update not successful";
         return res.status(status.error).send(errorMessage);
     }
