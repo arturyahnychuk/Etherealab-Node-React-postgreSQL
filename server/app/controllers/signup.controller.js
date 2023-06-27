@@ -54,15 +54,14 @@ exports.signup = async (req, res) => {
                 ? forwarded.split(/, /)[0]
                 : req.connection.remoteAddress;
             const userResponse = await pgClient.query(
-                `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', true, now(), '${userIP}', now()) returning id`
+                `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', now()) returning id`
             );
             const clientRows = await pgClient.query(
                 "select id, name from client where id = $1",
                 [clientResponse.rows[0].id]
             );
             const userRows = await pgClient.query(
-                "select id, client_id, firstname, lastname, email from users where id = $1",
-                [userResponse.rows[0].id]
+                `select id, client_id, firstname, lastname, email from users where id = ${userResponse.rows[0].id}`
             );
             const responseData = {
                 user: userRows.rows[0],
@@ -74,6 +73,7 @@ exports.signup = async (req, res) => {
             res.status(status.created).send(successMessage);
         }
     } catch (err) {
+        console.log(err);
         errorMessage.message = err.message;
         res.status(status.error).send(errorMessage);
     }
