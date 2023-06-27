@@ -66,10 +66,9 @@ const sendRecoveryEmail = async (user, res) => {
 };
 
 exports.sendPasswordResetEmail = async (req, res) => {
-    // Check where user already signed up or not
     const { email } = req.params;
     const userQueryResponse = await db.query(
-        "SELECT id, client_id, firstname, lastname, email, password, created FROM users WHERE email = $1 LIMIT 1",
+        "select id, client_id, firstname, lastname, email, password, created from users where email = $1 limit 1",
         [email]
     );
     if (userQueryResponse.rows.length < 1) {
@@ -84,10 +83,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
         errorMessage.user = user;
         return res.status(status.notfound).send(errorMessage);
     }
-    const clientQueryResponse = await db.query(
-        "SELECT id, name FROM client WHERE id = $1",
-        [user.client_id]
-    );
+
     if (user) {
         const token = usePasswordHashToMakeToken(user);
         const token_expires = moment()
@@ -96,7 +92,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
         // update user table for password reset token and expires time
         const userUpdateResponse = await db.query(
-            `UPDATE users SET reset_password_token='${token}', reset_password_expires='${token_expires}', updated= now() WHERE id =${user.id}`
+            `update users SET reset_password_token='${token}', reset_password_expires='${token_expires}', updated= now() where id =${user.id}`
         );
 
         if (userUpdateResponse.rowCount) {
@@ -110,12 +106,9 @@ exports.receiveNewPassword = async (req, res) => {
     const { password } = req.body;
 
     try {
-        // find user with reset_password_token AND userId
-        // check token expires validity
         const now = moment().format("YYYY-MM-DD HH:mm:ss");
         const queryUserResponse = await db.query(
-            `SELECT id, email, reset_password_token, reset_password_expires FROM users 
-    WHERE id=$1 AND reset_password_token=$2 AND reset_password_expires > '${now}'`,
+            `select id, email, reset_password_token, reset_password_expires from users where id=$1 and reset_password_token=$2 and reset_password_expires > '${now}'`,
             [userId, token]
         );
         const user = queryUserResponse.rows[0];
@@ -126,12 +119,10 @@ exports.receiveNewPassword = async (req, res) => {
             return res.status(status.notfound).send(errorMessage);
         }
 
-        // if all set then accept new password
         const hashedPassword = bcrypt.hashSync(password, 8);
 
         const updateUserResponse = await db.query(
-            `UPDATE users SET password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() 
-    WHERE id =$2 `,
+            `update users SET password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() where id =$2 `,
             [hashedPassword, user.id]
         );
 

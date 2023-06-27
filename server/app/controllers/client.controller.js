@@ -13,7 +13,7 @@ const updateClientProfile = async (req, res) => {
         }
 
         const updateResponse = await db.query(
-            "UPDATE client SET name = $1, license = $2 WHERE id = $3",
+            "update client SET name = $1, license = $2 where id = $3",
             [req.body.name, req.body.license, id]
         );
 

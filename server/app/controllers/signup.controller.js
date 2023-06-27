@@ -1,20 +1,19 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
-// const { signupPDF } = require("../helpers/signupPDF");
 
 exports.fieldValidate = async (req, res) => {
     if (!req.body.fieldName && !req.body.value) {
         errorMessage.message = "body content must be provided!";
         return res.status(status.error).send(errorMessage);
     }
-    let tableName = "client"; // By default let if look into client table
+    let tableName = "client";
     if (req.body.target) {
         tableName = req.body.target;
     }
     try {
         const selectResponse = await db.query(
-            `SELECT id, ${req.body.fieldName} FROM ${tableName} WHERE ${req.body.fieldName} = $1`,
+            `select id, ${req.body.fieldName} from ${tableName} where ${req.body.fieldName} = $1`,
             [req.body.value]
         );
         if (selectResponse.rows.length > 0) {
@@ -42,7 +41,7 @@ exports.signup = async (req, res) => {
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
         const clientResponse = await pgClient.query(
-            `INSERT INTO client(name, created) VALUES ('${clientName}', now()) RETURNING id`
+            `insert into client(name, created) values ('${clientName}', now()) RETURNING id`
         );
         if (!clientResponse.rowCount) {
             errorMessage.message = "Client Cannot be registered";
@@ -54,15 +53,15 @@ exports.signup = async (req, res) => {
             const userIP = forwarded
                 ? forwarded.split(/, /)[0]
                 : req.connection.remoteAddress;
-            const userResponse =
-                await pgClient.query(`INSERT INTO users(firstname, lastname, client_id, email, password, admin, sign_dt, sign_ip_address, created) 
-        VALUES ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', true, now(), '${userIP}', now()) RETURNING id`);
+            const userResponse = await pgClient.query(
+                `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', true, now(), '${userIP}', now()) returning id`
+            );
             const clientRows = await pgClient.query(
-                "SELECT id, name FROM client WHERE id = $1",
+                "select id, name from client where id = $1",
                 [clientResponse.rows[0].id]
             );
             const userRows = await pgClient.query(
-                "SELECT id, client_id, firstname, lastname, email FROM users WHERE id = $1",
+                "select id, client_id, firstname, lastname, email from users where id = $1",
                 [userResponse.rows[0].id]
             );
             const responseData = {

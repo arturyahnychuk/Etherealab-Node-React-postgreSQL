@@ -6,8 +6,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getProfile = async (req, res) => {
     try {
         const dbResponse = await db.query(
-            `select firstname, lastname, email, title, created, email_forward_user_id, phone, status, timezone
-      from users where id=${req.params.userId}`
+            `select firstname, lastname, email, title, created, email_forward_user_id, phone, status, timezone from users where id=${req.params.userId}`
         );
 
         if (!dbResponse) {
@@ -17,7 +16,6 @@ const getProfile = async (req, res) => {
         successMessage.data = dbResponse.rows[0];
         return res.status(status.created).send(successMessage);
     } catch (err) {
-        console.log(err);
         errorMessage.message = "Select not successful";
         return res.status(status.error).send(errorMessage);
     }
@@ -28,7 +26,7 @@ const updateProfile = async (req, res) => {
 
     try {
         const clientProfile = await db.query(
-            "SELECT name, license FROM client WHERE id = $1",
+            "select name, license FROM client where id = $1",
             [req.client_id]
         );
 
@@ -38,7 +36,7 @@ const updateProfile = async (req, res) => {
         }
         console.log({ userProfile: clientProfile });
         let $sql;
-        $sql = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', email='${email}'`;
+        $sql = `update users set firstname='${firstname}', lastname='${lastname}', email='${email}'`;
 
         if (password) {
             $sql += `, password='${bcrypt.hashSync(password, 8)}'`;
@@ -48,7 +46,7 @@ const updateProfile = async (req, res) => {
             "YYYY-MM-DD hh:ss"
         )}', updated_user_id=${req.user_id} WHERE id=${
             req.user_id
-        } RETURNING id`;
+        } returning id`;
 
         const updateResponse = await db.query($sql);
 

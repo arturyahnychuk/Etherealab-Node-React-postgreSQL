@@ -7,7 +7,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 exports.signin = async (req, res) => {
     try {
         const response = await db.query(
-            "SELECT id, client_id, firstname, lastname, password, email FROM users WHERE email = $1",
+            "select id, client_id, firstname, lastname, password, email from users where email = $1",
             [req.body.email]
         );
 
@@ -34,7 +34,7 @@ exports.signin = async (req, res) => {
 
         // update user login_dt
         await db.query(
-            `UPDATE users SET login_dt=now(), updated= now(), updated_user_id=$1 WHERE id =$2`,
+            `update users SET login_dt=now(), updated= now(), updated_user_id=$1 where id =$2`,
             [user.id, user.id]
         );
 
