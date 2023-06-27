@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
         "& li": {
             margin: 0,
         },
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"start",
+        alignItems:"start",
+        marginLeft: theme.spacing(4) +'!important'
     },
     item: {
         display: "flex",
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
     },
     linkTitle: {
-        paddingLeft: "10px",
+        paddingLeft: theme.spacing(1),
         fontWeight: 700,
     },
     button: {
@@ -182,7 +187,7 @@ const SidebarNav = (props) => {
                                         className={classes.link}
                                         onClick={page.logout && handleLogout}
                                     >
-                                        {page.icon && page.icon}
+                                        { page.icon}
                                         <span className={classes.linkTitle}>
                                             {page.title}
                                         </span>

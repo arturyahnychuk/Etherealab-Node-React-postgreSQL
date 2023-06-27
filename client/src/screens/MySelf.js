@@ -17,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         padding: theme.spacing(2),
     },
-    marginTop: {
-        marginTop: theme.spacing(16),
-    },
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
     form: {
         width: "50%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(2),
+    },
+    container:{
+        marginLeft:theme.spacing(2) + '!important'
     },
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
@@ -151,7 +151,7 @@ function MySelf() {
             });
     };
     return (
-        <Container>
+        <Container className={classes.container}>
             <Typography
                 component="h5"
                 variant="h5"
@@ -159,12 +159,12 @@ function MySelf() {
             >
                 Myself
             </Typography>
-            <Error errors={apiErrors} />
             <form
                 className={classes.form}
                 noValidate
                 onSubmit={(event) => handleFormSubmission(event)}
             >
+            <Error errors={apiErrors} />
                 <TextField
                     value={firstName}
                     variant="outlined"
@@ -234,7 +234,7 @@ function MySelf() {
                 />
 
                 <Button
-                    disabled={fieldErrors.length > 0}
+                    disabled={fieldErrors.length > 0 || !email || !password || !lastName || !firstName}
                     variant="contained"
                     color="primary"
                     className={classes.submit}

@@ -9,14 +9,14 @@ import { getAllowedRoutes } from "../../../../utils/helpers";
 import { SidebarNav } from "./components";
 import { makeStyles } from "@mui/styles";
 import { Drawer } from "@mui/material";
-import Logo from "../../../../assets/img/logo.svg";
+import Logo from "../../../../assets/img/logo-portal.svg";
 
 const useStyles = makeStyles((theme) => ({
     drawer: {
         width: 240,
         // display: "flex",
         [theme.breakpoints.up("lg")]: {
-            height: "calc(100% - 64px)",
+            height: "100%",
         },
         alignItems: "center",
         display: "flex",
@@ -61,7 +61,6 @@ const Sidebar = (props) => {
             open={open}
             variant={variant}
         >
-            {/* <LogoIcon height={50} color="#333" /> */}
             <img src={Logo} alt="Logo" className={classes.Logo} />
             <div {...rest} className={clsx(classes.root, className)}>
                 <SidebarNav className={classes.nav} pages={allowedPages} />

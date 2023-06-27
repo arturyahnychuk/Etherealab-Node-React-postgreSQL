@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
             marginRight: 0,
         },
     },
+    container:{
+        marginLeft:theme.spacing(2) + '!important'
+    },
     link: {
         color: theme.palette.text.primary,
         textDecoration: "none",
@@ -47,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.main + "!important",
     },
     searchWrapper: {
-        marginTop: theme.spacing(1) + "!important",
+        marginTop: theme.spacing(2) + "!important",
         marginBottom: theme.spacing(4) + "!important",
     },
     iconContainer: {
@@ -84,7 +87,7 @@ const Patient = () => {
     };
 
     return (
-        <Container>
+        <Container className={classes.container}>
             <Typography component="h5" variant="h5">
                 Dashboard
             </Typography>

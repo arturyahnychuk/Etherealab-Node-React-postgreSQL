@@ -212,7 +212,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
             />
 
             <Button
-                disabled={fieldErrors.length > 0}
+                disabled={fieldErrors.length > 0 || !email || !password || !lastName || !firstName || !clientName}
                 fullWidth
                 variant="contained"
                 color="primary"

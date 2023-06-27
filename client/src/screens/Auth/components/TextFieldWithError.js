@@ -20,7 +20,6 @@ const TextFieldWithError = ({
             variant="outlined"
             margin="dense"
             autoFocus={autoFocus || false}
-            required
             fullWidth
             id={id || fieldName}
             label={label}

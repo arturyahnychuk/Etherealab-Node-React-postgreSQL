@@ -1,29 +1,26 @@
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import HomeIcon from '@mui/icons-material/Home';
 export const client_pages = [
     {
         id: 1,
-        title: "Home",
+        title: "Dashboard",
         href: "/dashboard",
-        icon: <HomeOutlinedIcon />,
+        icon: <HomeIcon style={{color:"#000",fontSize:"20px"}}/>,
     },
     {
         id: 2,
-        icon: <AccountBoxOutlinedIcon />,
+        icon: <HomeIcon style={{color:"#000",fontSize:"20px"}} />,
         title: "Myself",
         href: "/myself",
     },
     {
         id: 3,
-        icon: <AdminPanelSettingsIcon />,
+        icon: <HomeIcon style={{color:"#000",fontSize:"20px"}} />,
         title: "Client",
         href: "/client-profile",
     },
     {
         id: 6,
-        icon: <ExitToAppOutlinedIcon />,
+        icon: <HomeIcon style={{color:"#000",fontSize:"20px"}} />,
         title: "Logout",
         href: "/",
         logout: true,

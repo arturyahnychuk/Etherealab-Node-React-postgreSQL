@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme) => ({
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
+    container:{
+        marginLeft:theme.spacing(2) + '!important'
+    },
     form: {
         width: "50%", // Fix IE 11 issue.
-        textAlign: "center",
-        marginTop: theme.spacing(1),
-        padding: theme.spacing(4),
+        marginTop: theme.spacing(2),
     },
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
@@ -86,7 +87,7 @@ function ClientProfile() {
     };
 
     return (
-        <Container component="main">
+        <Container className={classes.container}>
             <CssBaseline />
             <Typography
                 component="h5"
@@ -105,8 +106,7 @@ function ClientProfile() {
                 <TextField
                     value={name}
                     variant="outlined"
-                    margin="dense"
-                    required
+                    margin="dense"     
                     fullWidth
                     id="clinic"
                     label="Clinic Name"
@@ -125,7 +125,6 @@ function ClientProfile() {
                     value={license}
                     variant="outlined"
                     margin="dense"
-                    required
                     fullWidth
                     name="license"
                     label="Provider License"

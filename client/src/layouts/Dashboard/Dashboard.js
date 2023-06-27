@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flex: 1,
+        margin: '0px !important'
     },
 }));
 
