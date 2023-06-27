@@ -30,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 0,
         paddingBottom: 0,
     },
+    link: {
+        display: "flex !important",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    linkTitle: {
+        paddingLeft: "10px",
+        fontWeight: 700,
+    },
     button: {
         color: "#fff",
         padding: "10px 0px",
@@ -173,7 +182,10 @@ const SidebarNav = (props) => {
                                         className={classes.link}
                                         onClick={page.logout && handleLogout}
                                     >
-                                        {page.title}
+                                        {page.icon && page.icon}
+                                        <span className={classes.linkTitle}>
+                                            {page.title}
+                                        </span>
                                     </RouterLink>
                                 </Button>
                             </ListItem>

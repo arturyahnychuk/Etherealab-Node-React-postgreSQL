@@ -43,9 +43,9 @@ function MySelf() {
     const { enqueueSnackbar } = useSnackbar();
     const { user } = useAuth();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState(user.firstname);
+    const [lastName, setLastName] = useState(user.lastname);
+    const [email, setEmail] = useState(user.email);
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
     const [apiErrors, setApiErrors] = useState([]);
