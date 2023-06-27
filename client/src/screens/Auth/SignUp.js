@@ -53,7 +53,6 @@ const SignUp = () => {
                 });
                 // Dispatch the Redux action after successful registration
 
-                console.log({ user: response.data.user });
                 dispatch({
                     type: "LOGIN",
                     payload: {

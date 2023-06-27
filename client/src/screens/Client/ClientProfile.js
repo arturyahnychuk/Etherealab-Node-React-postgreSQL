@@ -6,7 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 import Error from "../../components/common/Error";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
-    container:{
-        marginLeft:theme.spacing(2) + '!important'
+    container: {
+        marginLeft: theme.spacing(2) + "!important",
     },
     form: {
         width: "50%", // Fix IE 11 issue.
@@ -74,7 +74,6 @@ function ClientProfile() {
                 }
             );
         } catch (error) {
-            console.error(error);
             enqueueSnackbar("Unable to update Client", {
                 variant: "error",
             });
@@ -85,6 +84,23 @@ function ClientProfile() {
             ]);
         }
     };
+
+    useEffect(() => {
+        const getClient = async () => {
+            clientService.getClient(user.client_id).then(
+                (res) => {
+                    setName(res.data.data.name);
+                    setLicense(res.data.data.license);
+                },
+                () => {
+                    setName("");
+                    setLicense("");
+                }
+            );
+        };
+
+        getClient();
+    }, [user.client_id]);
 
     return (
         <Container className={classes.container}>
@@ -106,7 +122,7 @@ function ClientProfile() {
                 <TextField
                     value={name}
                     variant="outlined"
-                    margin="dense"     
+                    margin="dense"
                     fullWidth
                     id="clinic"
                     label="Clinic Name"

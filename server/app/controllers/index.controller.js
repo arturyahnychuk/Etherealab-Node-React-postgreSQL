@@ -43,7 +43,6 @@ const getClient = async (req, res) => {
         successMessage.data = { client };
         return res.status(status.created).send(successMessage);
     } catch (error) {
-        console.log("error:", error);
         errorMessage.message = "Select not successful";
         return res.status(status.error).send(errorMessage);
     }

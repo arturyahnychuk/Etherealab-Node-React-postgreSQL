@@ -6,7 +6,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getProfile = async (req, res) => {
     try {
         const dbResponse = await db.query(
-            `select firstname, lastname, email, title, created, email_forward_user_id, phone, status, timezone from users where id=${req.params.userId}`
+            `select firstname, lastname, email from users where id = '${req.params.userId}'`
         );
 
         if (!dbResponse) {
@@ -26,15 +26,13 @@ const updateProfile = async (req, res) => {
 
     try {
         const clientProfile = await db.query(
-            "select name, license FROM client where id = $1",
-            [req.client_id]
+            `select name, license FROM client where id = ${req.client_id}`
         );
 
         if (clientProfile.rows < 1) {
             errorMessage.message = "Client not found";
             return res.status(status.inValid).send(errorMessage);
         }
-        console.log({ userProfile: clientProfile });
         let $sql;
         $sql = `update users set firstname='${firstname}', lastname='${lastname}', email='${email}'`;
 
@@ -44,7 +42,7 @@ const updateProfile = async (req, res) => {
 
         $sql += `, updated='${moment().format(
             "YYYY-MM-DD hh:ss"
-        )}', updated_user_id=${req.user_id} WHERE id=${
+        )}', updated_user_id=${req.user_id} where id=${
             req.user_id
         } returning id`;
 

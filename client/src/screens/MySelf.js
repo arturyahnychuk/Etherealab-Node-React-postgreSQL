@@ -1,5 +1,5 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
         width: "50%", // Fix IE 11 issue.
         marginTop: theme.spacing(2),
     },
-    container:{
-        marginLeft:theme.spacing(2) + '!important'
+    container: {
+        marginLeft: theme.spacing(2) + "!important",
     },
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
@@ -43,9 +43,9 @@ function MySelf() {
     const { enqueueSnackbar } = useSnackbar();
     const { user } = useAuth();
 
-    const [firstName, setFirstName] = useState(user.firstname);
-    const [lastName, setLastName] = useState(user.lastname);
-    const [email, setEmail] = useState(user.email);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
     const [apiErrors, setApiErrors] = useState([]);
@@ -111,9 +111,16 @@ function MySelf() {
         }
         return fieldErrors && fieldErrors.filter((err) => err?.param === value);
     };
-
     const handleAjaxValidation = (event, target) => {
         if (!event.target) {
+            return;
+        }
+
+        if (
+            event.target.name === "email" &&
+            event.target.value === user.email
+        ) {
+            // Skip validation if the field is email and value matches user email
             return;
         }
 
@@ -150,6 +157,26 @@ function MySelf() {
                 console.error("catch err", err);
             });
     };
+
+    useEffect(() => {
+        const getProfile = async () => {
+            myselfService.getProfile(user.id).then(
+                (res) => {
+                    setFirstName(res.data.firstname);
+                    setLastName(res.data.lastname);
+                    setEmail(res.data.email);
+                },
+                () => {
+                    setFirstName("");
+                    setLastName("");
+                    setEmail("");
+                }
+            );
+        };
+
+        getProfile();
+    }, [user.id]);
+
     return (
         <Container className={classes.container}>
             <Typography
@@ -164,7 +191,7 @@ function MySelf() {
                 noValidate
                 onSubmit={(event) => handleFormSubmission(event)}
             >
-            <Error errors={apiErrors} />
+                <Error errors={apiErrors} />
                 <TextField
                     value={firstName}
                     variant="outlined"
@@ -234,7 +261,12 @@ function MySelf() {
                 />
 
                 <Button
-                    disabled={fieldErrors.length > 0 || !email || !password || !lastName || !firstName}
+                    disabled={
+                        fieldErrors.length > 0 ||
+                        !email ||
+                        !lastName ||
+                        !firstName
+                    }
                     variant="contained"
                     color="primary"
                     className={classes.submit}

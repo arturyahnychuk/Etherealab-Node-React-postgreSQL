@@ -7,8 +7,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 exports.signin = async (req, res) => {
     try {
         const response = await db.query(
-            "select id, client_id, firstname, lastname, password, email from users where email = $1",
-            [req.body.email]
+            `select id, client_id, firstname, lastname, password, email from users where email = '${req.body.email}'`
         );
 
         const user = response.rows[0];
@@ -32,9 +31,8 @@ exports.signin = async (req, res) => {
             return res.status(status.unauthorized).send(errorMessage);
         }
 
-        // update user login_dt
         await db.query(
-            `update users SET login_dt=now(), updated= now(), updated_user_id=$1 where id =$2`,
+            `update users set login_dt=now(), updated= now(), updated_user_id=$1 where id =$2`,
             [user.id, user.id]
         );
 
@@ -54,7 +52,7 @@ exports.signin = async (req, res) => {
         successMessage.data = resData;
         res.status(status.success).send(successMessage);
     } catch (error) {
-        errorMessage.message = err.message;
+        errorMessage.message = error.message;
         res.status(status.error).send(errorMessage);
     }
 };

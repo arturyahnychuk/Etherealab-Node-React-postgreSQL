@@ -7,7 +7,6 @@ import Logo from "../../assets/img/logo.svg";
 import Dimmer from "../../components/common/Dimmer";
 import Error from "../../components/common/Error";
 import AuthService from "../../services/auth.service";
-import EmailService from "../../services/email.service";
 import Success from "./Success";
 import { makeStyles } from "@mui/styles";
 import {
@@ -98,31 +97,6 @@ const ForgetPassword = () => {
                     }
                     if (data && data.user && data.user.sign_dt === null) {
                         setRegistrationLink(true);
-                    }
-
-                    if (
-                        data &&
-                        data.user &&
-                        data.user.email_confirm_dt === null
-                    ) {
-                        setRegistrationLink(false);
-                        // Send email verification link
-                        EmailService.resendEmailVerification(
-                            error.response.data.user
-                        ).then(
-                            (response) => {
-                                console.info(
-                                    "resendEmailVerification response",
-                                    response.response
-                                );
-                            },
-                            (err) => {
-                                console.error(
-                                    "resendEmailVerification error.response",
-                                    err.response
-                                );
-                            }
-                        );
                     }
                 }
             }

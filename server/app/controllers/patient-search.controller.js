@@ -33,7 +33,6 @@ const search = async (req, res) => {
         successMessage.data = dbResponse.rows;
         return res.status(status.created).send(successMessage);
     } catch (err) {
-        console.log("err", err);
         errorMessage.message = "Select not successful";
         return res.status(status.error).send(errorMessage);
     }

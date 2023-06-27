@@ -38,7 +38,7 @@ function makeDb(databaseConfig, res) {
                     console.log(args);
                 }
             }
-            connection.query("SET SESSION group_concat_max_len = 10000"); // To increase default length of group_concat
+            connection.query("set SESSION group_concat_max_len = 10000"); // To increase default length of group_concat
             return util.promisify(connection.query).call(connection, sql, args);
         },
         close() {

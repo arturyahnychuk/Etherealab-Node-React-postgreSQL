@@ -45,7 +45,6 @@ const sendRecoveryEmail = async (user, res) => {
     }
     sgMail.send(emailTemplate).then(
         (info) => {
-            console.log(`** Email sent **`, info);
             return res.status(200).json({
                 status: "success",
                 message:
@@ -92,7 +91,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
         // update user table for password reset token and expires time
         const userUpdateResponse = await db.query(
-            `update users SET reset_password_token='${token}', reset_password_expires='${token_expires}', updated= now() where id =${user.id}`
+            `update users set reset_password_token='${token}', reset_password_expires='${token_expires}', updated= now() where id =${user.id}`
         );
 
         if (userUpdateResponse.rowCount) {
@@ -122,7 +121,7 @@ exports.receiveNewPassword = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, 8);
 
         const updateUserResponse = await db.query(
-            `update users SET password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() where id =$2 `,
+            `update users set password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() where id =$2 `,
             [hashedPassword, user.id]
         );
 
