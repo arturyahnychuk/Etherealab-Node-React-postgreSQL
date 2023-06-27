@@ -6,7 +6,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getProfile = async (req, res) => {
     try {
         const dbResponse = await db.query(
-            `select firstname, lastname, email from users where id = '${req.params.userId}'`
+            `select firstname, lastname, email from users where id = ${req.params.userId}`
         );
 
         if (!dbResponse) {
@@ -25,16 +25,8 @@ const updateProfile = async (req, res) => {
     const { firstname, lastname, email, password } = req.body.data;
 
     try {
-        const clientProfile = await db.query(
-            `select name, license FROM client where id = ${req.client_id}`
-        );
-
-        if (clientProfile.rows < 1) {
-            errorMessage.message = "Client not found";
-            return res.status(status.inValid).send(errorMessage);
-        }
         let $sql;
-        $sql = `update users set firstname='${firstname}', lastname='${lastname}', email='${email}'`;
+        $sql = `update users set firstname = '${firstname}', lastname= '${lastname}', email='${email}'`;
 
         if (password) {
             $sql += `, password='${bcrypt.hashSync(password, 8)}'`;
@@ -56,6 +48,7 @@ const updateProfile = async (req, res) => {
         successMessage.message = "Update successful";
         return res.status(status.success).send(successMessage);
     } catch (error) {
+        console.log(error);
         errorMessage.message = "Update not successful";
         return res.status(status.error).send(errorMessage);
     }
