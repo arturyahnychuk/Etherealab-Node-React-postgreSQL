@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: `${theme.spacing(3, 0, 2)} !important`,
     },
     Logo: {
         maxWidth: "180px",
@@ -58,7 +58,7 @@ function MySelf() {
                     firstname: firstName.trim(),
                     lastname: lastName.trim(),
                     email: email.trim(),
-                    password: password.trim(),
+                    password: password,
                 },
             };
 
@@ -235,7 +235,6 @@ function MySelf() {
 
                 <Button
                     disabled={fieldErrors.length > 0}
-                    fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}

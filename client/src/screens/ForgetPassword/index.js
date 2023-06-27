@@ -21,18 +21,23 @@ import {
 } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        display: "flex !important",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "90vh",
+    },
     paper: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
 
         padding: theme.spacing(2),
     },
-    marginTop: {
-        marginTop: theme.spacing(16),
-    },
     pageTitle: {
         marginBottom: theme.spacing(3),
+        color: theme.palette.text.secondary,
     },
     Error: {
         marginTop: theme.spacing(2),
@@ -47,9 +52,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "2px",
         padding: theme.spacing(4),
     },
-
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: `${theme.spacing(3, 0, 2)} !important`,
+    },
+    customLink: {
+        textDecoration: "none",
+        color: theme.palette.text.secondary,
+        paddingTop: theme.spacing(1),
     },
     Logo: {
         maxWidth: "180px",
@@ -123,74 +132,81 @@ const ForgetPassword = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm" className={classes.container}>
             <CssBaseline />
-            <Grid className={classes.marginTop}>
-                <div className={classes.paper}>
-                    <img src={Logo} alt="Logo" className={classes.Logo} />
-                    <Typography
-                        component="h1"
-                        variant="h5"
-                        className={classes.pageTitle}
-                    >
-                        Forgot Password
-                    </Typography>
-                    <Error errors={errors}>
-                        {registrationLink && (
-                            <Link href="/signup"> Go to user registration</Link>
-                        )}
-                    </Error>
-                    {success && (
-                        <Success
-                            header="If that account is in our system then we have sent an email with instructions
+            <div className={classes.paper}>
+                <img src={Logo} alt="Logo" className={classes.Logo} />
+                <Typography
+                    component="h1"
+                    variant="h5"
+                    className={classes.pageTitle}
+                >
+                    Forgot Password
+                </Typography>
+                <Error errors={errors}>
+                    {registrationLink && (
+                        <Link href="/signup_client">
+                            Go to user registration
+                        </Link>
+                    )}
+                </Error>
+                {success && (
+                    <Success
+                        header="If that account is in our system then we have sent an email with instructions
                 to reset your password"
-                            loginText="Sign back in"
-                        />
-                    )}
-                    {!success && (
-                        <>
-                            <p>Login to account</p>
-                            <form
-                                className={classes.form}
-                                noValidate
-                                onSubmit={sendPasswordResetEmail}
+                        loginText="Sign back in"
+                    />
+                )}
+                {!success && (
+                    <>
+                        <Link href="/login_client" underline="none">
+                            <Typography
+                                variant="body1"
+                                className={classes.customLink}
                             >
-                                <TextField
-                                    variant="outlined"
-                                    margin="dense"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    autoFocus
-                                    onChange={(event) =>
-                                        setEmail(event.target.value)
-                                    }
-                                    inputProps={{ maxLength: 255 }}
-                                    helperText={`${
-                                        email.length >= 255
-                                            ? "Enter an email between 255 character"
-                                            : ""
-                                    }`}
-                                />
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                                    disabled={!email}
-                                >
-                                    Send Password
-                                </Button>
-                            </form>
-                        </>
-                    )}
-                </div>
-                <Dimmer isOpen={isLoading} />
-            </Grid>
+                                Login to account
+                            </Typography>
+                        </Link>
+                        <form
+                            className={classes.form}
+                            noValidate
+                            onSubmit={sendPasswordResetEmail}
+                        >
+                            <TextField
+                                variant="outlined"
+                                margin="dense"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={(event) =>
+                                    setEmail(event.target.value)
+                                }
+                                inputProps={{ maxLength: 255 }}
+                                helperText={`${
+                                    email.length >= 255
+                                        ? "Enter an email between 255 character"
+                                        : ""
+                                }`}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                disabled={!email}
+                            >
+                                Send Password
+                            </Button>
+                        </form>
+                    </>
+                )}
+            </div>
+            <Dimmer isOpen={isLoading} />
         </Container>
     );
 };

@@ -12,27 +12,26 @@ import {
     Button,
     Container,
     CssBaseline,
-    Grid,
     TextField,
     Typography,
 } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(8),
+    container: {
+        display: "flex !important",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "90vh",
     },
     paper: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-
         padding: theme.spacing(2),
-    },
-    marginTop: {
-        marginTop: theme.spacing(16),
     },
     pageTitle: {
         marginBottom: theme.spacing(3),
+        color: theme.palette.text.secondary,
     },
     form: {
         width: "100%", // Fix IE 11 issue.
@@ -43,10 +42,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "2px",
         padding: theme.spacing(4),
     },
-    resetPasswordFormSentWrapper: {},
-    resetPasswordFormWrapper: {},
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: `${theme.spacing(3, 0, 2)} !important`,
     },
     Logo: {
         maxWidth: "180px",
@@ -61,7 +58,6 @@ const ResetPassword = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { userId, token } = useParams();
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
     const [success, setSuccess] = useState(false);
 
@@ -88,7 +84,6 @@ const ResetPassword = () => {
             }
         );
         setPassword("");
-        setConfirmPassword("");
     };
 
     const validatePassword = (event) => {
@@ -105,99 +100,59 @@ const ResetPassword = () => {
         }
     };
 
-    const validatePasswordConfirm = () => {
-        if (confirmPassword !== password) {
-            setFieldErrors([
-                {
-                    value: `password: ${password} confirmPassword ${confirmPassword}`,
-                    msg: "Password and ConfirmPassword must be same!",
-                },
-            ]);
-        }
-        if (confirmPassword === password) {
-            setFieldErrors([]);
-        }
-    };
-
     return (
-        <Container component="main" maxWidth="xs" className={classes.root}>
-            <Grid className={classes.marginTop}>
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <img src={Logo} alt="Logo" className={classes.Logo} />
-                    <Typography
-                        component="h1"
-                        variant="h5"
-                        className={classes.pageTitle}
-                    >
-                        Reset Password
-                    </Typography>
-                    {success && (
-                        <Success
-                            header="Your password has been saved."
-                            loginText="Sign back in"
-                        />
-                    )}
-                    {!success && (
-                        <div className={classes.resetPasswordFormWrapper}>
-                            <Error errors={fieldErrors} />
-                            <form className={classes.form} noValidate>
-                                <TextField
-                                    value={password}
-                                    variant="outlined"
-                                    margin="dense"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    autoFocus
-                                    onChange={(event) =>
-                                        setPassword(event.target.value)
-                                    }
-                                    onBlur={(event) => validatePassword(event)}
-                                />
-                                <TextField
-                                    value={confirmPassword}
-                                    variant="outlined"
-                                    margin="dense"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Confirm Password"
-                                    type="password"
-                                    id="confirmPassword"
-                                    autoComplete="confirm-password"
-                                    onChange={(event) =>
-                                        setConfirmPassword(event.target.value)
-                                    }
-                                    onBlur={(event) =>
-                                        validatePasswordConfirm(event)
-                                    }
-                                />
-                                <Button
-                                    fullWidth
-                                    disabled={
-                                        !password ||
-                                        !confirmPassword ||
-                                        password !== confirmPassword
-                                    }
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                                    onClick={(event) =>
-                                        handlePasswordReset(event)
-                                    }
-                                >
-                                    Reset
-                                </Button>
-                            </form>
-                        </div>
-                    )}
-                </div>
-            </Grid>
+        <Container component="main" maxWidth="sm" className={classes.container}>
+            <CssBaseline />
+            <div className={classes.paper}>
+                <img src={Logo} alt="Logo" className={classes.Logo} />
+                <Typography
+                    component="h1"
+                    variant="h5"
+                    className={classes.pageTitle}
+                >
+                    Reset Password
+                </Typography>
+                {success && (
+                    <Success
+                        header="Your password has been saved."
+                        loginText="Sign back in"
+                    />
+                )}
+                {!success && (
+                    <>
+                        <Error errors={fieldErrors} />
+                        <form className={classes.form} noValidate>
+                            <TextField
+                                value={password}
+                                variant="outlined"
+                                margin="dense"
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                autoFocus
+                                onChange={(event) =>
+                                    setPassword(event.target.value)
+                                }
+                                onBlur={(event) => validatePassword(event)}
+                            />
+
+                            <Button
+                                fullWidth
+                                disabled={!password}
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={(event) => handlePasswordReset(event)}
+                            >
+                                Reset
+                            </Button>
+                        </form>
+                    </>
+                )}
+            </div>
         </Container>
     );
 };

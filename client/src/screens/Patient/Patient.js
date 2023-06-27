@@ -43,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    searchButton: {
+        backgroundColor: theme.Colors.blue + "!important",
+    },
+    searchWrapper: {
+        display: "block",
+        marginTop: theme.spacing(1) + "!important",
+        marginBottom: theme.spacing(4) + "!important",
+    },
     iconContainer: {
         "& svg": {
             cursor: "pointer",
@@ -82,18 +90,30 @@ const Patient = () => {
                 Dashboard
             </Typography>
             <form onSubmit={onFormSubmit}>
-                <Grid container spacing={2} alignItems="center">
+                <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    className={classes.searchWrapper}
+                >
                     <Grid item>
                         <TextField
                             autoFocus
                             size="small"
+                            name="name"
+                            label="Name"
                             variant="outlined"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
                         />
                     </Grid>
                     <Grid item>
-                        <Button variant="outlined" type="submit" fullWidth>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            fullWidth
+                            className={classes.searchButton}
+                        >
                             Search
                         </Button>
                     </Grid>

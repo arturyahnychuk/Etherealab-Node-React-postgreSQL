@@ -10,11 +10,7 @@ import axios from "../utils/axios";
 const initialAuthState = {
     isAuthenticated: false,
     isInitialized: false,
-    user: {
-        firstname: "martin",
-        lastname: "karani",
-        login_url: "/login_client",
-    },
+    user: {},
     lastVisitedPatient: null,
 };
 

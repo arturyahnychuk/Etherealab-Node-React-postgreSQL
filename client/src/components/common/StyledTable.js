@@ -16,7 +16,7 @@ export const StyledTableCellLg = withStyles((theme) => ({
 export const StyledTableCellSm = withStyles(() => ({
     head: {
         whiteSpace: "nowrap",
-        fontSize: "12px",
+        fontSize: "16px",
         fontWeight: 700,
         padding: "6px 24px 6px 2px",
         borderBottom: "unset",

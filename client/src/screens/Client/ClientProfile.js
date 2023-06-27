@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(4),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: `${theme.spacing(3, 0, 2)} !important`,
     },
     Logo: {
         maxWidth: "180px",
@@ -58,7 +58,7 @@ function ClientProfile() {
         try {
             const payload = {
                 name: name.trim(),
-                license: setLicense.trim(),
+                license: license.trim(),
             };
             clientService.updateClient(payload, user.client_id).then(
                 (res) => {
@@ -74,7 +74,7 @@ function ClientProfile() {
             );
         } catch (error) {
             console.error(error);
-            enqueueSnackbar("Unable to login", {
+            enqueueSnackbar("Unable to update Client", {
                 variant: "error",
             });
             setApiErrors([
@@ -143,7 +143,6 @@ function ClientProfile() {
                 <Button
                     type="submit"
                     disabled={!name || !license}
-                    fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
