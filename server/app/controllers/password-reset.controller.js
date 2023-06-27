@@ -36,7 +36,6 @@ const sendRecoveryEmail = async (user, res) => {
                 "We have sent an email with instructions to reset your credentials.";
             return res.status(status.success).send(successMessage);
         } catch (error) {
-            console.error(error);
             return res.status(500).json({
                 status: "error",
                 message: "Something went wrong while sending a reset email.",
@@ -52,7 +51,6 @@ const sendRecoveryEmail = async (user, res) => {
             });
         },
         (error) => {
-            console.error(error);
             if (error.response) {
                 console.error("error.response.body:", error.response.body);
             }
