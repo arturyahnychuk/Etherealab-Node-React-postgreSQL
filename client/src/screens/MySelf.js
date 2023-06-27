@@ -9,6 +9,7 @@ import TextFieldWithError from "./Auth/components/TextFieldWithError";
 import myselfService from "../services/myself.service";
 import useAuth from "../hooks/useAuth";
 import Error from "../components/common/Error";
+import useEffectOnce from "../hooks/useEffectOnce";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -157,25 +158,23 @@ function MySelf() {
                 console.error("catch err", err);
             });
     };
-
-    useEffect(() => {
-        const getProfile = async () => {
-            myselfService.getProfile(user.id).then(
-                (res) => {
-                    setFirstName(res.data.firstname);
-                    setLastName(res.data.lastname);
-                    setEmail(res.data.email);
-                },
-                () => {
-                    setFirstName("");
-                    setLastName("");
-                    setEmail("");
-                }
-            );
-        };
-
-        getProfile();
-    }, [user.id]);
+    const getProfile = async (id) => {
+        try {
+            const res = await myselfService.getProfile(id);
+            setFirstName(res.data.firstname);
+            setLastName(res.data.lastname);
+            setEmail(res.data.email);
+        } catch (error) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+        }
+    };
+    useEffectOnce(() => {
+        if (user.id) {
+            getProfile(user.id);
+        }
+    });
 
     return (
         <Container className={classes.container}>

@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
+const config = require("../../config");
+const jwt = require("jsonwebtoken");
 
 exports.fieldValidate = async (req, res) => {
     if (!req.body.fieldName && !req.body.value) {
@@ -59,8 +61,20 @@ exports.signup = async (req, res) => {
             const userRows = await pgClient.query(
                 `select id, client_id, firstname, lastname, email from users where id = ${userResponse.rows[0].id}`
             );
+            let user = userRows.rows[0];
+            console.log({ user });
+
+            const token = jwt.sign(
+                { id: user.id, client_id: user.client_id, role: "CLIENT" },
+                config.authSecret,
+                {
+                    expiresIn: 86400, // 24 hours
+                }
+            );
+
             const responseData = {
-                user: userRows.rows[0],
+                user,
+                accessToken: token,
                 client: clientRows.rows[0],
             };
             successMessage.message = "User successfully registered!";
@@ -69,7 +83,6 @@ exports.signup = async (req, res) => {
             res.status(status.created).send(successMessage);
         }
     } catch (err) {
-        console.log(err);
         errorMessage.message = err.message;
         res.status(status.error).send(errorMessage);
     }

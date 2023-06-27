@@ -24,7 +24,7 @@ const isValidToken = (accessToken) => {
     return decoded.exp > currentTime;
 };
 
-const setSession = (accessToken) => {
+export const setSession = (accessToken) => {
     if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;

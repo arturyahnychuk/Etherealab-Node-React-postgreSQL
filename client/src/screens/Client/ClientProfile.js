@@ -12,6 +12,7 @@ import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
 import clientService from "../../services/client.service";
 import useAuth from "../../hooks/useAuth";
+import useEffectOnce from "../../hooks/useEffectOnce";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -84,23 +85,24 @@ function ClientProfile() {
             ]);
         }
     };
+    const getClient = async (id) => {
+        clientService.getClient(id).then(
+            (res) => {
+                setName(res.data.data.name);
+                setLicense(res.data.data.license || "");
+            },
+            () => {
+                setName("");
+                setLicense("");
+            }
+        );
+    };
 
-    useEffect(() => {
-        const getClient = async () => {
-            clientService.getClient(user.client_id).then(
-                (res) => {
-                    setName(res.data.data.name);
-                    setLicense(res.data.data.license || "");
-                },
-                () => {
-                    setName("");
-                    setLicense("");
-                }
-            );
-        };
-
-        getClient();
-    }, [user.client_id]);
+    useEffectOnce(() => {
+        if (user.client_id) {
+            getClient(user.client_id);
+        }
+    });
 
     return (
         <Container className={classes.container}>

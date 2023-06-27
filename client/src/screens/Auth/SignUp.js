@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import Logo from "../../assets/img/logo.svg";
@@ -8,6 +8,7 @@ import PracticeForm from "./components/PracticeForm";
 import { makeStyles } from "@mui/styles";
 import { Container, CssBaseline, Link, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { setSession } from "../../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -45,29 +46,28 @@ const SignUp = () => {
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
 
-    const handleFormSubmit = (data) => {
-        AuthService.register(data).then(
-            (response) => {
-                enqueueSnackbar(`${response.data.message}`, {
-                    variant: "success",
-                });
-                // Dispatch the Redux action after successful registration
+    const history = useHistory();
+    const handleFormSubmit = async (data) => {
+        try {
+            const response = await AuthService.register(data);
+            enqueueSnackbar(`${response.data.message}`, {
+                variant: "success",
+            });
+            console.log(response.data.data.user);
+            dispatch({
+                type: "LOGIN",
+                payload: {
+                    user: response.data.data.user,
+                },
+            });
+            setSession(response.data.data.accessToken);
 
-                dispatch({
-                    type: "LOGIN",
-                    payload: {
-                        user: response.data.user,
-                    },
-                });
-
-                return <Redirect to="/" />;
-            },
-            (error) => {
-                if (error.response) {
-                    setErrors(error.response.message);
-                }
+            history.push("/dashboard");
+        } catch (error) {
+            if (error.response) {
+                setErrors(error.response.message);
             }
-        );
+        }
     };
 
     return (

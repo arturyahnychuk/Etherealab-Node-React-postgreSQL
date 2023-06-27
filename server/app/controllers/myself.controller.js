@@ -34,9 +34,7 @@ const updateProfile = async (req, res) => {
 
         $sql += `, updated='${moment().format(
             "YYYY-MM-DD hh:ss"
-        )}', updated_user_id=${req.user_id} where id=${
-            req.user_id
-        } returning id`;
+        )}', updated_user_id=${req.user_id} where id=${req.user_id}`;
 
         const updateResponse = await db.query($sql);
 
@@ -48,7 +46,6 @@ const updateProfile = async (req, res) => {
         successMessage.message = "Update successful";
         return res.status(status.success).send(successMessage);
     } catch (error) {
-        console.log(error);
         errorMessage.message = "Update not successful";
         return res.status(status.error).send(errorMessage);
     }
