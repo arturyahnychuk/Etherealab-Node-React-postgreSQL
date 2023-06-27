@@ -7,7 +7,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 exports.signin = async (req, res) => {
     try {
         const response = await db.query(
-            "SELECT id, client_id, firstname, lastname, password, email, sign_ip_address, sign_dt FROM users WHERE email = $1",
+            "SELECT id, client_id, firstname, lastname, password, email FROM users WHERE email = $1",
             [req.body.email]
         );
 

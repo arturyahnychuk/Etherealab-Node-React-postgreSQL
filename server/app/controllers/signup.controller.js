@@ -62,7 +62,7 @@ exports.signup = async (req, res) => {
                 [clientResponse.rows[0].id]
             );
             const userRows = await pgClient.query(
-                "SELECT id, client_id, firstname, lastname, email, sign_ip_address, sign_dt FROM users WHERE id = $1",
+                "SELECT id, client_id, firstname, lastname, email FROM users WHERE id = $1",
                 [userResponse.rows[0].id]
             );
             const responseData = {

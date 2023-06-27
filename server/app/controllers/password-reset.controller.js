@@ -12,12 +12,7 @@ const {
     getPasswordResetURL,
     resetPasswordTemplate,
 } = require("../helpers/email");
-/**
- * `secret` is passwordHash concatenated with user's created,
- * so if someones gets a user token they still need a timestamp to intercept.
- * @param {object} user
- * @returns {string} token
- */
+
 const usePasswordHashToMakeToken = (user) => {
     const passwordHash = user.password;
     const userId = user.id;
@@ -74,7 +69,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     // Check where user already signed up or not
     const { email } = req.params;
     const userQueryResponse = await db.query(
-        "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt, created FROM users WHERE email = $1 LIMIT 1",
+        "SELECT id, client_id, firstname, lastname, email, password, created FROM users WHERE email = $1 LIMIT 1",
         [email]
     );
     if (userQueryResponse.rows.length < 1) {
@@ -93,24 +88,6 @@ exports.sendPasswordResetEmail = async (req, res) => {
         "SELECT id, name FROM client WHERE id = $1",
         [user.client_id]
     );
-
-    if (!user.sign_dt) {
-        errorMessage.message =
-            "The password for this additional user can not be reset until user registration has first been completed.";
-        delete user.password; // delete password from response
-        user.client = clientQueryResponse.rows[0];
-        errorMessage.user = user;
-        return res.status(status.unauthorized).send(errorMessage);
-    }
-
-    if (!user.email_confirm_dt) {
-        errorMessage.message =
-            "Login can not be done until the email address is confirmed. Please see the request in your email inbox.";
-        delete user.password; // delete password from response
-        errorMessage.user = user;
-        return res.status(status.unauthorized).send(errorMessage);
-    }
-
     if (user) {
         const token = usePasswordHashToMakeToken(user);
         const token_expires = moment()
@@ -132,33 +109,38 @@ exports.receiveNewPassword = async (req, res) => {
     const { userId, token } = req.params;
     const { password } = req.body;
 
-    // find user with reset_password_token AND userId
-    // check token expires validity
-    const now = moment().format("YYYY-MM-DD HH:mm:ss");
-    const queryUserResponse = await db.query(
-        `SELECT id, email, reset_password_token, reset_password_expires FROM users 
+    try {
+        // find user with reset_password_token AND userId
+        // check token expires validity
+        const now = moment().format("YYYY-MM-DD HH:mm:ss");
+        const queryUserResponse = await db.query(
+            `SELECT id, email, reset_password_token, reset_password_expires FROM users 
     WHERE id=$1 AND reset_password_token=$2 AND reset_password_expires > '${now}'`,
-        [userId, token]
-    );
-    const user = queryUserResponse.rows[0];
+            [userId, token]
+        );
+        const user = queryUserResponse.rows[0];
 
-    if (!user) {
-        errorMessage.message = "User not found";
-        errorMessage.user = user;
-        return res.status(status.notfound).send(errorMessage);
-    }
+        if (!user) {
+            errorMessage.message = "User not found";
+            errorMessage.user = user;
+            return res.status(status.notfound).send(errorMessage);
+        }
 
-    // if all set then accept new password
-    const hashedPassword = bcrypt.hashSync(password, 8);
+        // if all set then accept new password
+        const hashedPassword = bcrypt.hashSync(password, 8);
 
-    const updateUserResponse = await db.query(
-        `UPDATE users SET password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() 
+        const updateUserResponse = await db.query(
+            `UPDATE users SET password=$1, reset_password_token=NULL, reset_password_expires=NULL, updated= now() 
     WHERE id =$2 `,
-        [hashedPassword, user.id]
-    );
+            [hashedPassword, user.id]
+        );
 
-    if (updateUserResponse.rowCount) {
-        successMessage.message = "Password changed succesfullly!";
-        return res.status(status.success).send(successMessage);
+        if (updateUserResponse.rowCount) {
+            successMessage.message = "Password changed successfully!";
+            return res.status(status.success).send(successMessage);
+        }
+    } catch (error) {
+        errorMessage.message = "Password change not successful";
+        return res.status(status.error).send(errorMessage);
     }
 };
