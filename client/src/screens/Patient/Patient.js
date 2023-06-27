@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     searchButton: {
-        backgroundColor: theme.Colors.blue + "!important",
+        backgroundColor: theme.palette.primary.main + "!important",
     },
     searchWrapper: {
         marginTop: theme.spacing(1) + "!important",

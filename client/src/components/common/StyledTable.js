@@ -13,14 +13,15 @@ export const StyledTableCellLg = withStyles((theme) => ({
     },
 }))(TableCell);
 
-export const StyledTableCellSm = withStyles(() => ({
+export const StyledTableCellSm = withStyles((theme) => ({
     head: {
         whiteSpace: "nowrap",
         fontSize: "16px",
-        fontWeight: 700,
+        fontWeight: 700 + "!important",
         padding: "6px 24px 6px 2px",
         borderBottom: "unset",
         background: "white",
+        color: theme.palette.text.secondary + "!important",
     },
     body: {
         fontSize: 12,
