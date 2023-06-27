@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.Colors.blue + "!important",
     },
     searchWrapper: {
-        display: "block",
         marginTop: theme.spacing(1) + "!important",
         marginBottom: theme.spacing(4) + "!important",
     },
