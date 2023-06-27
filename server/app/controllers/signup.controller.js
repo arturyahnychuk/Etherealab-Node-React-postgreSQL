@@ -49,10 +49,6 @@ exports.signup = async (req, res) => {
         }
 
         if (clientResponse.rowCount) {
-            const forwarded = req.headers["x-forwarded-for"];
-            const userIP = forwarded
-                ? forwarded.split(/, /)[0]
-                : req.connection.remoteAddress;
             const userResponse = await pgClient.query(
                 `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', now()) returning id`
             );
