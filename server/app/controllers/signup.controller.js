@@ -15,7 +15,7 @@ exports.fieldValidate = async (req, res) => {
     }
     try {
         const selectResponse = await db.query(
-            `select id, ${req.body.fieldName} from ${tableName} where ${req.body.fieldName} = $1 limit 1`,
+            `select 1 from ${tableName} where ${req.body.fieldName} = $1 limit 1`,
             [req.body.value]
         );
         if (selectResponse.rows.length > 0) {
@@ -43,7 +43,7 @@ exports.signup = async (req, res) => {
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
         const clientResponse = await pgClient.query(
-            `insert into client(name) values ('${clientName}') returning *`
+            `insert into client(name) values ('${clientName}') returning id`
         );
         if (!clientResponse.rowCount) {
             errorMessage.message = "Client Cannot be registered";
