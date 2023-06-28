@@ -43,7 +43,7 @@ exports.signup = async (req, res) => {
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
         const clientResponse = await pgClient.query(
-            `insert into client(name) values ('${clientName}') returning id`
+            `insert into client(name) values ('${clientName}') returning *`
         );
         if (!clientResponse.rowCount) {
             errorMessage.message = "Client Cannot be registered";
@@ -54,7 +54,13 @@ exports.signup = async (req, res) => {
             `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', now())  returning *`
         );
 
-        let user = userResponse.rows[0];
+        let user = {
+            id: userResponse.rows[0].id,
+            client_id: userResponse.rows[0].client_id,
+            email: userResponse.rows[0].email,
+            lastname: userResponse.rows[0].lastname,
+            firstname:  userResponse.rows[0].firstname,
+        };
         const token = jwt.sign(
             { id: user.id, client_id: user.client_id, role: "CLIENT" },
             config.authSecret,
@@ -62,7 +68,6 @@ exports.signup = async (req, res) => {
                 expiresIn: 86400, // 24 hours
             }
         );
-
         const responseData = {
             user,
             accessToken: token,

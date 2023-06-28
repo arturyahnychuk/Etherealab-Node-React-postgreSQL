@@ -7,8 +7,7 @@ import AuthService from "../../services/auth.service";
 import PracticeForm from "./components/PracticeForm";
 import { makeStyles } from "@mui/styles";
 import { Container, CssBaseline, Link, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setSession } from "../../contexts/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -42,24 +41,19 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = () => {
     const classes = useStyles();
+    const { setUser } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
     const [errors, setErrors] = useState([]);
-    const dispatch = useDispatch();
-
     const history = useHistory();
+
     const handleFormSubmit = async (data) => {
         try {
             const response = await AuthService.register(data);
             enqueueSnackbar(`${response.data.message}`, {
                 variant: "success",
             });
-            dispatch({
-                type: "LOGIN",
-                payload: {
-                    user: response.data.data.user,
-                },
-            });
-            setSession(response.data.data.accessToken);
+            const { accessToken, user } = response.data.data;
+            setUser(user, accessToken)
 
             history.push("/dashboard");
         } catch (error) {

@@ -24,7 +24,7 @@ const isValidToken = (accessToken) => {
     return decoded.exp > currentTime;
 };
 
-export const setSession = (accessToken) => {
+const setSession = (accessToken) => {
     if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -71,6 +71,7 @@ const AuthContext = createContext({
     method: "JWT",
     login: () => Promise.resolve(),
     logout: () => {},
+    setUser: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
@@ -91,6 +92,16 @@ export const AuthProvider = ({ children }) => {
             },
         });
     };
+
+    const setUser = async (user, accessToken) => {
+        setSession(accessToken);
+        dispatch({
+            type: "LOGIN",
+            payload: {
+                user,
+            },
+        });
+    }
 
     const logout = () => {
         localStorage.clear();
@@ -155,6 +166,7 @@ export const AuthProvider = ({ children }) => {
                 method: "JWT",
                 login,
                 logout,
+                setUser,
             }}
         >
             {children}
