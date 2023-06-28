@@ -18,10 +18,11 @@ export const StyledTableCellSm = withStyles((theme) => ({
         whiteSpace: "nowrap",
         fontSize: "16px",
         fontWeight: 700 + "!important",
-        padding: "6px 24px 6px 2px",
+        padding: "6px 24px 6px 0px",
         borderBottom: "unset",
         background: "white",
         color: theme.palette.text.secondary + "!important",
+        textAlign: "left",
     },
     body: {
         fontSize: 12,
@@ -36,18 +37,14 @@ export const StyledTableRowSm = withStyles((theme) => ({
             lineHeight: "21px",
         },
         fontSize: 14,
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
         "& th": {
             fontSize: 12,
             whiteSpace: "nowrap",
-            padding: "2px 16px 2px 2px",
         },
         "& td": {
+            border: "0px !important",
             fontSize: 12,
             whiteSpace: "nowrap",
-            padding: "2px 16px 2px 2px",
         },
     },
 }))(TableRow);
@@ -55,9 +52,7 @@ export const StyledTableRowSm = withStyles((theme) => ({
 export const StyledTableRowLg = withStyles((theme) => ({
     root: {
         fontSize: 14,
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
+        backgroundColor: theme.palette.white,
         "& th": {
             fontSize: 12,
         },

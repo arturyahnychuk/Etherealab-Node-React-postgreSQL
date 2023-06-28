@@ -44,7 +44,6 @@ const updateClientProfile = async (req, res) => {
         successMessage.message = "Update successful";
         return res.status(status.created).send(successMessage);
     } catch (err) {
-        console.log(err);
         errorMessage.message = "Update not successful";
         return res.status(status.error).send(errorMessage);
     }

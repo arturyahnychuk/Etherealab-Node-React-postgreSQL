@@ -53,7 +53,6 @@ const SignUp = () => {
             enqueueSnackbar(`${response.data.message}`, {
                 variant: "success",
             });
-            console.log(response.data.data.user);
             dispatch({
                 type: "LOGIN",
                 payload: {

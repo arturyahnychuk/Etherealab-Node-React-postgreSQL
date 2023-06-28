@@ -3,7 +3,7 @@ const db = require("../db");
 
 const getUser = async (req, res) => {
     try {
-        const $sql = `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email, u.sign_dt,  c.name
+        const $sql = `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email
         from users u
         left join client c on c.id=u.client_id 
         where u.id=${req.user_id}

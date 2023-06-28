@@ -1,6 +1,6 @@
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
-
+const moment = require("moment");
 const search = async (req, res) => {
     const { searchTerm } = req.body;
 
@@ -43,8 +43,8 @@ const search = async (req, res) => {
             return {
                 firstname: row.firstname,
                 lastname: row.lastname,
-                status: translationMap[row.status] || row.status,
-                updated: row.updated,
+                status: translationMap[row.status.trim()],
+                updated: moment(row.updated).format("MMM, D YYYY"),
             };
         });
 

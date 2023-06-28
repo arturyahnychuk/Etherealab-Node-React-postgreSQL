@@ -73,7 +73,7 @@ const Patient = () => {
     const searchPatientHandler = (searchText) => {
         setIsLoading(true);
         const payload = {
-            searchTerm: searchText,
+            searchTerm: searchText.trim(),
         };
         SearchPatient.search(payload).then((res) => {
             setSearchResults(res.data.data);
@@ -122,7 +122,7 @@ const Patient = () => {
                 </Grid>
             </form>
             <TableContainer>
-                <Table stickyHeader size="small">
+                <Table size="small">
                     <TableHead>
                         <TableRow>
                             <StyledTableCellSm>Firstname</StyledTableCellSm>

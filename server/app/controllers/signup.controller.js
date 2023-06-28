@@ -62,7 +62,6 @@ exports.signup = async (req, res) => {
                 `select id, client_id, firstname, lastname, email from users where id = ${userResponse.rows[0].id}`
             );
             let user = userRows.rows[0];
-            console.log({ user });
 
             const token = jwt.sign(
                 { id: user.id, client_id: user.client_id, role: "CLIENT" },
