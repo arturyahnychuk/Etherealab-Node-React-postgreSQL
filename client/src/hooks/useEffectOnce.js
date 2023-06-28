@@ -8,6 +8,7 @@ function useEffectOnce(callback, deps) {
             callback();
             isRunOnce.current = true;
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps);
 }
 
