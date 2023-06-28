@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-
 import { useSnackbar } from "notistack";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import Logo from "../assets/img/logo.svg";
 import Error from "../components/common/Error";
 import AuthService from "../services/auth.service";
-import Success from "./ForgetPassword/Success";
 import { makeStyles } from "@mui/styles";
 import {
     Button,
@@ -59,30 +57,34 @@ const ResetPassword = () => {
     const { userId, token } = useParams();
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
-    const [success, setSuccess] = useState(false);
+    const history = useHistory();
 
-    const handlePasswordReset = (e) => {
+    const handlePasswordReset = async (e) => {
         e.preventDefault();
-        AuthService.resetPassword(userId, token, password).then(
-            (response) => {
-                enqueueSnackbar(`${response.data.message}`, {
-                    variant: "success",
-                });
-                setSuccess(true);
-            },
-            (error) => {
-                if (!error.response) {
-                    return;
-                }
-                const { data, status } = error.response;
 
-                if (status === 400) {
-                    setFieldErrors(data.message);
-                } else {
-                    setFieldErrors([]);
-                }
+        try {
+            const response = await AuthService.resetPassword(
+                userId,
+                token,
+                password
+            );
+            enqueueSnackbar(`${response.data.message}`, {
+                variant: "success",
+            });
+            history.push("/login_client");
+        } catch (error) {
+            if (!error.response) {
+                return;
             }
-        );
+            const { data, status } = error.response;
+
+            if (status === 400) {
+                setFieldErrors(data.message);
+            } else {
+                setFieldErrors([]);
+            }
+        }
+
         setPassword("");
     };
 
@@ -112,46 +114,35 @@ const ResetPassword = () => {
                 >
                     Reset Password
                 </Typography>
-                {success && (
-                    <Success
-                        header="Your password has been saved."
-                        loginText="Sign back in"
-                    />
-                )}
-                {!success && (
-                    <>
-                        <Error errors={fieldErrors} />
-                        <form className={classes.form} noValidate>
-                            <TextField
-                                value={password}
-                                variant="outlined"
-                                margin="dense"
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                autoFocus
-                                onChange={(event) =>
-                                    setPassword(event.target.value)
-                                }
-                                onBlur={(event) => validatePassword(event)}
-                            />
 
-                            <Button
-                                fullWidth
-                                disabled={!password}
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                onClick={(event) => handlePasswordReset(event)}
-                            >
-                                Reset
-                            </Button>
-                        </form>
-                    </>
-                )}
+                <Error errors={fieldErrors} />
+                <form className={classes.form} noValidate>
+                    <TextField
+                        value={password}
+                        variant="outlined"
+                        margin="dense"
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        autoFocus
+                        onChange={(event) => setPassword(event.target.value)}
+                        onBlur={(event) => validatePassword(event)}
+                    />
+
+                    <Button
+                        fullWidth
+                        disabled={!password}
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={(event) => handlePasswordReset(event)}
+                    >
+                        Reset
+                    </Button>
+                </form>
             </div>
         </Container>
     );

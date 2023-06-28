@@ -1,5 +1,5 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
@@ -50,6 +50,16 @@ function MySelf() {
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
     const [apiErrors, setApiErrors] = useState([]);
+
+    const formRef = useRef(null);
+
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            if (fieldErrors.length > 0 && !email && !lastName && !firstName)
+                formRef.current.dispatchEvent(new Event("submit"));
+        }
+    };
 
     const handleFormSubmission = (e) => {
         e.preventDefault();
@@ -186,9 +196,11 @@ function MySelf() {
                 Myself
             </Typography>
             <form
+                ref={formRef}
                 className={classes.form}
                 noValidate
                 onSubmit={(event) => handleFormSubmission(event)}
+                onKeyUp={(event) => handleKeyPress(event)}
             >
                 <Error errors={apiErrors} />
                 <TextField

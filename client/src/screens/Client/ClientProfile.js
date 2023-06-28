@@ -6,7 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 import Error from "../../components/common/Error";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -55,6 +55,15 @@ function ClientProfile() {
     const [name, setName] = useState("");
     const [license, setLicense] = useState("");
 
+    const formRef = useRef(null);
+
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            if (!name && !license)
+                formRef.current.dispatchEvent(new Event("submit"));
+        }
+    };
     const onFormSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -120,6 +129,7 @@ function ClientProfile() {
                 className={classes.form}
                 noValidate
                 onSubmit={(event) => onFormSubmit(event)}
+                onKeyUp={(event) => handleKeyPress(event)}
             >
                 <TextField
                     value={name}

@@ -33,7 +33,7 @@ const sendRecoveryEmail = async (user, res) => {
             const info = await transporter.sendMail(emailTemplate);
             console.info("Sending email:", info);
             successMessage.message =
-                "We have sent an email with instructions to reset your credentials.";
+                "If the email address exists then an email will be sent with password reset instructions.";
             return res.status(status.success).send(successMessage);
         } catch (error) {
             return res.status(500).json({
@@ -47,7 +47,7 @@ const sendRecoveryEmail = async (user, res) => {
             return res.status(200).json({
                 status: "success",
                 message:
-                    "We have sent an email with instructions to reset your credentials.",
+                    "If the email address exists then an email will be sent with password reset instructions.",
             });
         },
         (error) => {
