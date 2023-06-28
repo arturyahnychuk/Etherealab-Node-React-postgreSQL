@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 
-import { useSnackbar } from "notistack";
-import { useSelector, shallowEqual } from "react-redux";
-
-import Logo from "../../assets/img/logo.svg";
-import Dimmer from "../../components/common/Dimmer";
-import Error from "../../components/common/Error";
-import AuthService from "../../services/auth.service";
-import Success from "./Success";
-import { makeStyles } from "@mui/styles";
 import {
     Button,
     Container,
@@ -17,6 +8,13 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { useSnackbar } from "notistack";
+
+import Logo from "../../assets/img/logo.svg";
+import Dimmer from "../../components/common/Dimmer";
+import Error from "../../components/common/Error";
+import AuthService from "../../services/auth.service";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -73,7 +71,6 @@ const ForgetPassword = () => {
     const [errors, setErrors] = useState([]);
     const [registrationLink, setRegistrationLink] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const success = useSelector((state) => state.common.success, shallowEqual);
 
     const sendPasswordResetEmail = (e) => {
         e.preventDefault();
@@ -123,61 +120,51 @@ const ForgetPassword = () => {
                         </Link>
                     )}
                 </Error>
-                {success && (
-                    <Success
-                        header="If that account is in our system then we have sent an email with instructions
-                to reset your password"
-                        loginText="Sign back in"
+             
+                <Link href="/login_client" underline="none">
+                    <Typography
+                        variant="body1"
+                        className={classes.customLink}
+                    >
+                        Login to account
+                    </Typography>
+                </Link>
+                <form
+                    className={classes.form}
+                    noValidate
+                    onSubmit={sendPasswordResetEmail}
+                >
+                    <TextField
+                        variant="outlined"
+                        margin="dense"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        onChange={(event) =>
+                            setEmail(event.target.value)
+                        }
+                        inputProps={{ maxLength: 255 }}
+                        helperText={`${
+                            email.length >= 255
+                                ? "Enter an email between 255 character"
+                                : ""
+                        }`}
                     />
-                )}
-                {!success && (
-                    <>
-                        <Link href="/login_client" underline="none">
-                            <Typography
-                                variant="body1"
-                                className={classes.customLink}
-                            >
-                                Login to account
-                            </Typography>
-                        </Link>
-                        <form
-                            className={classes.form}
-                            noValidate
-                            onSubmit={sendPasswordResetEmail}
-                        >
-                            <TextField
-                                variant="outlined"
-                                margin="dense"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                onChange={(event) =>
-                                    setEmail(event.target.value)
-                                }
-                                inputProps={{ maxLength: 255 }}
-                                helperText={`${
-                                    email.length >= 255
-                                        ? "Enter an email between 255 character"
-                                        : ""
-                                }`}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                disabled={!email}
-                            >
-                                Send Password
-                            </Button>
-                        </form>
-                    </>
-                )}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        disabled={!email}
+                    >
+                        Send Password
+                    </Button>
+                </form>
             </div>
             <Dimmer isOpen={isLoading} />
         </Container>
