@@ -38,11 +38,10 @@ exports.fieldValidate = async (req, res) => {
 };
 
 exports.signup = async (req, res) => {
-    const pgClient = await db.getClient();
     const { clientName, firstname, lastname, email, password } = req.body;
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
-        const clientResponse = await pgClient.query(
+        const clientResponse = await db.query(
             `insert into client(name) values ('${clientName}') returning id`
         );
         if (!clientResponse.rowCount) {
@@ -50,7 +49,7 @@ exports.signup = async (req, res) => {
             res.status(status.notfound).send(errorMessage);
         }
 
-        const userResponse = await pgClient.query(
+        const userResponse = await db.query(
             `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', now())  returning *`
         );
 
