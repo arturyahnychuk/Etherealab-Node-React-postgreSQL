@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Container from "@mui/material/Container";
-import { ReactComponent as LogoSvg } from "../../assets/img/logo.svg";
+import Logo from "../../assets/img/logo.svg";
 import {
     Button,
     CssBaseline,
@@ -14,6 +14,7 @@ import useAuth from "../../hooks/useAuth";
 import { makeStyles } from "@mui/styles";
 import Error from "../../components/common/Error";
 import { Redirect } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -85,7 +86,9 @@ function Login() {
         <Container component="main" maxWidth="sm" className={classes.container}>
             <CssBaseline />
             <div className={classes.paper}>
-                <LogoSvg width={170} height={65} />
+                <RouterLink to="/">
+                    <img src={Logo} alt="Logo" className={classes.Logo} />
+                </RouterLink>
                 <Typography
                     component="h5"
                     variant="h5"

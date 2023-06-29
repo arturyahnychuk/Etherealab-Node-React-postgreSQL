@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import _ from "lodash";
 
 import AuthService from "../../../services/auth.service";
-import TextFieldWithError from "./TextFieldWithError";
+import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
 import { Alert, Button, TextField } from "@mui/material";
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PracticeForm = ({ onFormSubmit, ...props }) => {
+const SignupForm = ({ onFormSubmit, ...props }) => {
     const { errors } = props;
     const classes = useStyles();
     const [clientName, setClientName] = useState("");
@@ -51,6 +51,28 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
             password: password.trim(),
         };
         onFormSubmit(formData);
+    };
+
+    const validateEmail = (event) => {
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        const isValid = emailRegex.test(event.target.value);
+
+        if (!isValid) {
+            setFieldErrors([
+                ...fieldErrors,
+                {
+                    value: event.target.value,
+                    msg: "Invalid email address",
+                    param: "users.email",
+                },
+            ]);
+        } else {
+            const updatedErrors = fieldErrors.filter(
+                (error) => error.param !== "users.email"
+            );
+            setFieldErrors(updatedErrors);
+        }
+        return isValid;
     };
 
     const validatePassword = (event) => {
@@ -82,6 +104,12 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
     const handleAjaxValidation = (event, target) => {
         if (!event.target) {
             return;
+        }
+
+        if (target === "users") {
+            if (!validateEmail(event)) {
+                return;
+            }
         }
 
         AuthService.validate({
@@ -212,7 +240,14 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
             />
 
             <Button
-                disabled={fieldErrors.length > 0 || !email || !password || !lastName || !firstName || !clientName}
+                disabled={
+                    fieldErrors.length > 0 ||
+                    !email ||
+                    !password ||
+                    !lastName ||
+                    !firstName ||
+                    !clientName
+                }
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -225,4 +260,4 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
     );
 };
 
-export default PracticeForm;
+export default SignupForm;

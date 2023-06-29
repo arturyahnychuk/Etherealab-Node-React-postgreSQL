@@ -1,11 +1,11 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
 
 import authService from "../services/auth.service";
-import TextFieldWithError from "./Auth/components/TextFieldWithError";
+import TextFieldWithError from "../components/common/TextFieldWithError";
 import myselfService from "../services/myself.service";
 import useAuth from "../hooks/useAuth";
 import Error from "../components/common/Error";
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function MySelf() {
+function Myself() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     const { user } = useAuth();
@@ -184,7 +184,7 @@ function MySelf() {
         if (user.id) {
             getProfile(user.id);
         }
-    });
+    }, [user.id]);
 
     return (
         <Container className={classes.container}>
@@ -290,4 +290,4 @@ function MySelf() {
     );
 }
 
-export default MySelf;
+export default Myself;

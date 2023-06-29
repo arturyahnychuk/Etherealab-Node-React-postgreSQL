@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flex: 1,
-        margin: '0px !important'
+        margin: "0px !important",
     },
 }));
 
@@ -40,7 +40,6 @@ const Dashboard = (props) => {
         setOpenSidebar(false);
     };
 
-    // Scroll Restoration::https://reactrouter.com/web/guides/scroll-restoration
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [children]);

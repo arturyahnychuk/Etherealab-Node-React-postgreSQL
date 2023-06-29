@@ -10,16 +10,17 @@ import { SidebarNav } from "./components";
 import { makeStyles } from "@mui/styles";
 import { Drawer } from "@mui/material";
 import Logo from "../../../../assets/img/logo-portal.svg";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     drawer: {
         width: 240,
-        // display: "flex",
         [theme.breakpoints.up("lg")]: {
             height: "100%",
         },
         alignItems: "center",
         display: "flex",
+        backgroundColor: theme.Colors.black + "!important",
     },
     root: {
         backgroundColor: theme.Colors.black,
@@ -42,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
         objectFit: "cover",
         padding: theme.spacing(4),
     },
+    link: {
+        margin: 0,
+        padding: 0,
+    },
 }));
 
 const Sidebar = (props) => {
@@ -61,7 +66,9 @@ const Sidebar = (props) => {
             open={open}
             variant={variant}
         >
-            <img src={Logo} alt="Logo" className={classes.Logo} />
+            <RouterLink to="/dashboard" className={classes.link}>
+                <img src={Logo} alt="Logo" className={classes.Logo} />
+            </RouterLink>
             <div {...rest} className={clsx(classes.root, className)}>
                 <SidebarNav className={classes.nav} pages={allowedPages} />
             </div>

@@ -17,7 +17,8 @@ import {
 } from "../../components/common/StyledTable";
 import { makeStyles } from "@mui/styles";
 
-import SearchPatient from "../../services/patientSearch.service";
+import DashboardService from "../../services/dashboard.service";
+import useEffectOnce from "../../hooks/useEffectOnce";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -70,12 +71,12 @@ const Patient = () => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
-    const searchPatientHandler = (searchText) => {
+    const searchHandler = (searchText) => {
         setIsLoading(true);
         const payload = {
             searchTerm: searchText.trim(),
         };
-        SearchPatient.search(payload).then((res) => {
+        DashboardService.search(payload).then((res) => {
             setSearchResults(res.data.data);
         });
         setIsLoading(false);
@@ -83,8 +84,12 @@ const Patient = () => {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
-        searchPatientHandler(searchText);
+        searchHandler(searchText);
     };
+
+    useEffectOnce(() => {
+        searchHandler(" ");
+    }, []);
 
     return (
         <Container className={classes.container}>

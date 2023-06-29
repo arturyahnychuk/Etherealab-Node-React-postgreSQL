@@ -4,6 +4,6 @@ const Dashboard = require("../controllers/dashboard.controller.js");
 
 const router = express.Router();
 
-router.get("/client/patient-search", [authJwt.verifyToken], Dashboard.search);
+router.post("/client/patient-search", [authJwt.verifyToken], Dashboard.search);
 
 module.exports = router;

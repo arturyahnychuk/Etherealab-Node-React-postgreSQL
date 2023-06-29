@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
+import { Link as RouterLink } from "react-router-dom";
 
 import Logo from "../../assets/img/logo.svg";
 import Dimmer from "../../components/common/Dimmer";
@@ -105,7 +106,9 @@ const ForgetPassword = () => {
         <Container component="main" maxWidth="sm" className={classes.container}>
             <CssBaseline />
             <div className={classes.paper}>
-                <img src={Logo} alt="Logo" className={classes.Logo} />
+                <RouterLink to="/">
+                    <img src={Logo} alt="Logo" className={classes.Logo} />
+                </RouterLink>
                 <Typography
                     component="h1"
                     variant="h5"
@@ -115,9 +118,7 @@ const ForgetPassword = () => {
                 </Typography>
                 <Error errors={errors}>
                     {registrationLink && (
-                        <Link href="/signup">
-                            Go to user registration
-                        </Link>
+                        <Link href="/signup">Go to user registration</Link>
                     )}
                 </Error>
 

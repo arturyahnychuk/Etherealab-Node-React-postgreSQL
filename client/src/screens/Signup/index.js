@@ -4,10 +4,11 @@ import { useSnackbar } from "notistack";
 
 import Logo from "../../assets/img/logo.svg";
 import AuthService from "../../services/auth.service";
-import PracticeForm from "./components/PracticeForm";
+import SignupForm from "./components/SignupForm";
 import { makeStyles } from "@mui/styles";
 import { Container, CssBaseline, Link, Typography } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignUp = () => {
+const Signup = () => {
     const classes = useStyles();
     const { setUser } = useAuth();
     const { enqueueSnackbar } = useSnackbar();
@@ -67,7 +68,9 @@ const SignUp = () => {
         <Container component="main" maxWidth="sm" className={classes.container}>
             <CssBaseline />
             <div className={classes.paper}>
-                <img src={Logo} alt="Logo" className={classes.Logo} />
+                <RouterLink to="/">
+                    <img src={Logo} alt="Logo" className={classes.Logo} />
+                </RouterLink>
                 <Typography
                     component="h1"
                     variant="h5"
@@ -81,7 +84,7 @@ const SignUp = () => {
                     </Typography>
                 </Link>
                 <div>
-                    <PracticeForm
+                    <SignupForm
                         onFormSubmit={handleFormSubmit}
                         errors={errors}
                     />
@@ -91,4 +94,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default Signup;

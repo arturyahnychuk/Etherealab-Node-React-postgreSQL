@@ -1,16 +1,15 @@
 import { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import GuestGuard from "./components/GuestGuard";
-import Login from "./screens/Auth/Login";
-import SignUp from "./screens/Auth/SignUp";
-import MainLayout from "./layouts/MainLayout/MainLayout";
+import Login from "./screens/Login";
+import Signup from "./screens/Signup";
 import ForgetPassword from "./screens/ForgetPassword";
 import ResetPassword from "./screens/ResetPassword";
 import Home from "./screens/Home";
 import DashboardLayout from "./layouts/Dashboard";
-import ClientProfile from "./screens/Client/ClientProfile";
-import MySelf from "./screens/MySelf";
-import Patient from "./screens/Patient/Patient";
+import ClientProfile from "./screens/ClientProfile/ClientProfile";
+import Myself from "./screens/Myself";
+import Patient from "./screens/Dashboard/Dashboard";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -45,30 +44,26 @@ const routes = [
     {
         exact: true,
         path: "/login",
-        layout: MainLayout,
         guard: GuestGuard,
         component: Login,
     },
     {
         exact: true,
         guard: GuestGuard,
-        layout: MainLayout,
         path: "/forgot-password",
         component: ForgetPassword,
     },
     {
         exact: true,
         guard: GuestGuard,
-        layout: MainLayout,
         path: "/password/reset/:userId/:token",
         component: ResetPassword,
     },
     {
         exact: true,
         guard: GuestGuard,
-        layout: MainLayout,
         path: "/signup",
-        component: SignUp,
+        component: Signup,
     },
     {
         exact: true,
@@ -80,7 +75,7 @@ const routes = [
         exact: true,
         layout: DashboardLayout,
         path: "/myself",
-        component: MySelf,
+        component: Myself,
     },
     {
         exact: true,
@@ -90,14 +85,7 @@ const routes = [
     },
     {
         path: "*",
-        layout: MainLayout,
-        routes: [
-            {
-                exact: true,
-                path: "/",
-                component: Home,
-            },
-        ],
+        component: Home,
     },
 ];
 

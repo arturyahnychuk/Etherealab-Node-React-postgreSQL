@@ -6,6 +6,7 @@ import SplashScreen from "../components/SlashScreen";
 import authHeader from "../services/auth-header";
 import { API_BASE } from "../utils/API_BASE";
 import axios from "../utils/axios";
+import useEffectOnce from "../hooks/useEffectOnce";
 
 const initialAuthState = {
     isAuthenticated: false,
@@ -101,7 +102,7 @@ export const AuthProvider = ({ children }) => {
                 user,
             },
         });
-    }
+    };
 
     const logout = () => {
         localStorage.clear();
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }) => {
         dispatch({ type: "LOGOUT" });
     };
 
-    useEffect(() => {
+    useEffectOnce(() => {
         const initialize = async () => {
             try {
                 const accessToken = window.localStorage.getItem("accessToken");
