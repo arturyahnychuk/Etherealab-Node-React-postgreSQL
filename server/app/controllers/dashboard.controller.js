@@ -1,6 +1,7 @@
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const moment = require("moment");
+
 const search = async (req, res) => {
     const { searchTerm } = req.body;
 
@@ -60,8 +61,8 @@ const search = async (req, res) => {
     }
 };
 
-const PatientSearch = {
+const Dashboard = {
     search,
 };
 
-module.exports = PatientSearch;
+module.exports = Dashboard;
