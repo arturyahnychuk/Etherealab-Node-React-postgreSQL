@@ -1,10 +1,10 @@
 ## Stack
 
-- React.js
-- Redux
-- Material-UI
-- Node + Express
-- PostgreSQL
+-   React.js
+-   Redux
+-   Material-UI
+-   Node + Express
+-   PostgreSQL
 
 ## Database
 
@@ -36,7 +36,7 @@
 
 ## Doctor Login
 
-1. Login page for doctors/clients http://localhost:3000/login_client
+1. Login page for doctors/clients http://localhost:3000/login
 2. Use email dr@test.com password 12345678
 3. Use these credentials so you will see the correct demo data.
 
@@ -48,8 +48,10 @@ To test email notifications (only for development):
 2. Check emails on `https://ethereal.email/messages`
 
 ## Pull Requests
+
 When you are ready with your work please create a git pull request.
 
 It is recommended to test the linter locally before creating pull request:
+
 1. `cd client`
 2. `./node_modules/.bin/eslint ./src/`
