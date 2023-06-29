@@ -212,6 +212,7 @@ function MySelf() {
                     label="Your Firstname"
                     name="firstName"
                     autoComplete="firstName"
+                    autoFocus
                     onChange={(event) => setFirstName(event.target.value)}
                     inputProps={{ maxLength: 35 }}
                     helperText={`${
