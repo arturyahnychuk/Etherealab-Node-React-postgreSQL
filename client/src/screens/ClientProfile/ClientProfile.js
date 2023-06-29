@@ -111,7 +111,7 @@ function ClientProfile() {
         if (user.client_id) {
             getClient(user.client_id);
         }
-    });
+    }, [user.client_id]);
 
     return (
         <Container className={classes.container}>
