@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = () => {
     const classes = useStyles();
-    const { setUser } = useAuth()
+    const { setUser } = useAuth();
     const { enqueueSnackbar } = useSnackbar();
     const [errors, setErrors] = useState([]);
     const history = useHistory();
@@ -53,7 +53,7 @@ const SignUp = () => {
                 variant: "success",
             });
             const { accessToken, user } = response.data.data;
-            setUser(user, accessToken)
+            setUser(user, accessToken);
 
             history.push("/dashboard");
         } catch (error) {
@@ -75,7 +75,7 @@ const SignUp = () => {
                 >
                     Sign Up for a new account
                 </Typography>
-                <Link href="/login_client" underline="none">
+                <Link href="/login" underline="none">
                     <Typography variant="body1" className={classes.customLink}>
                         Already a member? Login here
                     </Typography>

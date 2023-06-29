@@ -24,11 +24,11 @@ const useStyles = makeStyles((theme) => ({
         "& li": {
             margin: 0,
         },
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"start",
-        alignItems:"start",
-        marginLeft: theme.spacing(4) +'!important'
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+        alignItems: "start",
+        marginLeft: theme.spacing(4) + "!important",
     },
     item: {
         display: "flex",
@@ -150,7 +150,7 @@ const SidebarNav = (props) => {
     const handleLogout = async () => {
         try {
             await logout();
-            history.push(user.login_url || "/login_client");
+            history.push(user.login_url || "/login");
         } catch (err) {
             console.error(err);
         }
@@ -187,7 +187,7 @@ const SidebarNav = (props) => {
                                         className={classes.link}
                                         onClick={page.logout && handleLogout}
                                     >
-                                        { page.icon}
+                                        {page.icon}
                                         <span className={classes.linkTitle}>
                                             {page.title}
                                         </span>

@@ -49,7 +49,7 @@ exports.signin = async (req, res) => {
         delete user.password; // delete password from response
         resData.user = user;
         resData.user.role = "CLIENT";
-        resData.user.login_url = `/login_client`;
+        resData.user.login_url = `/login`;
         successMessage.data = resData;
         res.status(status.success).send(successMessage);
     } catch (error) {

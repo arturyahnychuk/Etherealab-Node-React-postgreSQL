@@ -71,7 +71,7 @@ const ResetPassword = () => {
             enqueueSnackbar(`${response.data.message}`, {
                 variant: "success",
             });
-            history.push("/login_client");
+            history.push("/login");
         } catch (error) {
             if (!error.response) {
                 return;

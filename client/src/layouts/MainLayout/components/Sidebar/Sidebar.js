@@ -40,13 +40,11 @@ const Sidebar = (props) => {
     const publicPages = [
         {
             title: "Login",
-            href: "/login_client",
-            // icon: <LockIcon />,
+            href: "/login",
         },
         {
             title: "Signup",
-            href: "/signup_client",
-            // icon: <LockOpenIcon />,
+            href: "/signup",
         },
     ];
 

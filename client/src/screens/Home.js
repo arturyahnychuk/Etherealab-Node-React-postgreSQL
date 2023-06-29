@@ -11,7 +11,7 @@ const Home = () => {
     if (isAuthenticated) {
         return <Redirect to="/dashboard" />;
     }
-    return <Redirect to="/login_client" />;
+    return <Redirect to="/login" />;
 };
 
 export default Home;

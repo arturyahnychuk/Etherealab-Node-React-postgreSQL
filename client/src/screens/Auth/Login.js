@@ -94,7 +94,7 @@ function Login() {
                     Login to your account
                 </Typography>
 
-                <Link href="/signup_client" underline="none">
+                <Link href="/signup" underline="none">
                     <Typography variant="body1" className={classes.customLink}>
                         Don't have an account? Sign up here
                     </Typography>

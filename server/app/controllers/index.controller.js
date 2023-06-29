@@ -19,7 +19,7 @@ const getUser = async (req, res) => {
             user.permissions = ["ADMIN"];
         }
         user.role = "CLIENT";
-        user.login_url = `/login_client`;
+        user.login_url = `/login`;
         successMessage.data = { user };
         return res.status(status.created).send(successMessage);
     } catch (error) {

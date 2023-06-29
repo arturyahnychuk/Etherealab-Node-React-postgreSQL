@@ -115,17 +115,14 @@ const ForgetPassword = () => {
                 </Typography>
                 <Error errors={errors}>
                     {registrationLink && (
-                        <Link href="/signup_client">
+                        <Link href="/signup">
                             Go to user registration
                         </Link>
                     )}
                 </Error>
-             
-                <Link href="/login_client" underline="none">
-                    <Typography
-                        variant="body1"
-                        className={classes.customLink}
-                    >
+
+                <Link href="/login" underline="none">
+                    <Typography variant="body1" className={classes.customLink}>
                         Login to account
                     </Typography>
                 </Link>
@@ -144,9 +141,7 @@ const ForgetPassword = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
-                        onChange={(event) =>
-                            setEmail(event.target.value)
-                        }
+                        onChange={(event) => setEmail(event.target.value)}
                         inputProps={{ maxLength: 255 }}
                         helperText={`${
                             email.length >= 255

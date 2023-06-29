@@ -54,7 +54,7 @@ const Header = ({ ...props }) => {
     const handleLogout = async () => {
         try {
             await logout();
-            history.push(user.login_url || "/login_client");
+            history.push(user.login_url || "/login");
         } catch (err) {
             console.error(err);
         }

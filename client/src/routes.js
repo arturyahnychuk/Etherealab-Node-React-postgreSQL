@@ -44,7 +44,7 @@ export const renderRoutes = (routes = []) => (
 const routes = [
     {
         exact: true,
-        path: "/login_client",
+        path: "/login",
         layout: MainLayout,
         guard: GuestGuard,
         component: Login,
@@ -67,7 +67,7 @@ const routes = [
         exact: true,
         guard: GuestGuard,
         layout: MainLayout,
-        path: "/signup_client",
+        path: "/signup",
         component: SignUp,
     },
     {
