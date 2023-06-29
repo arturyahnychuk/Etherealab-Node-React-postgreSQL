@@ -65,7 +65,7 @@ const sendRecoveryEmail = async (user, res) => {
 exports.sendPasswordResetEmail = async (req, res) => {
     const { email } = req.params;
     const userQueryResponse = await db.query(
-        "select id from users where email = $1 limit 1",
+        "select id, email, firstname, password, created from users where email = $1 limit 1",
         [email]
     );
     if (userQueryResponse.rows.length < 1) {
@@ -88,7 +88,8 @@ exports.sendPasswordResetEmail = async (req, res) => {
             .format("YYYY-MM-DD HH:mm:ss"); // 1 hour
 
         const userUpdateResponse = await db.query(
-            `update users set reset_password_token='${token}', reset_password_expires='${token_expires}', updated= now() where id =${user.id}`
+            `update users set reset_password_token=$1, reset_password_expires= $2, updated= now() where id =$3`,
+            [token, token_expires, user.id]
         );
 
         if (userUpdateResponse.rowCount) {
@@ -104,8 +105,8 @@ exports.receiveNewPassword = async (req, res) => {
     try {
         const now = moment().format("YYYY-MM-DD HH:mm:ss");
         const queryUserResponse = await db.query(
-            `select id, email, reset_password_token, reset_password_expires from users where id=$1 and reset_password_token=$2 and reset_password_expires > '${now}'`,
-            [userId, token]
+            `select id, email, reset_password_token, reset_password_expires from users where id=$1 and reset_password_token=$2 and reset_password_expires > $3`,
+            [userId, token, now]
         );
         const user = queryUserResponse.rows[0];
 

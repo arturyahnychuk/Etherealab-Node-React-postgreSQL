@@ -3,14 +3,13 @@ const db = require("../db");
 
 const getUser = async (req, res) => {
     try {
-        const $sql = `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email
+        const dbResponse = await db.query(
+            `select u.id, u.admin, u.client_id, u.firstname, u.lastname, u.email
         from users u
         left join client c on c.id=u.client_id 
-        where u.id=${req.user_id}
-        `;
-
-        const dbResponse = await db.query($sql);
-
+        where u.id=$1`,
+            [req.user_id]
+        );
         if (!dbResponse) {
             errorMessage.message = "None found";
             return res.status(status.notfound).send(errorMessage);

@@ -6,7 +6,8 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getProfile = async (req, res) => {
     try {
         const dbResponse = await db.query(
-            `select firstname, lastname, email from users where id = ${req.params.userId}`
+            `select firstname, lastname, email from users where id = $1`,
+            [req.params.userId]
         );
 
         if (!dbResponse) {
@@ -26,17 +27,27 @@ const updateProfile = async (req, res) => {
 
     try {
         let $sql;
-        $sql = `update users set firstname = '${firstname}', lastname= '${lastname}', email='${email}'`;
+        $sql = `update users set firstname = $1, lastname = $2, email = $3`;
+
+        const params = [firstname, lastname, email];
+        let paramCount = 4;
 
         if (password) {
-            $sql += `, password='${bcrypt.hashSync(password, 8)}'`;
+            $sql += `, password = $${paramCount}`;
+            params.push(bcrypt.hashSync(password, 8));
+            paramCount++;
         }
 
-        $sql += `, updated='${moment().format(
-            "YYYY-MM-DD hh:ss"
-        )}', updated_user_id=${req.user_id} where id=${req.user_id}`;
+        $sql += `, updated = $${paramCount}, updated_user_id = $${
+            paramCount + 1
+        } where id = $${paramCount + 2}`;
+        params.push(
+            moment().format("YYYY-MM-DD hh:ss"),
+            req.user_id,
+            req.user_id
+        );
 
-        const updateResponse = await db.query($sql);
+        const updateResponse = await db.query($sql, params);
 
         if (!updateResponse.rowCount) {
             errorMessage.message = "Update not successful";

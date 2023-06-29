@@ -41,24 +41,33 @@ exports.signup = async (req, res) => {
     const { clientName, firstname, lastname, email, password } = req.body;
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
-        const clientResponse = await db.query(
-            `insert into client(name) values ('${clientName}') returning id`
-        );
+        const clientQuery = `insert into client (name) VALUES ($1) returning id`;
+        const clientParams = [clientName];
+        const clientResponse = await db.query(clientQuery, clientParams);
         if (!clientResponse.rowCount) {
             errorMessage.message = "Client Cannot be registered";
             res.status(status.notfound).send(errorMessage);
         }
 
-        const userResponse = await db.query(
-            `insert into users(firstname, lastname, client_id, email, password, created) values ('${firstname}', '${lastname}', ${clientResponse.rows[0].id}, '${email}', '${hashedPassword}', now())  returning *`
-        );
-
+        const userQuery = `
+            insert into users(firstname, lastname, client_id, email, password, created)
+            values ($1, $2, $3, $4, $5, now())
+            returning *
+        `;
+        const userParams = [
+            firstname,
+            lastname,
+            clientResponse.rows[0].id,
+            email,
+            hashedPassword,
+        ];
+        const userResponse = await db.query(userQuery, userParams);
         let user = {
             id: userResponse.rows[0].id,
             client_id: userResponse.rows[0].client_id,
             email: userResponse.rows[0].email,
             lastname: userResponse.rows[0].lastname,
-            firstname:  userResponse.rows[0].firstname,
+            firstname: userResponse.rows[0].firstname,
         };
         const token = jwt.sign(
             { id: user.id, client_id: user.client_id, role: "CLIENT" },
@@ -75,7 +84,6 @@ exports.signup = async (req, res) => {
         successMessage.data = responseData;
 
         res.status(status.created).send(successMessage);
-        
     } catch (err) {
         errorMessage.message = err.message;
         res.status(status.error).send(errorMessage);

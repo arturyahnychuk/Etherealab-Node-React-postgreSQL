@@ -5,7 +5,8 @@ const getClientProfile = async (req, res) => {
     const { id } = req.params;
     try {
         const clientProfile = await db.query(
-            `select name, license from client where id = ${id}`
+            `select name, license from client where id = $1`,
+            [id]
         );
 
         if (!clientProfile.rowCount) {
@@ -24,7 +25,8 @@ const updateClientProfile = async (req, res) => {
     const { id } = req.params;
     try {
         const updateResponse = await db.query(
-            `update client set name = '${req.body.name}', license = '${req.body.license}' where id = '${id}'`
+            `update client set name = $1, license = $2 where id = $3`,
+            [req.body.name, req.body.license, id]
         );
 
         if (!updateResponse.rowCount) {
