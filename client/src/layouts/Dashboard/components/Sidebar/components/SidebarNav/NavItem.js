@@ -1,13 +1,5 @@
 import React, { useState } from "react";
 
-// import {
-//   Button,
-//   Collapse,
-//   ListItem,
-//   makeStyles,
-// } from "@material-ui/core";
-// import ExpandLessIcon from "@material-ui/icons/ExpandLessOutlined";
-// import ExpandMoreIcon from "@material-ui/icons/ExpandMoreOutlined";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { NavLink as RouterLink } from "react-router-dom";
@@ -107,7 +99,6 @@ const NavItem = ({
                 >
                     {Icon && <Icon className={classes.icon} size="20" />}
                     <span className={classes.title}>{title}</span>
-                    {/* {open ? <ExpandLessIcon /> : <ExpandMoreIcon />} */}
                 </Button>
                 <Collapse in={open}>{children}</Collapse>
             </ListItem>

@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         backgroundColor: theme.Colors.black,
-        // flexDirection: "column",
         display: "block",
         textAlign: "center",
         width: "100%",
@@ -44,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(4),
     },
     link: {
-        margin: 0,
-        padding: 0,
+        margin: theme.spacing(0),
+        padding: theme.spacing(0),
     },
 }));
 

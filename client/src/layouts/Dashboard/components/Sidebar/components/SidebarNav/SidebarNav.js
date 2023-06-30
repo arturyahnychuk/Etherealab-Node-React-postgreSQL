@@ -1,9 +1,5 @@
 import React from "react";
 
-// import {
-//   Button, List, ListItem, Divider, ListSubheader,
-// } from "@material-ui/core";
-// import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { NavLink as RouterLink, matchPath, useHistory } from "react-router-dom";
@@ -11,7 +7,7 @@ import { NavLink as RouterLink, matchPath, useHistory } from "react-router-dom";
 import useAuth from "../../../../../../hooks/useAuth";
 import NavItem from "./NavItem";
 import { makeStyles } from "@mui/styles";
-import { Button, Divider, List, ListItem, ListSubheader } from "@mui/material";
+import { Button, List, ListItem } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -160,42 +156,25 @@ const SidebarNav = (props) => {
         <List {...rest} className={clsx(classes.root, className)}>
             {pages &&
                 pages.map((page) => (
-                    <List
-                        key={page.href}
-                        subheader={
-                            page.subMenus ? (
-                                <ListSubheader disableGutters disableSticky>
-                                    {page.title}
-                                </ListSubheader>
-                            ) : null
-                        }
-                    >
-                        {page.subMenus ? (
-                            renderNavItems({
-                                items: page.subMenus,
-                                pathname: page.pathname,
-                            })
-                        ) : (
-                            <ListItem
-                                className={clsx(classes.item, className)}
-                                disableGutters
-                                key={page.href}
-                            >
-                                <Button className={classes.button}>
-                                    <RouterLink
-                                        to={page.href}
-                                        className={classes.link}
-                                        onClick={page.logout && handleLogout}
-                                    >
-                                        {page.icon}
-                                        <span className={classes.linkTitle}>
-                                            {page.title}
-                                        </span>
-                                    </RouterLink>
-                                </Button>
-                            </ListItem>
-                        )}
-                        <Divider />
+                    <List key={page.href}>
+                        <ListItem
+                            className={clsx(classes.item, className)}
+                            disableGutters
+                            key={page.href}
+                        >
+                            <Button className={classes.button}>
+                                <RouterLink
+                                    to={page.href}
+                                    className={classes.link}
+                                    onClick={page.logout && handleLogout}
+                                >
+                                    {page.icon}
+                                    <span className={classes.linkTitle}>
+                                        {page.title}
+                                    </span>
+                                </RouterLink>
+                            </Button>
+                        </ListItem>
                     </List>
                 ))}
         </List>

@@ -31,12 +31,6 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
     },
-    Logo: {
-        maxWidth: "180px",
-        width: 170,
-        height: 65,
-        objectFit: "contain",
-    },
 }));
 
 function Myself() {

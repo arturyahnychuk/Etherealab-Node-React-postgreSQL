@@ -21,10 +21,6 @@ import DashboardService from "../../services/dashboard.service";
 import useEffectOnce from "../../hooks/useEffectOnce";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        padding: "20px 0px",
-    },
     borderSection: {
         position: "relative",
         border: "1px solid rgba(0, 0, 0, 0.23)",
@@ -53,13 +49,6 @@ const useStyles = makeStyles((theme) => ({
     searchWrapper: {
         marginTop: theme.spacing(2) + "!important",
         marginBottom: theme.spacing(4) + "!important",
-    },
-    iconContainer: {
-        "& svg": {
-            cursor: "pointer",
-            position: "relative",
-            top: 3,
-        },
     },
 }));
 

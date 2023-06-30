@@ -19,11 +19,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-
         padding: theme.spacing(2),
-    },
-    marginTop: {
-        marginTop: theme.spacing(16),
     },
     pageTitle: {
         marginBottom: theme.spacing(3),
@@ -37,12 +33,6 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
-    },
-    Logo: {
-        maxWidth: "180px",
-        width: 170,
-        height: 65,
-        objectFit: "contain",
     },
 }));
 
@@ -115,7 +105,6 @@ function ClientProfile() {
 
     return (
         <Container className={classes.container}>
-            <CssBaseline />
             <Typography
                 component="h5"
                 variant="h5"
