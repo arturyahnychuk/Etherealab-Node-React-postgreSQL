@@ -10,7 +10,6 @@ import {
     Checkbox,
     TableContainer,
     Table,
-    TableRow,
     TableBody,
     TableHead,
     Container,
@@ -81,15 +80,7 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
-    table: {
-        border: "none",
-        "& th": {
-            borderBottom: "none !important",
-        },
-        "& td": {
-            borderBottom: "none !important",
-        },
-    },
+
     iconContainer: {
         "& svg": {
             cursor: "pointer",
@@ -336,7 +327,7 @@ const Catalog = () => {
                             className={classes.table}
                         >
                             <TableHead>
-                                <TableRow>
+                                <StyledTableRowSm>
                                     <StyledTableCellSm padding="checkbox">
                                         Lab Company
                                     </StyledTableCellSm>
@@ -353,7 +344,7 @@ const Catalog = () => {
                                     <StyledTableCellSm>
                                         Detail
                                     </StyledTableCellSm>
-                                </TableRow>
+                                </StyledTableRowSm>
                             </TableHead>
                             <TableBody>
                                 {!isLoading && catalog.length > 0 ? (

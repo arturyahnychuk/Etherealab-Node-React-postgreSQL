@@ -13,7 +13,8 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     label: {
-        fontWeight: "600",
+        fontWeight: "600 !important",
+        color: theme.palette.text.secondary + "!important",
     },
     header: {
         display: "flex",
@@ -36,6 +37,16 @@ const useStyles = makeStyles((theme) => ({
         "&:last-child td": {
             borderBottom: "none !important",
             padding: "0px !important",
+        },
+    },
+    table: {
+        border: "none",
+        "& th": {
+            borderBottom: "none !important",
+        },
+        "& td": {
+            borderBottom: "none !important",
+            paddingBottom: "3px",
         },
     },
 }));
@@ -65,7 +76,7 @@ const DetailToolTip = ({ data, onClose }) => {
                 </Button>
             </Box>
             <hr />
-            <Table>
+            <Table className={classes.table}>
                 <TableBody>
                     <TableRow className={classes.tableRow}>
                         <TableCell className={classes.label}>
