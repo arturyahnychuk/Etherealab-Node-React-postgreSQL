@@ -201,7 +201,8 @@ const Catalog = () => {
     const handleClearFilter = () => {
         setSelectedCompanies([]);
         setFavoriteOnly(false);
-        fetchLabCompanies();
+        setSearchText("");
+        fetchCatalogData();
     };
 
     const handleSearchClick = () => {
