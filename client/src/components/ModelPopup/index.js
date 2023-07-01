@@ -10,7 +10,10 @@ const useStyles = makeStyles((theme) => ({
     },
     modalContent: {
         backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(2),
+        padding: theme.spacing(2, 1, 4),
+    },
+    span: {
+        cursor: "pointer",
     },
 }));
 
@@ -37,7 +40,7 @@ const ModalPopup = (props) => {
             <span
                 ref={modalAnchor}
                 onClick={openModal}
-                style={{ cursor: "pointer" }}
+                className={classes.span}
             >
                 {children}
             </span>
