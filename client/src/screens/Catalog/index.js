@@ -223,7 +223,7 @@ const Catalog = () => {
                     className={classes.filterButton}
                     onClick={handleClearFilter}
                 >
-                    Clear Filter
+                    Clear All Filters
                 </Button>
                 <form onSubmit={onFormSubmit}>
                     <TextField
