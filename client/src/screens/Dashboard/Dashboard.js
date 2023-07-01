@@ -77,7 +77,7 @@ const Patient = () => {
     };
 
     useEffectOnce(() => {
-        searchHandler(" ");
+        searchHandler("");
     }, []);
 
     return (

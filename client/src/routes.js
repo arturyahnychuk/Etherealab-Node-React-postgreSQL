@@ -10,6 +10,7 @@ import DashboardLayout from "./layouts/Dashboard";
 import ClientProfile from "./screens/ClientProfile/ClientProfile";
 import Myself from "./screens/Myself";
 import Patient from "./screens/Dashboard/Dashboard";
+import Catalog from "./screens/Catalog";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -82,6 +83,12 @@ const routes = [
         layout: DashboardLayout,
         path: "/client-profile",
         component: ClientProfile,
+    },
+    {
+        exact: true,
+        layout: DashboardLayout,
+        path: "/catalog",
+        component: Catalog,
     },
     {
         path: "*",

@@ -1,6 +1,6 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
 import Error from "../../components/common/Error";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -9,12 +9,6 @@ import useAuth from "../../hooks/useAuth";
 import useEffectOnce from "../../hooks/useEffectOnce";
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: theme.spacing(2),
-    },
     pageTitle: {
         marginBottom: theme.spacing(3),
     },
@@ -78,24 +72,20 @@ function ClientProfile() {
             ]);
         }
     };
-    const getClient = async (id) => {
-        clientService.getClient(id).then(
-            (res) => {
-                setName(res.data.data.name);
-                setLicense(res.data.data.license || "");
-            },
-            () => {
-                setName("");
-                setLicense("");
-            }
-        );
-    };
+    const getClient = useCallback(async (id) => {
+        try {
+            const res = await clientService.getClient(id);
+            setName(res.data.data.name);
+            setLicense(res.data.data.license || "");
+        } catch (error) {
+            setName("");
+            setLicense("");
+        }
+    }, []);
 
     useEffectOnce(() => {
-        if (user.client_id) {
-            getClient(user.client_id);
-        }
-    }, [user.client_id]);
+        getClient(user.client_id);
+    }, [getClient, user.client_id]);
 
     return (
         <Container className={classes.container}>

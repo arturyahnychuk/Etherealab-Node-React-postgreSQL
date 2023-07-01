@@ -4,12 +4,11 @@ import { API_BASE } from "../utils/API_BASE";
 import authHeader from "./auth-header";
 
 class MySelfService {
-    getProfile(userId) {
-        return axios
-            .get(`${API_BASE}/myself/profile/${userId}`, {
-                headers: authHeader(),
-            })
-            .then((res) => res.data);
+    async getProfile(userId) {
+        const res = await axios.get(`${API_BASE}/myself/profile/${userId}`, {
+            headers: authHeader(),
+        });
+        return res.data;
     }
 
     updateProfile(payload, userId) {

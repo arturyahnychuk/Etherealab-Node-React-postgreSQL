@@ -1,5 +1,5 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
@@ -162,7 +162,7 @@ function Myself() {
                 console.error("catch err", err);
             });
     };
-    const getProfile = async (id) => {
+    const getProfile = useCallback(async (id) => {
         try {
             const res = await myselfService.getProfile(id);
             setFirstName(res.data.firstname);
@@ -173,12 +173,11 @@ function Myself() {
             setLastName("");
             setEmail("");
         }
-    };
+    }, []);
+
     useEffectOnce(() => {
-        if (user.id) {
-            getProfile(user.id);
-        }
-    }, [user.id]);
+        getProfile(user.id);
+    }, [getProfile, user.id]);
 
     return (
         <Container className={classes.container}>
