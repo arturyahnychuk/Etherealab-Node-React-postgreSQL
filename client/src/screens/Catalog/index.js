@@ -202,7 +202,6 @@ const Catalog = () => {
         setSelectedCompanies([]);
         setFavoriteOnly(false);
         setSearchText("");
-        fetchCatalogData();
     };
 
     const handleSearchClick = () => {
