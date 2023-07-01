@@ -8,13 +8,16 @@ import {
     TableBody,
     TableCell,
     TableRow,
+    Divider,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     label: {
-        fontWeight: "600 !important",
-        color: theme.palette.text.secondary + "!important",
+        fontWeight: "500 !important",
+        color: theme.palette.black + "!important",
+        fontSize: "16px !important",
+        maxWidth: "50px",
     },
     header: {
         display: "flex",
@@ -27,26 +30,25 @@ const useStyles = makeStyles((theme) => ({
     closeButton: {
         borderColor: theme.palette.black + " !important",
         color: theme.palette.black + " !important",
+        padding: theme.spacing(0, 2) + " !important",
+        "& span": {},
     },
     title: {
-        fontSize: "17px !important",
-        fontWeight: 700 + "!important",
-        color: "#546e7a",
+        fontSize: "16px !important",
+        fontWeight: 600 + "!important",
+        color: theme.Colors.black,
     },
     tableRow: {
         "&:last-child td": {
             borderBottom: "none !important",
-            padding: "0px !important",
+            padding: theme.spacing(0) + " !important",
         },
     },
+
     table: {
-        border: "none",
-        "& th": {
-            borderBottom: "none !important",
-        },
         "& td": {
             borderBottom: "none !important",
-            paddingBottom: "3px",
+            padding: theme.spacing(0.7, 0) + "!important",
         },
     },
 }));
@@ -61,7 +63,7 @@ const DetailToolTip = ({ data, onClose }) => {
     } = data;
 
     return (
-        <Box minWidth={400}>
+        <Box minWidth={550} paddingX={1} pt={0}>
             <Box className={classes.header} mb={1}>
                 <div></div>
                 <Typography component="h2" variant="" className={classes.title}>
@@ -75,39 +77,45 @@ const DetailToolTip = ({ data, onClose }) => {
                     Close
                 </Button>
             </Box>
-            <hr />
-            <Table className={classes.table}>
-                <TableBody>
-                    <TableRow className={classes.tableRow}>
-                        <TableCell className={classes.label}>
-                            Lab Company:
-                        </TableCell>
-                        <TableCell className={classes.text}>
-                            {lab_company_name}
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className={classes.label}>
-                            Test Name:
-                        </TableCell>
-                        <TableCell className={classes.text}>
-                            {lab_company_test_name}
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className={classes.label}>Sample:</TableCell>
-                        <TableCell className={classes.text}>
-                            {sample_type_name}
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className={classes.label}>Price:</TableCell>
-                        <TableCell className={classes.text}>
-                            {test_price}
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
+            <Divider />
+            <Box paddingY={2}>
+                <Table className={classes.table}>
+                    <TableBody className={classes.tableBody}>
+                        <TableRow className={classes.tableRow}>
+                            <TableCell className={classes.label}>
+                                Lab Company
+                            </TableCell>
+                            <TableCell className={classes.text}>
+                                {lab_company_name}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.label}>
+                                Test Name
+                            </TableCell>
+                            <TableCell className={classes.text}>
+                                {lab_company_test_name}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.label}>
+                                Sample
+                            </TableCell>
+                            <TableCell className={classes.text}>
+                                {sample_type_name}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.label}>
+                                Price
+                            </TableCell>
+                            <TableCell className={classes.text}>
+                                {test_price}
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Box>
         </Box>
     );
 };

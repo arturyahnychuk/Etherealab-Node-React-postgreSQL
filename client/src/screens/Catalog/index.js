@@ -54,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
     },
     accordion: {
         boxShadow: "none !important",
-        "& .MuiAccordionSummary-content": {
-            // margin: 0,
-        },
         "& .MuiAccordionDetails-root": {
             padding: theme.spacing(0, 2),
         },
@@ -103,26 +100,29 @@ const Catalog = () => {
 
     const debouncedSearchTerm = useDebounce(searchText, 500);
 
-    const fetchCatalogData = (text) => {
-        setIsLoading(true);
-        const reqBody = {
-            data: {
-                text,
-                labCompanyId: selectedCompanies.length
-                    ? selectedCompanies
-                    : null,
-                favorite: favoriteOnly,
-            },
-        };
-        CatalogService.searchCatalog(reqBody)
-            .then((res) => {
-                setCatalog(res.data);
-                setIsLoading(false);
-            })
-            .catch(() => {
-                setIsLoading(false);
-            });
-    };
+    const fetchCatalogData = useCallback(
+        (text) => {
+            setIsLoading(true);
+            const reqBody = {
+                data: {
+                    text,
+                    labCompanyId: selectedCompanies.length
+                        ? selectedCompanies
+                        : null,
+                    favorite: favoriteOnly,
+                },
+            };
+            CatalogService.searchCatalog(reqBody)
+                .then((res) => {
+                    setCatalog(res.data);
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                });
+        },
+        [favoriteOnly, selectedCompanies]
+    );
 
     const fetchLabCompanies = useCallback(async (id) => {
         setIsLoading(true);
@@ -201,7 +201,7 @@ const Catalog = () => {
     const handleClearFilter = () => {
         setSelectedCompanies([]);
         setFavoriteOnly(false);
-        fetchLabCompanies();
+        setSearchText("");
     };
 
     const handleSearchClick = () => {
@@ -328,7 +328,7 @@ const Catalog = () => {
                         >
                             <TableHead>
                                 <StyledTableRowSm>
-                                    <StyledTableCellSm padding="checkbox">
+                                    <StyledTableCellSm>
                                         Lab Company
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
@@ -349,11 +349,8 @@ const Catalog = () => {
                             <TableBody>
                                 {!isLoading && catalog.length > 0 ? (
                                     catalog.map((item, idx) => (
-                                        <StyledTableRowSm
-                                            key={idx}
-                                            className={classes.pointer}
-                                        >
-                                            <StyledTableCellSm padding="checkbox">
+                                        <StyledTableRowSm key={idx}>
+                                            <StyledTableCellSm>
                                                 {item.lab_company_name}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
@@ -363,10 +360,11 @@ const Catalog = () => {
                                                 {item.sample_type_name}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
-                                                {item.test_price}
+                                                &#36; {item.test_price}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 <IconButton
+                                                    size="small"
                                                     onClick={() =>
                                                         handleFavorite(
                                                             item.favorite_id,
@@ -403,7 +401,9 @@ const Catalog = () => {
                                                         )
                                                     }
                                                 >
-                                                    <InfoIcon fontSize="small" />
+                                                    <IconButton size="small">
+                                                        <InfoIcon fontSize="small" />
+                                                    </IconButton>
                                                 </ModelPopup>
                                             </StyledTableCellSm>
                                         </StyledTableRowSm>
