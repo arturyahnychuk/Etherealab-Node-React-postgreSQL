@@ -32,9 +32,16 @@ exports.signin = async (req, res) => {
             return res.status(status.unauthorized).send(errorMessage);
         }
 
+        /*
         await db.query(
-            `update users set login_dt=now(), updated= now(), updated_user_id=$1 where id =$2`,
+            `update users set login_dt = now(), updated = now(), updated_user_id = $1 where id = $2`,
             [user.id, user.id]
+        );
+        */
+
+        await db.query(
+            `update users set login_dt = now() where id = $1`,
+            [user.id]
         );
 
         const token = jwt.sign(

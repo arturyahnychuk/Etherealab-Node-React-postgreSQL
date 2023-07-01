@@ -41,7 +41,7 @@ exports.signup = async (req, res) => {
     const { clientName, firstname, lastname, email, password } = req.body;
     hashedPassword = bcrypt.hashSync(password, 8);
     try {
-        const clientQuery = `insert into client (name) VALUES ($1) returning id`;
+        const clientQuery = `insert into client (name) values ($1) returning id`;
         const clientParams = [clientName];
         const clientResponse = await db.query(clientQuery, clientParams);
         if (!clientResponse.rowCount) {
