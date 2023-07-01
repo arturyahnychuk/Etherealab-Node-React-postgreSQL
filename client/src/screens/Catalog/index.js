@@ -100,26 +100,29 @@ const Catalog = () => {
 
     const debouncedSearchTerm = useDebounce(searchText, 500);
 
-    const fetchCatalogData = (text) => {
-        setIsLoading(true);
-        const reqBody = {
-            data: {
-                text,
-                labCompanyId: selectedCompanies.length
-                    ? selectedCompanies
-                    : null,
-                favorite: favoriteOnly,
-            },
-        };
-        CatalogService.searchCatalog(reqBody)
-            .then((res) => {
-                setCatalog(res.data);
-                setIsLoading(false);
-            })
-            .catch(() => {
-                setIsLoading(false);
-            });
-    };
+    const fetchCatalogData = useCallback(
+        (text) => {
+            setIsLoading(true);
+            const reqBody = {
+                data: {
+                    text,
+                    labCompanyId: selectedCompanies.length
+                        ? selectedCompanies
+                        : null,
+                    favorite: favoriteOnly,
+                },
+            };
+            CatalogService.searchCatalog(reqBody)
+                .then((res) => {
+                    setCatalog(res.data);
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                });
+        },
+        [favoriteOnly, selectedCompanies]
+    );
 
     const fetchLabCompanies = useCallback(async (id) => {
         setIsLoading(true);
@@ -362,6 +365,7 @@ const Catalog = () => {
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 <IconButton
+                                                    size="small"
                                                     onClick={() =>
                                                         handleFavorite(
                                                             item.favorite_id,
@@ -398,7 +402,9 @@ const Catalog = () => {
                                                         )
                                                     }
                                                 >
-                                                    <InfoIcon fontSize="small" />
+                                                    <IconButton size="small">
+                                                        <InfoIcon fontSize="small" />
+                                                    </IconButton>
                                                 </ModelPopup>
                                             </StyledTableCellSm>
                                         </StyledTableRowSm>
