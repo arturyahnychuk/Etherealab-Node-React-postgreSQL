@@ -97,7 +97,7 @@ const Patient = () => {
                             autoFocus
                             size="small"
                             name="name"
-                            label="Name"
+                            label="Patient"
                             variant="outlined"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
