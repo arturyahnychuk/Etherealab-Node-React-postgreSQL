@@ -54,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
     },
     accordion: {
         boxShadow: "none !important",
-        "& .MuiAccordionSummary-content": {
-            // margin: 0,
-        },
         "& .MuiAccordionDetails-root": {
             padding: theme.spacing(0, 2),
         },
@@ -329,7 +326,7 @@ const Catalog = () => {
                         >
                             <TableHead>
                                 <StyledTableRowSm>
-                                    <StyledTableCellSm padding="checkbox">
+                                    <StyledTableCellSm>
                                         Lab Company
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
@@ -350,11 +347,8 @@ const Catalog = () => {
                             <TableBody>
                                 {!isLoading && catalog.length > 0 ? (
                                     catalog.map((item, idx) => (
-                                        <StyledTableRowSm
-                                            key={idx}
-                                            className={classes.pointer}
-                                        >
-                                            <StyledTableCellSm padding="checkbox">
+                                        <StyledTableRowSm key={idx}>
+                                            <StyledTableCellSm>
                                                 {item.lab_company_name}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
