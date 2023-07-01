@@ -18,7 +18,7 @@ export const StyledTableCellSm = withStyles((theme) => ({
         whiteSpace: "nowrap",
         fontSize: "16px",
         fontWeight: 700 + "!important",
-        padding: "6px 24px 6px 0px",
+        // padding: "6px 24px 6px 0px",
         borderBottom: "unset",
         background: "white",
         color: theme.palette.text.secondary + "!important",
