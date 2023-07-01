@@ -13,21 +13,21 @@ export const client_pages = [
     },
     {
         id: 2,
+        icon: <ListAltIcon style={{ color: "#FFF", fontSize: "20px" }} />,
+        title: "Catalog",
+        href: "/catalog",
+    },
+    {
+        id: 3,
         icon: <PersonIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "Myself",
         href: "/myself",
     },
     {
-        id: 3,
+        id: 4,
         icon: <LocationCityIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "Client",
         href: "/client-profile",
-    },
-    {
-        id: 4,
-        icon: <ListAltIcon style={{ color: "#FFF", fontSize: "20px" }} />,
-        title: "Catalog",
-        href: "/catalog",
     },
     {
         id: 5,
