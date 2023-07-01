@@ -37,8 +37,8 @@ const searchCatalog = async (req, res) => {
         }
         if (text) {
             $sql += `
-            and lct.name like $${paramIndex++}`;
-            params.push(`%${text}%`);
+            and lower(lct.name) like $${paramIndex++}`;
+            params.push(`%${text.toLowerCase()}%`);
         }
 
         $sql += `

@@ -231,7 +231,7 @@ const Catalog = () => {
                         fullWidth
                         size="small"
                         variant="outlined"
-                        placeholder="Search"
+                        placeholder="Search test names..."
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                         InputProps={{
