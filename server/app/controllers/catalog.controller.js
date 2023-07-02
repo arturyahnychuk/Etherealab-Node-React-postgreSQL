@@ -5,14 +5,14 @@ const searchCatalog = async (req, res) => {
     const { text, labCompanyId, favorite } = req.body.data;
     try {
         let $sql = `
-        select lc.id as lab_company_id
-          , lc.name as lab_company_name
-          , lct.id as lab_company_test_id
-          , lct.name as lab_company_test_name
-          , lct.msrp as test_msrp
-          , lct.price as test_price
-          , st.name as sample_type_name
-          , lctf.lab_company_test_id as favorite_id
+        select lc.id lab_company_id
+          , lc.name lab_company_name
+          , lct.id lab_company_test_id
+          , lct.name lab_company_test_name
+          , lct.msrp test_msrp
+          , lct.price test_price
+          , st.name sample_type_name
+          , lctf.lab_company_test_id favorite_id
         from lab_company lc
         join lab_company_test lct on lct.lab_company_id = lc.id
         left join sample_type st on st.id = lct.sample_type_id
@@ -24,18 +24,21 @@ const searchCatalog = async (req, res) => {
         let paramIndex = 2;
 
         if (favorite) {
-            $sql += ` and lctf.lab_company_test_id is not null`;
+            $sql += `
+            and lctf.lab_company_test_id is not null`;
         }
         if (labCompanyId) {
             const placeholders = labCompanyId
                 .map((_, i) => `$${paramIndex++}`)
                 .join(", ");
-            $sql += ` and lc.id in (${placeholders})`;
+            $sql += `
+            and lc.id in (${placeholders})`;
             params.push(...labCompanyId);
         }
         if (text) {
-            $sql += ` and lct.name like $${paramIndex++}`;
-            params.push(`%${text}%`);
+            $sql += `
+            and lower(lct.name) like $${paramIndex++}`;
+            params.push(`%${text.toLowerCase()}%`);
         }
 
         $sql += `
