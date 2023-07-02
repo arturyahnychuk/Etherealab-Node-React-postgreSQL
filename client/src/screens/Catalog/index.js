@@ -251,7 +251,7 @@ const Catalog = () => {
                 </form>
             </Box>
             <Grid container spacing={2}>
-                <Grid item sm={2.5} xs={12}>
+                <Grid item sm={3} xs={12}>
                     <Box className={classes.border} mb={1} pl={2}>
                         <FormControlLabel
                             label="Favorites Only"
@@ -319,7 +319,7 @@ const Catalog = () => {
                         </Accordion>
                     </Box>
                 </Grid>
-                <Grid item sm={9.5} xs={12}>
+                <Grid item sm={9} xs={12}>
                     <TableContainer className={classes.border}>
                         <Table
                             stickyHeader
