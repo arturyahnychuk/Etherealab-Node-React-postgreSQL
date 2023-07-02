@@ -20,7 +20,7 @@ const searchCatalog = async (req, res) => {
           and lctf.lab_company_test_id = lct.id
         where true`;
 
-        const params = [1];
+        const params = [req.client_id];
         let paramIndex = 2;
 
         if (favorite) {
