@@ -66,9 +66,9 @@ const useStyles = makeStyles((theme) => ({
     },
     filterButton: {
         padding: theme.spacing(0) + " !important",
-        color: theme.palette.black + " !important",
+        color: theme.palette.primary.main + " !important",
         textTransform: "Capitalize !important",
-        fontSize: "15px !important",
+        fontSize: "12px !important",
     },
     link: {
         color: theme.palette.text.primary,

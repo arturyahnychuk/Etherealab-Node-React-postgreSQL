@@ -151,7 +151,7 @@ drop table if exists lab_company_test cascade;
       id serial primary key,
       lab_company_id int, --fk to lab_company.id
       name varchar(100),
-      sample_type_id int, --fk to sample_type.id
+      -- DELETED  sample_type_id int, --fk to sample_type.id
       phlebotomy boolean,
       msrp decimal(6,2), --the higher price
       price decimal(6,2), --the real price
@@ -163,15 +163,15 @@ drop table if exists lab_company_test cascade;
 
     create unique index on lab_company_test using btree (lab_company_id, lower(name));
 
-    insert into lab_company_test values (1, 11, 'GI Effects', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (2, 11, 'SIBO', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (3, 11, 'NutrEval', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (4, 11, 'Metabolomix+', null, null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (1, 11, 'GI Effects', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (2, 11, 'SIBO', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (3, 11, 'NutrEval', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (4, 11, 'Metabolomix+', null, 500.00, 400.00, null, 'A', now(), now());
 
     select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
 
     --alter table lab_company_test add foreign key (lab_company_id) references lab_company(id);
-    --alter table lab_company_test add foreign key (sample_type_id) references sample_type(id);
+    -- DELETED  --alter table lab_company_test add foreign key (sample_type_id) references sample_type(id);
 
 
 drop table if exists lab_company_test_favorite cascade;
@@ -219,6 +219,23 @@ drop table if exists sample_type cascade;
 
     select setval(pg_get_serial_sequence('sample_type', 'id'), (select max(id) from sample_type)); --fix primary key sequence
 
+
+/*Added July 2 2023*/
+drop table if exists lab_company_test_sample cascade;
+    create table lab_company_test_sample (
+        lab_company_test_id int,
+        sample_type_id int,
+        created TIMESTAMP WITHOUT TIME ZONE
+    );
+
+    create unique index on lab_company_test_sample (lab_company_test_id, sample_type_id);
+
+    insert into lab_company_test_sample values(1, 1, now());
+    insert into lab_company_test_sample values(1, 2, now());
+
+    --alter table lab_company_test_sample add foreign key (lab_company_test_id) references lab_company_test(id);
+    --alter table lab_company_test_sample add foreign key (sample_type_id) references sample_type(id);
+    
 
 drop table if exists orders cascade; /*order is a reserved word and does not work*/
     create table orders (
