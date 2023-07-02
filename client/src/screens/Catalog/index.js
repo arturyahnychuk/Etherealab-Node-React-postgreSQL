@@ -360,7 +360,7 @@ const Catalog = () => {
                                                 {item.sample_type_name}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
-                                                &#36; {item.test_price}
+                                                &#36;{item.test_price}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 <IconButton
