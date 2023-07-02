@@ -18,9 +18,9 @@ drop table if exists client cascade;
       updated_user_id int
     );
 
-    create unique index on client (name);
-    create unique index on client (phone);
-    create unique index on client (website);
+    create unique index on client (lower(name));
+    create unique index on client (lower(phone));
+    create unique index on client (lower(website));
 
     insert into client values(1, 'The Center For Functional Medicine', '100 Main St', 'Suite #100', 'Annapolis', 'MD', '94521', 'US', '800-555-1212', 'www.functionalmedicine.com', '#MD1234', 'note', now(), null, now(), null);
 
@@ -54,7 +54,7 @@ drop table if exists users cascade; /*user is a reserved word and does not work*
     );
 
     create index on users using btree (client_id); --so client can select their list of users
-    create unique index on users (email);
+    create unique index on users (lower(email));
 
     insert into users values(1, 1, 'Mark', 'Hyman MD', 'dr@test.com', '818 415 9596', 'note', 'A', true, '$2a$08$j9tLFDe2qULcezPfM2AUbuuicNBBKB/Gw1VE1GXuoxXx85w7uYX/u', null, null, null, null, now(), now(), 1, now(), 1);
 
@@ -95,7 +95,7 @@ drop table if exists patient cascade;
     create index on patient using btree (client_id, firstname); 
     create index on patient using btree (client_id, lastname); 
     create index on patient using btree (client_id, phone); 
-    create unique index on patient (client_id, email);	--one patients email can be used at several clients
+    create unique index on patient (client_id, lower(email));	--one patients email can be used at several clients
 
     insert into patient values(1, 1, 'John', '', 'Doe', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
     insert into patient values(2, 1, 'Joe', '', 'Does', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt2@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
@@ -113,7 +113,7 @@ drop table if exists lab_company cascade;
       status boolean
     );
 
-    create unique index on lab_company using btree (name);
+    create unique index on lab_company using btree (lower(name));
 
     insert into lab_company values (1, 'Access Medical Labs', True);
     insert into lab_company values (2, 'Alletess', True);
@@ -161,7 +161,7 @@ drop table if exists lab_company_test cascade;
       updated TIMESTAMP WITHOUT TIME ZONE
     );
 
-    create unique index on lab_company_test using btree (lab_company_id, name);
+    create unique index on lab_company_test using btree (lab_company_id, lower(name));
 
     insert into lab_company_test values (1, 11, 'GI Effects', null, null, 500.00, 400.00, null, 'A', now(), now());
     insert into lab_company_test values (2, 11, 'SIBO', null, null, 500.00, 400.00, null, 'A', now(), now());
@@ -197,7 +197,7 @@ drop table if exists sample_type cascade;
       name char(30)
     );
 
-    create unique index on sample_type using btree (name);
+    create unique index on sample_type using btree (lower(name));
     
     insert into sample_type values (1, 'Stool');
     insert into sample_type values (2, 'Saliva');
