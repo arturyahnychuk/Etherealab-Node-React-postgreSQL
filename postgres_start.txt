@@ -261,8 +261,8 @@ drop table if exists orders cascade; /*order is a reserved word and does not wor
     create index on orders (client_id);
     create index on orders (status);  -- for cron job to send invoice emails to patients
 
-    insert into orders values(1, 1, 1, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
-    insert into orders values(2, 1, 1, 200.00, 'STP', null, now() - interval '1 days', null, now() - interval '2 days', null);
+    insert into orders values(1, 1, 1, 100.00, 'STP', null, now() - interval '2 days', 1, now() - interval '2 days', 1);
+    insert into orders values(2, 1, 1, 200.00, 'STP', null, now() - interval '1 days', 1, now() - interval '2 days', 1);
 
     select setval(pg_get_serial_sequence('orders', 'id'), (select max(id) from orders)); --fix primary key sequence
     

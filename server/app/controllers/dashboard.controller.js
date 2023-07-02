@@ -16,7 +16,7 @@ const search = async (req, res) => {
         };
         let params = [];
         $sql = `
-        select p.firstname, p.lastname, o.status, o.updated
+        select p.firstname, p.lastname, o.status, o.created, o.updated
         from orders o
         left join patient p on p.id = o.patient_id
         left join users u on u.id = o.updated_user_id
