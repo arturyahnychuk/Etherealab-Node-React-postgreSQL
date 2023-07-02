@@ -26,11 +26,11 @@ const search = async (req, res) => {
 
         if (searchTerm) {
             $sql += `
-            and (p.firstname like $${params.length + 1} or p.lastname like $${
+            and (lower(p.firstname) like $${params.length + 1} or lower(p.lastname) like $${
                 params.length + 1
             })
             `;
-            params.push(`%${searchTerm}%`);
+            params.push(`%${searchTerm.toLowerCase()}%`);
         }
 
         $sql += `
