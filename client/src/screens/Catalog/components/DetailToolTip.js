@@ -110,7 +110,7 @@ const DetailToolTip = ({ data, onClose }) => {
                                 Price
                             </TableCell>
                             <TableCell className={classes.text}>
-                                {test_price}
+                                &#36;{test_price}
                             </TableCell>
                         </TableRow>
                     </TableBody>

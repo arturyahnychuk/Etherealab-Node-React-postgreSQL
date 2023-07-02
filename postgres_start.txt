@@ -232,6 +232,12 @@ drop table if exists lab_company_test_sample cascade;
 
     insert into lab_company_test_sample values(1, 1, now());
     insert into lab_company_test_sample values(1, 2, now());
+    insert into lab_company_test_sample values(2, 3, now());
+    insert into lab_company_test_sample values(2, 4, now());
+    insert into lab_company_test_sample values(3, 5, now());
+    insert into lab_company_test_sample values(3, 6, now());
+    insert into lab_company_test_sample values(4, 7, now());
+    insert into lab_company_test_sample values(4, 8, now());
 
     --alter table lab_company_test_sample add foreign key (lab_company_test_id) references lab_company_test(id);
     --alter table lab_company_test_sample add foreign key (sample_type_id) references sample_type(id);
@@ -255,7 +261,8 @@ drop table if exists orders cascade; /*order is a reserved word and does not wor
     create index on orders (client_id);
     create index on orders (status);  -- for cron job to send invoice emails to patients
 
-    insert into orders values(1, 1, 1, 500.00, 'IP', null, now(), null, now(), null);
+    insert into orders values(1, 1, 1, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into orders values(2, 1, 1, 200.00, 'STP', null, now() - interval '1 days', null, now() - interval '2 days', null);
 
     select setval(pg_get_serial_sequence('orders', 'id'), (select max(id) from orders)); --fix primary key sequence
     
@@ -269,7 +276,7 @@ drop table if exists order_item cascade;
     create table order_item (
         order_id int,
         lab_company_test_id int,        
-        lab_company_id int,
+        lab_company_id int, -- keep this?
         price decimal(9,2),
         status char(3),
         note varchar(1000),
@@ -281,7 +288,10 @@ drop table if exists order_item cascade;
 
     create unique index on order_item (order_id, lab_company_test_id);
 
-    insert into order_item values(1, 1, 11, 500.00, 'IP', null, now(), null, now(), null);
+    insert into order_item values(1, 1, 11, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into order_item values(2, 2, 11, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into order_item values(3, 3, 11, 100.00, 'STP', null, now() - interval '1 days', null, now() - interval '1 days', null);
+    insert into order_item values(4, 4, 11, 100.00, 'STP', null, now() - interval '1 days', null, now() - interval '1 days', null);
     
     --alter table order_item add foreign key (created_user_id) references users(id);
     --alter table order_item add foreign key (updated_user_id) references users(id);
