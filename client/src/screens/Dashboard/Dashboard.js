@@ -124,7 +124,7 @@ const Patient = () => {
                             <StyledTableCellSm>Status</StyledTableCellSm>
                             <StyledTableCellSm>Created</StyledTableCellSm>
                             <StyledTableCellSm>Updated</StyledTableCellSm>
-                            <StyledTableCellSm>View</StyledTableCellSm>
+                            <StyledTableCellSm>View Order</StyledTableCellSm>
                             <StyledTableCellSm>New Order</StyledTableCellSm>
                         </TableRow>
                     </TableHead>
