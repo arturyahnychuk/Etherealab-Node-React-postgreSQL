@@ -49,7 +49,8 @@ const search = async (req, res) => {
                 firstname: row.firstname,
                 lastname: row.lastname,
                 status: translationMap[row.status.trim()],
-                updated: moment(row.updated).format("MMM, D YYYY"),
+                created: moment(row.updated).format("MMM D, YYYY"),
+                updated: moment(row.updated).format("MMM D, YYYY"),
             };
         });
 
