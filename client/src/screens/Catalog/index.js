@@ -335,11 +335,13 @@ const Catalog = () => {
                                         Test Name
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
+                                        Favorite
+                                    </StyledTableCellSm>
+                                    <StyledTableCellSm>
                                         Sample
                                     </StyledTableCellSm>
-                                    <StyledTableCellSm>Price</StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        Favorite
+                                        Price
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
                                         Detail
@@ -355,12 +357,6 @@ const Catalog = () => {
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 {item.lab_company_test_name}
-                                            </StyledTableCellSm>
-                                            <StyledTableCellSm>
-                                                {item.sample_type_name}
-                                            </StyledTableCellSm>
-                                            <StyledTableCellSm>
-                                                &#36;{item.test_price}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 <IconButton
@@ -380,6 +376,12 @@ const Catalog = () => {
                                                 </IconButton>
                                             </StyledTableCellSm>
 
+                                            <StyledTableCellSm>
+                                                {item.sample_type_name}
+                                            </StyledTableCellSm>
+                                            <StyledTableCellSm>
+                                                &#36;{item.test_price}
+                                            </StyledTableCellSm>
                                             <StyledTableCellSm
                                                 onClick={() =>
                                                     handleModelPopOpen(item)
