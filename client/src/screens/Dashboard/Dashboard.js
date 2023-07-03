@@ -150,7 +150,7 @@ const Patient = () => {
                                         {item.updated}
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        {item.view || ""}
+                                        View Order
                                     </StyledTableCellSm>
                                 </StyledTableRowSm>
                             ))
