@@ -249,7 +249,7 @@ drop table if exists orders cascade; /*order is a reserved word and does not wor
         patient_id int,
         client_id int,
         price decimal(9,2),
-        status char(3),  --STP=Sent To Patient, IP=In Progress, ARI=All Results In, C=Cancelled
+        status char(3),
         note varchar(1000),
         created TIMESTAMP WITHOUT TIME ZONE,
         created_user_id int,
@@ -297,7 +297,22 @@ drop table if exists order_item cascade;
     --alter table order_item add foreign key (updated_user_id) references users(id);
     --alter table order_item add foreign key (lab_company_test_id) references lab_company_test(id);
     --alter table order_item add foreign key (lab_company_id) references lab_company(id);
-  
+
+
+drop table if exists status cascade;
+    create table status (
+      id varchar(100) primary key,
+      name varchar(255)
+    );
+
+    create unique index on status (lower(name));
+
+    insert into status values('STP', 'Sent To Patient');
+    insert into status values('IP', 'In Progress');
+    insert into status values('ARI', 'All Results In');
+    insert into status values('RI', 'Result In');
+    insert into status values('C', 'Cancelled');
+
 
 drop table if exists message cascade;
     create table message (
