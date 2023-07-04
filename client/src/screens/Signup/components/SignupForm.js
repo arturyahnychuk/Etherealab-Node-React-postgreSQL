@@ -10,7 +10,7 @@ import _ from "lodash";
 import AuthService from "../../../services/auth.service";
 import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
-import { Alert, Button, TextField } from "@mui/material";
+import { Alert, Button, TextField, Checkbox } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -238,6 +238,10 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                         : ""
                 }`}
             />
+
+            <Checkbox
+                Required
+            /> I agree to the Terms and Conditions
 
             <Button
                 disabled={
