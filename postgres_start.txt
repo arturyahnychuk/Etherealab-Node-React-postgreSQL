@@ -289,9 +289,9 @@ drop table if exists order_item cascade;
     create unique index on order_item (order_id, lab_company_test_id);
 
     insert into order_item values(1, 1, 11, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
-    insert into order_item values(1, 2, 11, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into order_item values(1, 2, 11, 100.00, 'RI', null, now() - interval '2 days', null, now() - interval '2 days', null);
     insert into order_item values(2, 3, 11, 100.00, 'STP', null, now() - interval '1 days', null, now() - interval '1 days', null);
-    insert into order_item values(2, 4, 11, 100.00, 'STP', null, now() - interval '1 days', null, now() - interval '1 days', null);
+    insert into order_item values(2, 4, 11, 100.00, 'RI', null, now() - interval '1 days', null, now() - interval '1 days', null);
     
     --alter table order_item add foreign key (created_user_id) references users(id);
     --alter table order_item add foreign key (updated_user_id) references users(id);
