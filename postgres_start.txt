@@ -314,6 +314,15 @@ drop table if exists status cascade;
     insert into status values('C', 'Cancelled');
 
 
+drop table if exists patient_order_notify_log cascade;
+    create table patient_order_notify_log (
+      order_id int,
+      dt date
+    );
+
+    create unique index on patient_order_notify_log (order_id, dt);
+
+
 drop table if exists message cascade;
     create table message (
       id serial primary key,
