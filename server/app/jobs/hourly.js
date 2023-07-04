@@ -1,6 +1,7 @@
 /*
 David
 July 4 2023
+This job sends an email to patients to purchase lab tests
 Test the job from command line: "node ./server/jobs/hourly.js"
 */
 
