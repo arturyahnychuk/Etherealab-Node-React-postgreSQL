@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/PersonOutlined";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import AddchartIcon from '@mui/icons-material/Addchart';
 
 export const client_pages = [
     {
@@ -21,7 +21,7 @@ export const client_pages = [
     {
         id: 3,
         icon: (
-            <BookmarkBorderIcon style={{ color: "#FFF", fontSize: "20px" }} />
+        <AddchartIcon style={{ color: "#FFF", fontSize: "20px" }} />
         ),
         title: "New Order",
         href: "/new-order",
