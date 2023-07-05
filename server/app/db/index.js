@@ -28,6 +28,7 @@ module.exports = {
         // monkey patch the query method to keep track of the last query executed
         client.query = (...args) => {
             client.lastQuery = args;
+            console.log("\nquery", { text: args[0], params: args[1] });
             return query.apply(client, args);
         };
         client.release = () => {
