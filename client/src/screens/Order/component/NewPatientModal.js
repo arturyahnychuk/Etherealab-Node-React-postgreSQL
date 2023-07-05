@@ -179,14 +179,14 @@ function NewPatientModal(props) {
                     <Button
                         variant="outlined"
                         className={classes.customButton}
-                        onClick={(e) => handleSubmit(e, StepEnum.ORDERS)}
+                        onClick={(e) => handleSubmit(e, StepEnum.DASHBOARD)}
                     >
                         Create Patient
                     </Button>
                     <Button
                         variant="outlined"
                         className={classes.customButton}
-                        onClick={(e) => handleSubmit(e, StepEnum.DASHBOARD)}
+                        onClick={(e) => handleSubmit(e, StepEnum.ORDERS)}
                     >
                         Create Order
                     </Button>
