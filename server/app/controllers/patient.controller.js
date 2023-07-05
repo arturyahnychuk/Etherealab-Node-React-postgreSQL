@@ -5,12 +5,13 @@ const searchPatientsByClientId = async (req, res) => {
     const { term } = req.body;
     try {
         const patients = await db.query(
-            `select id, firstname, lastname
+            `
+            select id, firstname, lastname
             from patient
             where client_id = $1
-              and (lower(firstname) like '%$2%' 
-                or lower(lastname) like '%$2%'
-                or lower(email) like '%$2%'`,
+            and (lower(firstname) like '%' || lower($2) || '%'
+            or lower(lastname) like '%' || lower($2) || '%'
+            or lower(email) like '%' || lower($2) || '%')`,
             [req.client_id, term]
         );
         successMessage.data = patients.rows;
