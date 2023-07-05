@@ -8,21 +8,22 @@ const search = async (req, res) => {
     let $sql;
 
     try {
-        const translationMap = {
-            STP: "Sent To Patient",
-            IP: "In Progress",
-            ARI: "All Results In",
-            C: "Cancelled",
-        };
+
         let params = [];
+
         $sql = `
-        select p.firstname, p.lastname, s.name status, o.created, o.updated
-        from orders o
-        left join patient p on p.id = o.patient_id
-        left join users u on u.id = o.updated_user_id
-		left join status s on s.id = o.status
-        where o.client_id = $1
+            select p.firstname
+                , p.lastname
+                , s.name status
+                , to_char(o.created::date, 'Mon d, yyyy') created
+                , to_char(o.updated::date, 'Mon d, yyyy') updated
+            from orders o
+            left join patient p on p.id = o.patient_id
+            left join users u on u.id = o.updated_user_id
+            left join status s on s.id = o.status
+            where o.client_id = $1
         `;
+
         params.push(req.client_id);
 
         if (searchTerm) {
@@ -45,17 +46,8 @@ const search = async (req, res) => {
             errorMessage.message = "None found";
             return res.status(status.notfound).send(errorMessage);
         }
-        const translatedResponse = dbResponse.rows.map((row) => {
-            return {
-                firstname: row.firstname,
-                lastname: row.lastname,
-                status: row.status,
-                created: moment(row.updated).format("MMM D, YYYY"),
-                updated: moment(row.updated).format("MMM D, YYYY"),
-            };
-        });
 
-        successMessage.data = translatedResponse;
+        successMessage.data = dbResponse.rows;
         return res.status(status.created).send(successMessage);
     } catch (err) {
         errorMessage.message = "Select not successful";
