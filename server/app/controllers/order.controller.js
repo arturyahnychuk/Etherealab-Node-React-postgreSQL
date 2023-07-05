@@ -11,7 +11,7 @@ const createOrder = async (req, res) => {
         let totalPrice = 0;
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
-            totalPrice += order.price;
+            totalPrice += order.test_price;
         }
         const orderInsertQuery = `
             insert into orders (patient_id, client_id, price, status, created, created_user_id, updated, updated_user_id)
@@ -28,7 +28,7 @@ const createOrder = async (req, res) => {
         const orderResult = await pgClient.query(orderInsertQuery, orderValues);
 
         if (!orderResult.rowCount) {
-            errorMessage.message = "Orders not created found";
+            errorMessage.message = "Orders not created";
             return res.status(status.notfound).send(errorMessage);
         }
         const orderId = orderResult.rows[0].id;
@@ -43,7 +43,7 @@ const createOrder = async (req, res) => {
                 orderId,
                 order.lab_company_test_id,
                 order.lab_company_id,
-                order.price,
+                order.test_price,
                 req.user_id,
             ];
 
@@ -51,8 +51,9 @@ const createOrder = async (req, res) => {
                 orderItemInsertQuery,
                 orderItemValues
             );
+            console.log(insertedOrderResponse.rowCount);
             if (!insertedOrderResponse.rowCount) {
-                errorMessage.message = "Orders not created found";
+                errorMessage.message = "Orders not created";
                 return res.status(status.notfound).send(errorMessage);
             }
         }
