@@ -51,7 +51,6 @@ const createOrder = async (req, res) => {
                 orderItemInsertQuery,
                 orderItemValues
             );
-            console.log(insertedOrderResponse.rowCount);
             if (!insertedOrderResponse.rowCount) {
                 errorMessage.message = "Orders not created";
                 return res.status(status.notfound).send(errorMessage);
