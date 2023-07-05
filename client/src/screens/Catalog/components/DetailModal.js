@@ -1,17 +1,7 @@
 import React from "react";
 
-import {
-    Typography,
-    Box,
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Divider,
-} from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import ModelBody from "../../../components/common/ModelBody";
 import ModelHeader from "../../../components/common/ModelHeader";
 
 const useStyles = makeStyles((theme) => ({

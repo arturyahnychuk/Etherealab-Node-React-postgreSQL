@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3, 5, 4, 5),
     },
     addButton: {
-        position: "absolute",
+        position: "absolute !important",
         bottom: theme.spacing(1),
         color: theme.palette.text.primary + "! important",
         fontSize: "17px ! important",

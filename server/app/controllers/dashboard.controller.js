@@ -1,6 +1,5 @@
 const db = require("../db");
 const { errorMessage, successMessage, status } = require("../helpers/status");
-const moment = require("moment");
 
 const search = async (req, res) => {
     const { searchTerm } = req.body;
@@ -8,7 +7,6 @@ const search = async (req, res) => {
     let $sql;
 
     try {
-
         let params = [];
 
         $sql = `
@@ -28,9 +26,9 @@ const search = async (req, res) => {
 
         if (searchTerm) {
             $sql += `
-            and (lower(p.firstname) like $${params.length + 1} or lower(p.lastname) like $${
+            and (lower(p.firstname) like $${
                 params.length + 1
-            })
+            } or lower(p.lastname) like $${params.length + 1})
             `;
             params.push(`%${searchTerm.toLowerCase()}%`);
         }
