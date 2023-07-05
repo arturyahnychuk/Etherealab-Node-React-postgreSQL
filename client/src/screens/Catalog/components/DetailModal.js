@@ -11,6 +11,8 @@ import {
     Divider,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import ModelBody from "../../../components/common/ModelBody";
+import ModelHeader from "../../../components/common/ModelHeader";
 
 const useStyles = makeStyles((theme) => ({
     label: {
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DetailToolTip = ({ data, onClose }) => {
+const DetailModal = ({ data, onClose }) => {
     const classes = useStyles();
     const {
         lab_company_name,
@@ -64,20 +66,7 @@ const DetailToolTip = ({ data, onClose }) => {
 
     return (
         <Box minWidth={550} paddingX={1} pt={0}>
-            <Box className={classes.header} mb={1}>
-                <div></div>
-                <Typography component="h2" variant="" className={classes.title}>
-                    Lab Company Test Detail
-                </Typography>
-                <Button
-                    variant="outlined"
-                    onClick={() => onClose()}
-                    className={classes.closeButton}
-                >
-                    Close
-                </Button>
-            </Box>
-            <Divider />
+            <ModelHeader onClose={onClose} title="Lab Company Test Detail" />
             <Box paddingY={2}>
                 <Table className={classes.table}>
                     <TableBody className={classes.tableBody}>
@@ -120,4 +109,4 @@ const DetailToolTip = ({ data, onClose }) => {
     );
 };
 
-export default DetailToolTip;
+export default DetailModal;
