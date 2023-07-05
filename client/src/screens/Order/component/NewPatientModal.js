@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         minHeight: "300px",
         padding: theme.spacing(3, 7),
         "& input": {
-            // maxWidth: "150px",
+            maxWidth: "250px !important",
             padding: theme.spacing(1.5),
         },
     },
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     names: {
-        display: "block",
+        display: "block !important",
     },
 }));
 function NewPatientModal(props) {
