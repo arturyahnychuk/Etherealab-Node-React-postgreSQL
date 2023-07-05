@@ -14,8 +14,8 @@ const createOrder = async (req, res) => {
             totalPrice += order.price;
         }
         const orderInsertQuery = `
-            insert into orders (patient_id, client_id, price, status, created, created_user_id)
-            values ($1, $2, $3, 'STP', NOW(), $4)
+            insert into orders (patient_id, client_id, price, status, created, created_user_id, updated, updated_user_id)
+            values ($1, $2, $3, 'STP', now(), $4, now(), $4)
             returning id;
         `;
         const orderValues = [
