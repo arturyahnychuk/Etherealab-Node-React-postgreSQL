@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
         minHeight: "400px !important",
         border: "1px solid rgba(0, 0, 0, 0.23)",
         borderRadius: "4px",
-        paddingBottom: theme.spacing(17),
+        paddingBottom: theme.spacing(17) + " !important",
     },
     totalRow: {
         display: "flex",
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     orderButtons: {
-        position: "absolute",
+        position: "absolute ",
         bottom: "10px",
         left: "50%",
         display: "flex",
