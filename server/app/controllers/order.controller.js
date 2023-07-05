@@ -37,7 +37,7 @@ const createOrder = async (req, res) => {
             const order = orders[i];
             const orderItemInsertQuery = `
               insert into order_item 
-              values ($1, $2, $3, $4, 'STP', null, now(), $5, null, null);
+              values ($1, $2, $3, $4, 'STP', null, now(), $5, now(), $5);
             `;
             const orderItemValues = [
                 orderId,
