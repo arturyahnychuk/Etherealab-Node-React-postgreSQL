@@ -11,11 +11,9 @@ const searchCatalog = async (req, res) => {
           , lct.name lab_company_test_name
           , lct.msrp test_msrp
           , lct.price test_price
-          , st.name sample_type_name
           , lctf.lab_company_test_id favorite_id
         from lab_company lc
         join lab_company_test lct on lct.lab_company_id = lc.id
-        left join sample_type st on st.id = lct.sample_type_id
         left join lab_company_test_favorite lctf on lctf.client_id = $1
           and lctf.lab_company_test_id = lct.id
         where true`;

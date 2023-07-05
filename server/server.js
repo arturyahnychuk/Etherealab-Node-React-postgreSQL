@@ -33,6 +33,8 @@ app.use(baseAPIPath, require("./app/routes/password-reset.routes"));
 app.use(baseAPIPath, require("./app/routes/index.routes"));
 app.use(baseAPIPath, require("./app/routes/dashboard.routes"));
 app.use(baseAPIPath, require("./app/routes/catalog.routes"));
+app.use(baseAPIPath, require("./app/routes/patient.routes"));
+app.use(baseAPIPath, require("./app/routes/order.routes"));
 
 app.listen(config.port).on("listening", () => {
     console.log(`API is live on ${config.port}`);
