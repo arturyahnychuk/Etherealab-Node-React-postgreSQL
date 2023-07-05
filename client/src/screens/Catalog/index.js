@@ -63,9 +63,9 @@ const useStyles = makeStyles((theme) => ({
     },
     filterButton: {
         padding: theme.spacing(0) + " !important",
-        color: theme.palette.black + " !important",
-        textTransform: "none !important",
-        fontSize: "15px !important",
+        color: theme.palette.primary.main + " !important",
+        textTransform: "Capitalize !important",
+        fontSize: "12px !important",
     },
     link: {
         color: theme.palette.text.primary,
@@ -268,12 +268,12 @@ const Catalog = () => {
                                         Test Name
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
+                                        Favorite
+                                    </StyledTableCellSm>
+                                    <StyledTableCellSm>
                                         Sample
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>Price</StyledTableCellSm>
-                                    <StyledTableCellSm>
-                                        Favorite
-                                    </StyledTableCellSm>
                                     <StyledTableCellSm>
                                         Detail
                                     </StyledTableCellSm>
@@ -288,12 +288,6 @@ const Catalog = () => {
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 {item.lab_company_test_name}
-                                            </StyledTableCellSm>
-                                            <StyledTableCellSm>
-                                                {item.sample_type_name}
-                                            </StyledTableCellSm>
-                                            <StyledTableCellSm>
-                                                &#36; {item.test_price}
                                             </StyledTableCellSm>
                                             <StyledTableCellSm>
                                                 <IconButton
@@ -313,6 +307,12 @@ const Catalog = () => {
                                                 </IconButton>
                                             </StyledTableCellSm>
 
+                                            <StyledTableCellSm>
+                                                {item.sample_type_name}
+                                            </StyledTableCellSm>
+                                            <StyledTableCellSm>
+                                                &#36;{item.test_price}
+                                            </StyledTableCellSm>
                                             <StyledTableCellSm
                                                 onClick={() =>
                                                     handleShowDetails(item)

@@ -18,9 +18,9 @@ drop table if exists client cascade;
       updated_user_id int
     );
 
-    create unique index on client (name);
-    create unique index on client (phone);
-    create unique index on client (website);
+    create unique index on client (lower(name));
+    create unique index on client (lower(phone));
+    create unique index on client (lower(website));
 
     insert into client values(1, 'The Center For Functional Medicine', '100 Main St', 'Suite #100', 'Annapolis', 'MD', '94521', 'US', '800-555-1212', 'www.functionalmedicine.com', '#MD1234', 'note', now(), null, now(), null);
 
@@ -54,7 +54,7 @@ drop table if exists users cascade; /*user is a reserved word and does not work*
     );
 
     create index on users using btree (client_id); --so client can select their list of users
-    create unique index on users (email);
+    create unique index on users (lower(email));
 
     insert into users values(1, 1, 'Mark', 'Hyman MD', 'dr@test.com', '818 415 9596', 'note', 'A', true, '$2a$08$j9tLFDe2qULcezPfM2AUbuuicNBBKB/Gw1VE1GXuoxXx85w7uYX/u', null, null, null, null, now(), now(), 1, now(), 1);
 
@@ -95,7 +95,7 @@ drop table if exists patient cascade;
     create index on patient using btree (client_id, firstname); 
     create index on patient using btree (client_id, lastname); 
     create index on patient using btree (client_id, phone); 
-    create unique index on patient (client_id, email);	--one patients email can be used at several clients
+    create unique index on patient (client_id, lower(email));	--one patients email can be used at several clients
 
     insert into patient values(1, 1, 'John', '', 'Doe', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
     insert into patient values(2, 1, 'Joe', '', 'Does', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt2@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
@@ -113,7 +113,7 @@ drop table if exists lab_company cascade;
       status boolean
     );
 
-    create unique index on lab_company using btree (name);
+    create unique index on lab_company using btree (lower(name));
 
     insert into lab_company values (1, 'Access Medical Labs', True);
     insert into lab_company values (2, 'Alletess', True);
@@ -151,7 +151,7 @@ drop table if exists lab_company_test cascade;
       id serial primary key,
       lab_company_id int, --fk to lab_company.id
       name varchar(100),
-      sample_type_id int, --fk to sample_type.id
+      -- DELETED  sample_type_id int, --fk to sample_type.id
       phlebotomy boolean,
       msrp decimal(6,2), --the higher price
       price decimal(6,2), --the real price
@@ -161,17 +161,17 @@ drop table if exists lab_company_test cascade;
       updated TIMESTAMP WITHOUT TIME ZONE
     );
 
-    create unique index on lab_company_test using btree (lab_company_id, name);
+    create unique index on lab_company_test using btree (lab_company_id, lower(name));
 
-    insert into lab_company_test values (1, 11, 'GI Effects', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (2, 11, 'SIBO', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (3, 11, 'NutrEval', null, null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (4, 11, 'Metabolomix+', null, null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (1, 11, 'GI Effects', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (2, 11, 'SIBO', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (3, 11, 'NutrEval', null, 500.00, 400.00, null, 'A', now(), now());
+    insert into lab_company_test values (4, 11, 'Metabolomix+', null, 500.00, 400.00, null, 'A', now(), now());
 
     select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
 
     --alter table lab_company_test add foreign key (lab_company_id) references lab_company(id);
-    --alter table lab_company_test add foreign key (sample_type_id) references sample_type(id);
+    -- DELETED  --alter table lab_company_test add foreign key (sample_type_id) references sample_type(id);
 
 
 drop table if exists lab_company_test_favorite cascade;
@@ -197,7 +197,7 @@ drop table if exists sample_type cascade;
       name char(30)
     );
 
-    create unique index on sample_type using btree (name);
+    create unique index on sample_type using btree (lower(name));
     
     insert into sample_type values (1, 'Stool');
     insert into sample_type values (2, 'Saliva');
@@ -220,13 +220,36 @@ drop table if exists sample_type cascade;
     select setval(pg_get_serial_sequence('sample_type', 'id'), (select max(id) from sample_type)); --fix primary key sequence
 
 
+/*Added July 2 2023*/
+drop table if exists lab_company_test_sample cascade;
+    create table lab_company_test_sample (
+        lab_company_test_id int,
+        sample_type_id int,
+        created TIMESTAMP WITHOUT TIME ZONE
+    );
+
+    create unique index on lab_company_test_sample (lab_company_test_id, sample_type_id);
+
+    insert into lab_company_test_sample values(1, 1, now());
+    insert into lab_company_test_sample values(1, 2, now());
+    insert into lab_company_test_sample values(2, 3, now());
+    insert into lab_company_test_sample values(2, 4, now());
+    insert into lab_company_test_sample values(3, 5, now());
+    insert into lab_company_test_sample values(3, 6, now());
+    insert into lab_company_test_sample values(4, 7, now());
+    insert into lab_company_test_sample values(4, 8, now());
+
+    --alter table lab_company_test_sample add foreign key (lab_company_test_id) references lab_company_test(id);
+    --alter table lab_company_test_sample add foreign key (sample_type_id) references sample_type(id);
+    
+
 drop table if exists orders cascade; /*order is a reserved word and does not work*/
     create table orders (
         id serial primary key,
         patient_id int,
         client_id int,
         price decimal(9,2),
-        status char(3),  --STP=Sent To Patient, IP=In Progress, ARI=All Results In, C=Cancelled
+        status char(3),
         note varchar(1000),
         created TIMESTAMP WITHOUT TIME ZONE,
         created_user_id int,
@@ -238,7 +261,8 @@ drop table if exists orders cascade; /*order is a reserved word and does not wor
     create index on orders (client_id);
     create index on orders (status);  -- for cron job to send invoice emails to patients
 
-    insert into orders values(1, 1, 1, 500.00, 'IP', null, now(), null, now(), null);
+    insert into orders values(1, 1, 1, 100.00, 'STP', null, now() - interval '2 days', 1, now() - interval '2 days', 1);
+    insert into orders values(2, 1, 1, 200.00, 'STP', null, now() - interval '1 days', 1, now() - interval '1 days', 1);
 
     select setval(pg_get_serial_sequence('orders', 'id'), (select max(id) from orders)); --fix primary key sequence
     
@@ -252,7 +276,7 @@ drop table if exists order_item cascade;
     create table order_item (
         order_id int,
         lab_company_test_id int,        
-        lab_company_id int,
+        lab_company_id int, -- keep this?
         price decimal(9,2),
         status char(3),
         note varchar(1000),
@@ -264,13 +288,40 @@ drop table if exists order_item cascade;
 
     create unique index on order_item (order_id, lab_company_test_id);
 
-    insert into order_item values(1, 1, 11, 500.00, 'IP', null, now(), null, now(), null);
+    insert into order_item values(1, 1, 11, 100.00, 'STP', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into order_item values(1, 2, 11, 100.00, 'RI', null, now() - interval '2 days', null, now() - interval '2 days', null);
+    insert into order_item values(2, 3, 11, 100.00, 'STP', null, now() - interval '1 days', null, now() - interval '1 days', null);
+    insert into order_item values(2, 4, 11, 100.00, 'RI', null, now() - interval '1 days', null, now() - interval '1 days', null);
     
     --alter table order_item add foreign key (created_user_id) references users(id);
     --alter table order_item add foreign key (updated_user_id) references users(id);
     --alter table order_item add foreign key (lab_company_test_id) references lab_company_test(id);
     --alter table order_item add foreign key (lab_company_id) references lab_company(id);
-  
+
+
+drop table if exists status cascade;
+    create table status (
+      id varchar(100) primary key,
+      name varchar(255)
+    );
+
+    create unique index on status (lower(name));
+
+    insert into status values('STP', 'Sent To Patient');
+    insert into status values('IP', 'In Progress');
+    insert into status values('ARI', 'All Results In');
+    insert into status values('RI', 'Result In');
+    insert into status values('C', 'Cancelled');
+
+
+drop table if exists patient_order_notify_log cascade;
+    create table patient_order_notify_log (
+      order_id int,
+      dt date
+    );
+
+    create unique index on patient_order_notify_log (order_id, dt);
+
 
 drop table if exists message cascade;
     create table message (

@@ -15,8 +15,8 @@ exports.fieldValidate = async (req, res) => {
     }
     try {
         const selectResponse = await db.query(
-            `select 1 from ${tableName} where ${req.body.fieldName} = $1 limit 1`,
-            [req.body.value]
+            `select 1 from ${tableName} where lower(${req.body.fieldName}) = $1 limit 1`,
+            [req.body.value.toLowerCase()]
         );
         if (selectResponse.rows.length > 0) {
             errorMessage.message = {

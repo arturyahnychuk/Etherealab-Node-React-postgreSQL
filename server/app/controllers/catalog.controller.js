@@ -5,17 +5,20 @@ const searchCatalog = async (req, res) => {
     const { text, labCompanyId, favorite } = req.body.data;
     try {
         let $sql = `
-        select lc.id lab_company_id
-          , lc.name lab_company_name
-          , lct.id lab_company_test_id
-          , lct.name lab_company_test_name
-          , lct.msrp test_msrp
-          , lct.price test_price
-          , lctf.lab_company_test_id favorite_id
+            select lc.id lab_company_id
+            , lc.name lab_company_name
+            , lct.id lab_company_test_id
+            , lct.name lab_company_test_name
+            , lct.msrp test_msrp
+            , lct.price test_price
+            , string_agg(st.name, ', ') sample_type_name
+            , lctf.lab_company_test_id favorite_id
         from lab_company lc
         join lab_company_test lct on lct.lab_company_id = lc.id
+        left join lab_company_test_sample lcts on lcts.lab_company_test_id = lct.id
+        left join sample_type st on st.id = lcts.sample_type_id
         left join lab_company_test_favorite lctf on lctf.client_id = $1
-          and lctf.lab_company_test_id = lct.id
+            and lctf.lab_company_test_id = lct.id
         where true`;
 
         const params = [req.client_id];
@@ -40,6 +43,13 @@ const searchCatalog = async (req, res) => {
         }
 
         $sql += `
+		group by lc.id 
+          , lc.name 
+          , lct.id 
+          , lct.name 
+          , lct.msrp 
+          , lct.price 
+          , lctf.lab_company_test_id
         order by lc.name, lct.name
         limit 100`;
 

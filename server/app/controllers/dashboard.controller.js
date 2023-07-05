@@ -16,21 +16,22 @@ const search = async (req, res) => {
         };
         let params = [];
         $sql = `
-        select p.firstname, p.lastname, o.status, o.updated
+        select p.firstname, p.lastname, s.name status, o.created, o.updated
         from orders o
         left join patient p on p.id = o.patient_id
         left join users u on u.id = o.updated_user_id
+		left join status s on s.id = o.status
         where o.client_id = $1
         `;
         params.push(req.client_id);
 
         if (searchTerm) {
             $sql += `
-            and (p.firstname like $${params.length + 1} or p.lastname like $${
+            and (lower(p.firstname) like $${params.length + 1} or lower(p.lastname) like $${
                 params.length + 1
             })
             `;
-            params.push(`%${searchTerm}%`);
+            params.push(`%${searchTerm.toLowerCase()}%`);
         }
 
         $sql += `
@@ -48,8 +49,9 @@ const search = async (req, res) => {
             return {
                 firstname: row.firstname,
                 lastname: row.lastname,
-                status: translationMap[row.status.trim()],
-                updated: moment(row.updated).format("MMM, D YYYY"),
+                status: row.status,
+                created: moment(row.updated).format("MMM D, YYYY"),
+                updated: moment(row.updated).format("MMM D, YYYY"),
             };
         });
 
