@@ -5,35 +5,32 @@ import {
     Grid,
     Typography,
     Button,
-    TextField,
     FormControlLabel,
     Checkbox,
+    Container,
     TableContainer,
     Table,
-    TableBody,
     TableHead,
-    Container,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
+    TableBody,
     IconButton,
-    InputAdornment,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import InfoIcon from "@mui/icons-material/InfoOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SearchIcon from "@mui/icons-material/SearchOutlined";
-import {
-    StyledTableRowSm,
-    StyledTableCellSm,
-} from "../../components/common/StyledTable";
-import ModelPopup from "../../components/ModelPopup";
+
 import CatalogService from "../../services/catalog.service";
-import DetailToolTip from "./components/DetailToolTip";
 import useEffectOnce from "../../hooks/useEffectOnce";
 import useDebounce from "../../hooks/useDebounce";
+import LabCompanies from "../../components/LabCompanies";
+import Search from "../../components/common/Search";
+import ModalPopup from "../../components/ModalPopup";
+
+import {
+    StyledTableCellSm,
+    StyledTableRowSm,
+} from "../../components/common/StyledTable";
+import DetailModal from "./components/DetailModal";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -55,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     accordion: {
         boxShadow: "none !important",
         "& .MuiAccordionDetails-root": {
-            padding: theme.spacing(0, 2),
+            padding: theme.spacing(0, 1),
         },
     },
     topSection: {
@@ -194,7 +191,7 @@ const Catalog = () => {
             setSelectedCompanies([...tempSelectedCompanies]);
         }
     };
-    const handleModelPopOpen = (lab) => {
+    const handleShowDetails = (lab) => {
         setSelectedItem(lab);
     };
 
@@ -225,30 +222,13 @@ const Catalog = () => {
                 >
                     Clear All Filters
                 </Button>
-                <form onSubmit={onFormSubmit}>
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        placeholder="Search test names..."
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <IconButton
-                                        size="small"
-                                        aria-label="search"
-                                        onSubmit={handleSearchClick}
-                                    >
-                                        <SearchIcon />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </form>
+                <Search
+                    placeholderText="Search test names..."
+                    onFormSubmit={onFormSubmit}
+                    handleSearchClick={handleSearchClick}
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                />
             </Box>
             <Grid container spacing={2}>
                 <Grid item sm={3} xs={12}>
@@ -269,63 +249,16 @@ const Catalog = () => {
                             }
                         />
                     </Box>
-                    <Box className={classes.border}>
-                        <Accordion
-                            className={classes.accordion}
-                            defaultExpanded
-                        >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                            >
-                                <Typography
-                                    component="h6"
-                                    color="textPrimary"
-                                    className={classes.title}
-                                    gutterBottom
-                                >
-                                    Lab Company
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                {catalogLabCompanies &&
-                                    catalogLabCompanies.length > 0 &&
-                                    catalogLabCompanies.map((item) => (
-                                        <Grid key={item.id}>
-                                            <FormControlLabel
-                                                value={item.id.toString()}
-                                                label={item.name}
-                                                className={classes.label}
-                                                control={
-                                                    <Checkbox
-                                                        name={item.id.toString()}
-                                                        color="primary"
-                                                        size="small"
-                                                        checked={selectedCompanies.includes(
-                                                            item.id.toString()
-                                                        )}
-                                                        onChange={(e) =>
-                                                            onCheckBoxChangeHandler(
-                                                                e
-                                                            )
-                                                        }
-                                                    />
-                                                }
-                                            />
-                                        </Grid>
-                                    ))}
-                            </AccordionDetails>
-                        </Accordion>
-                    </Box>
+
+                    <LabCompanies
+                        catalogLabCompanies={catalogLabCompanies}
+                        selectedCompanies={selectedCompanies}
+                        onCheckBoxChangeHandler={onCheckBoxChangeHandler}
+                    />
                 </Grid>
                 <Grid item sm={9} xs={12}>
-                    <TableContainer className={classes.border}>
-                        <Table
-                            stickyHeader
-                            size="small"
-                            className={classes.table}
-                        >
+                    <TableContainer>
+                        <Table stickyHeader size="small">
                             <TableHead>
                                 <StyledTableRowSm>
                                     <StyledTableCellSm>
@@ -340,9 +273,7 @@ const Catalog = () => {
                                     <StyledTableCellSm>
                                         Sample
                                     </StyledTableCellSm>
-                                    <StyledTableCellSm>
-                                        Price
-                                    </StyledTableCellSm>
+                                    <StyledTableCellSm>Price</StyledTableCellSm>
                                     <StyledTableCellSm>
                                         Detail
                                     </StyledTableCellSm>
@@ -384,16 +315,16 @@ const Catalog = () => {
                                             </StyledTableCellSm>
                                             <StyledTableCellSm
                                                 onClick={() =>
-                                                    handleModelPopOpen(item)
+                                                    handleShowDetails(item)
                                                 }
                                                 className={
                                                     classes.iconContainer
                                                 }
                                             >
-                                                <ModelPopup
+                                                <ModalPopup
                                                     bodyElement={
                                                         selectedItem ? (
-                                                            <DetailToolTip
+                                                            <DetailModal
                                                                 data={
                                                                     selectedItem
                                                                 }
@@ -406,7 +337,7 @@ const Catalog = () => {
                                                     <IconButton size="small">
                                                         <InfoIcon fontSize="small" />
                                                     </IconButton>
-                                                </ModelPopup>
+                                                </ModalPopup>
                                             </StyledTableCellSm>
                                         </StyledTableRowSm>
                                     ))

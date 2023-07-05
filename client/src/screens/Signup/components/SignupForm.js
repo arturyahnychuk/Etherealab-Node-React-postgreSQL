@@ -179,7 +179,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                 margin="dense"
                 fullWidth
                 id="firstName"
-                label="Your Firstname"
+                label="Firstname"
                 name="firstName"
                 autoComplete="firstName"
                 onChange={(event) => setFirstName(event.target.value)}
@@ -196,7 +196,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                 margin="dense"
                 fullWidth
                 id="lastName"
-                label="Your Lastname"
+                label="Lastname"
                 name="lastName"
                 autoComplete="lastName"
                 onChange={(event) => setLastName(event.target.value)}
@@ -210,7 +210,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
             <TextFieldWithError
                 id="userEmail"
                 fieldName="email"
-                label="Your Email Address"
+                label="Email Address"
                 value={email}
                 handleOnChange={(event) => setEmail(event.target.value)}
                 handleOnBlur={(event) => handleAjaxValidation(event, "users")}
@@ -225,7 +225,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
 
             <TextFieldWithError
                 fieldName="password"
-                label="Your Password"
+                label="Password"
                 type="password"
                 value={password}
                 handleOnChange={(event) => setPassword(event.target.value)}

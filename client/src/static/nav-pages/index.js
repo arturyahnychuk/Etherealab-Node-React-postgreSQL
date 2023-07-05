@@ -3,6 +3,7 @@ import PersonIcon from "@mui/icons-material/PersonOutlined";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 export const client_pages = [
     {
@@ -19,18 +20,26 @@ export const client_pages = [
     },
     {
         id: 3,
+        icon: (
+            <BookmarkBorderIcon style={{ color: "#FFF", fontSize: "20px" }} />
+        ),
+        title: "New Order",
+        href: "/new-order",
+    },
+    {
+        id: 4,
         icon: <PersonIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "Myself",
         href: "/myself",
     },
     {
-        id: 4,
+        id: 5,
         icon: <LocationCityIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "Client",
         href: "/client-profile",
     },
     {
-        id: 5,
+        id: 6,
         icon: <ExitToAppIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "Logout",
         href: "/",

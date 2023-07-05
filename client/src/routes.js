@@ -11,6 +11,7 @@ import ClientProfile from "./screens/ClientProfile/ClientProfile";
 import Myself from "./screens/Myself";
 import Patient from "./screens/Dashboard/Dashboard";
 import Catalog from "./screens/Catalog";
+import Order from "./screens/Order";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -89,6 +90,12 @@ const routes = [
         layout: DashboardLayout,
         path: "/catalog",
         component: Catalog,
+    },
+    {
+        exact: true,
+        layout: DashboardLayout,
+        path: "/new-order",
+        component: Order,
     },
     {
         path: "*",

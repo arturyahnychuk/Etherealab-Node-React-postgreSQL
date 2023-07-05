@@ -10,7 +10,7 @@ const getProfile = async (req, res) => {
             [req.params.userId]
         );
 
-        if (!dbResponse) {
+        if (!dbResponse.rowCount) {
             errorMessage.message = "None found";
             return res.status(status.notfound).send(errorMessage);
         }

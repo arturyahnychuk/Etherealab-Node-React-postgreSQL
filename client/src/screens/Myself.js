@@ -202,7 +202,7 @@ function Myself() {
                     margin="dense"
                     fullWidth
                     id="firstName"
-                    label="Your Firstname"
+                    label="Firstname"
                     name="firstName"
                     autoComplete="firstName"
                     autoFocus
@@ -220,7 +220,7 @@ function Myself() {
                     margin="dense"
                     fullWidth
                     id="lastName"
-                    label="Your Lastname"
+                    label="Lastname"
                     name="lastName"
                     autoComplete="lastName"
                     onChange={(event) => setLastName(event.target.value)}
@@ -234,7 +234,7 @@ function Myself() {
                 <TextFieldWithError
                     id="userEmail"
                     fieldName="email"
-                    label="Your Email Address"
+                    label="Email"
                     value={email}
                     handleOnChange={(event) => setEmail(event.target.value)}
                     handleOnBlur={(event) =>
@@ -251,7 +251,7 @@ function Myself() {
 
                 <TextFieldWithError
                     fieldName="password"
-                    label="Your Password"
+                    label="Password"
                     type="password"
                     value={password}
                     handleOnChange={(event) => setPassword(event.target.value)}
