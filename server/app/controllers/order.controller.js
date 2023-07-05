@@ -11,7 +11,7 @@ const createOrder = async (req, res) => {
         let totalPrice = 0;
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
-            totalPrice += order.test_price;
+            totalPrice += parseFloat(order.test_price);
         }
         const orderInsertQuery = `
             insert into orders (patient_id, client_id, price, status, created, created_user_id, updated, updated_user_id)
@@ -61,6 +61,7 @@ const createOrder = async (req, res) => {
         successMessage.data = orderResult.rows[0];
         return res.status(status.created).send(successMessage);
     } catch (error) {
+        console.log(error);
         await pgClient.query("ROLLBACK");
         errorMessage.message = "Error while creating order client patients";
         return res.status(status.error).send(errorMessage);
