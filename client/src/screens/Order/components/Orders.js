@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
     btnCancel: {
         color: theme.palette.black + " !important",
+        marginTop: theme.spacing(2) + " !important",
     },
     orderPlaceholder: {
         fontSize: "14px",
