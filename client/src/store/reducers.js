@@ -2,8 +2,10 @@ import { combineReducers } from "redux";
 
 import commonReducer from "./common";
 import notificationsReducer from "./notifications";
+import patientReducer from "./patient/reducer";
 
 const appReducer = combineReducers({
+    patient: patientReducer,
     common: commonReducer,
     notifications: notificationsReducer,
 });
