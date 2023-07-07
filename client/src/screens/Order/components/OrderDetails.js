@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     button: {
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        border: `1px solid rgba(0, 0, 0, 0.23)`,
         borderRadius: "4px",
         color: theme.palette.black,
         backgroundColor: theme.palette.white,
@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
         fontSize: "12px",
         cursor: "pointer",
+    },
+    disabled: {
+        pointerEvents: "none",
+        borderColor: theme.palette.divider,
+        color: theme.palette.text.secondary,
     },
     orderSummary: {
         "& p": {
