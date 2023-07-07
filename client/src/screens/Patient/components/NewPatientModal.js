@@ -5,9 +5,11 @@ import ModelHeader from "../../../components/common/ModelHeader";
 import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
 import _ from "lodash";
-import patientService from "../../../services/patient.service";
 import { useSnackbar } from "notistack";
 import { StepEnum } from "../SelectPatient";
+import axios from "axios";
+import authHeader from "../../../utils/helpers";
+import { API_BASE } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     newPatientContainer: {
@@ -34,6 +36,20 @@ const useStyles = makeStyles((theme) => ({
         display: "block !important",
     },
 }));
+
+async function createPatientRequest(data) {
+    const res = await axios.post(`${API_BASE}/patient/create-patient`, data, {
+        headers: authHeader(),
+    });
+
+    return res.data;
+}
+
+async function validatePatientEmailRequest(data) {
+    return await axios.post(`${API_BASE}/patient/email/validate`, data, {
+        headers: authHeader(),
+    });
+}
 function NewPatientModal(props) {
     const classes = useStyles();
     const { onClose } = props;
@@ -82,7 +98,7 @@ function NewPatientModal(props) {
         }
 
         try {
-            await patientService.validate({
+            await validatePatientEmailRequest({
                 email: event.target.value.trim().toLowerCase(),
             });
             const updatedErrors = fieldErrors.filter(
@@ -110,7 +126,7 @@ function NewPatientModal(props) {
             email: email.trim(),
         };
         try {
-            const res = await patientService.createPatient(data);
+            const res = await createPatientRequest(data);
             enqueueSnackbar(res.message, {
                 variant: "success",
             });

@@ -19,7 +19,6 @@ import InfoIcon from "@mui/icons-material/InfoOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 
-import CatalogService from "../../services/catalog.service";
 import useEffectOnce from "../../hooks/useEffectOnce";
 import useDebounce from "../../hooks/useDebounce";
 import LabCompanies from "../../components/LabCompanies";
@@ -31,6 +30,9 @@ import {
     StyledTableRowSm,
 } from "../../components/common/StyledTable";
 import DetailModal from "./components/DetailModal";
+import axios from "axios";
+import { API_BASE } from "../../utils/constants";
+import authHeader from "../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -83,7 +85,28 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
-
+async function searchCatalog(data) {
+    const res = await axios.post(`${API_BASE}/catalog/search`, data, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function getLabCompanies() {
+    const res = await axios.get(`${API_BASE}/catalog/lab-companies`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function addFavorite(data) {
+    return axios.post(`${API_BASE}/catalog/lab-company/favorite`, data, {
+        headers: authHeader(),
+    });
+}
+async function removeFavorite(id) {
+    return axios.delete(`${API_BASE}/catalog/lab-company/favorite/${id}`, {
+        headers: authHeader(),
+    });
+}
 const Catalog = () => {
     const classes = useStyles();
 
@@ -112,7 +135,7 @@ const Catalog = () => {
                     favorite: favoriteOnly,
                 },
             };
-            CatalogService.searchCatalog(reqBody)
+            searchCatalog(reqBody)
                 .then((res) => {
                     setCatalog(res.data);
                     setIsLoading(false);
@@ -128,7 +151,7 @@ const Catalog = () => {
         setIsLoading(true);
 
         try {
-            const res = await CatalogService.getLabCompanies();
+            const res = await getLabCompanies();
             setCatalogLabCompanies(res.data);
             setIsLoading(false);
         } catch (error) {
@@ -149,11 +172,11 @@ const Catalog = () => {
 
     const handleFavorite = (favoriteId, labCompanyTestId) => {
         if (favoriteId) {
-            CatalogService.removeFavorite(labCompanyTestId)
+            removeFavorite(labCompanyTestId)
                 .then(() => updateCatalogItem(labCompanyTestId, null))
                 .catch(() => setIsLoading(false));
         } else {
-            CatalogService.addFavorite({ labCompanyTestId })
+            addFavorite({ labCompanyTestId })
                 .then((res) =>
                     updateCatalogItem(
                         labCompanyTestId,

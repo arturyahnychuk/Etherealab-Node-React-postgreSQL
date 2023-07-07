@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useSnackbar } from "notistack";
-import { useParams, useHistory } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
+import { useParams, useHistory, Link as RouterLink } from "react-router-dom";
 
 import Logo from "../assets/img/logo.svg";
 import Error from "../components/common/Error";
-import AuthService from "../services/auth.service";
 import { makeStyles } from "@mui/styles";
 import {
     Button,
@@ -14,6 +12,8 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import axios from "axios";
+import { API_BASE } from "../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -51,7 +51,11 @@ const useStyles = makeStyles((theme) => ({
         objectFit: "contain",
     },
 }));
-
+function resetPassword(userId, token, password) {
+    return axios.post(`${API_BASE}/auth/reset/${userId}/${token}`, {
+        password,
+    });
+}
 const ResetPassword = () => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -64,11 +68,7 @@ const ResetPassword = () => {
         e.preventDefault();
 
         try {
-            const response = await AuthService.resetPassword(
-                userId,
-                token,
-                password
-            );
+            const response = await resetPassword(userId, token, password);
             enqueueSnackbar(`${response.data.message}`, {
                 variant: "success",
             });

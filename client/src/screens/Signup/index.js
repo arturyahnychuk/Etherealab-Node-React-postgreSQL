@@ -3,12 +3,13 @@ import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import Logo from "../../assets/img/logo.svg";
-import AuthService from "../../services/auth.service";
 import SignupForm from "./components/SignupForm";
 import { makeStyles } from "@mui/styles";
 import { Container, CssBaseline, Link, Typography } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -39,7 +40,9 @@ const useStyles = makeStyles((theme) => ({
         height: "90vh",
     },
 }));
-
+function register(user) {
+    return axios.post(`${API_BASE}/auth/signup`, user);
+}
 const Signup = () => {
     const classes = useStyles();
     const { setUser } = useAuth();
@@ -49,7 +52,7 @@ const Signup = () => {
 
     const handleFormSubmit = async (data) => {
         try {
-            const response = await AuthService.register(data);
+            const response = await register(data);
             enqueueSnackbar(`${response.data.message}`, {
                 variant: "success",
             });

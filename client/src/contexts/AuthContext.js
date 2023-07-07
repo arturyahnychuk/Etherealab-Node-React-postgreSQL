@@ -3,10 +3,10 @@ import React, { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 
 import SplashScreen from "../components/SlashScreen";
-import authHeader from "../services/auth-header";
 import { API_BASE } from "../utils/constants";
 import axios from "../utils/axios";
 import useEffectOnce from "../hooks/useEffectOnce";
+import authHeader from "../utils/helpers";
 
 const initialAuthState = {
     isAuthenticated: false,

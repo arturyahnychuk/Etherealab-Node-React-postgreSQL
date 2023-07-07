@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 import {
     Button,
     Container,
@@ -18,8 +19,9 @@ import {
 } from "../../components/common/StyledTable";
 import { makeStyles } from "@mui/styles";
 
-import DashboardService from "../../services/dashboard.service";
 import useEffectOnce from "../../hooks/useEffectOnce";
+import { API_BASE } from "../../utils/constants";
+import authHeader from "../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     borderSection: {
@@ -52,7 +54,11 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(4) + "!important",
     },
 }));
-
+function searchRequest(data) {
+    return axios.post(`${API_BASE}/client/patient-search`, data, {
+        headers: authHeader(),
+    });
+}
 const Dashboard = () => {
     const classes = useStyles();
 
@@ -66,7 +72,7 @@ const Dashboard = () => {
         const payload = {
             searchTerm: searchText.trim(),
         };
-        DashboardService.search(payload).then((res) => {
+        searchRequest(payload).then((res) => {
             setSearchResults(res.data.data);
         });
         setIsLoading(false);

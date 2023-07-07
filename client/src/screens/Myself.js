@@ -4,12 +4,14 @@ import { makeStyles } from "@mui/styles";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
 
-import authService from "../services/auth.service";
 import TextFieldWithError from "../components/common/TextFieldWithError";
-import myselfService from "../services/myself.service";
 import useAuth from "../hooks/useAuth";
 import Error from "../components/common/Error";
 import useEffectOnce from "../hooks/useEffectOnce";
+import axios from "axios";
+import { API_BASE } from "../utils/constants";
+import _ from "lodash";
+import authHeader from "../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,6 +35,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+async function validateRequest(data) {
+    return await axios.post(`${API_BASE}/auth/field/validate`, data);
+}
+
+async function getProfileRequest() {
+    const res = await axios.get(`${API_BASE}/myself/profile`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function updateProfileRequest(payload, userId) {
+    return await axios.put(`${API_BASE}/myself/profile/${userId}`, payload, {
+        headers: authHeader(),
+    });
+}
 function Myself() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -67,7 +84,7 @@ function Myself() {
                 },
             };
 
-            myselfService.updateProfile(payload, user.id).then(
+            updateProfileRequest(payload, user.id).then(
                 (res) => {
                     enqueueSnackbar(res.data.message, {
                         variant: "success",
@@ -116,7 +133,7 @@ function Myself() {
         }
         return fieldErrors && fieldErrors.filter((err) => err?.param === value);
     };
-    const handleAjaxValidation = (event, target) => {
+    const handleAjaxValidation = async (event, target) => {
         if (!event.target) {
             return;
         }
@@ -129,42 +146,33 @@ function Myself() {
             return;
         }
 
-        authService
-            .validate({
+        try {
+            const response = await validateRequest({
                 fieldName: event.target.name,
                 value: event.target.value,
                 target: target || "client",
-            })
-            .then(
-                (response) => {
-                    // Remove errors record with param
-                    const updatedErrors = fieldErrors.filter(
-                        (error) => error.param !== response.data.message.param
-                    );
-                    setFieldErrors(updatedErrors);
-                },
-                (error) => {
-                    if (!error.response) {
-                        // network error
-                        console.error(error);
-                    } else {
-                        // eslint-disable-next-line no-undef
-                        const uniqueFieldErrors = _.uniqWith(
-                            [...fieldErrors, error.response.data.message],
-                            // eslint-disable-next-line no-undef
-                            _.isEqual
-                        );
-                        setFieldErrors(uniqueFieldErrors);
-                    }
-                }
-            )
-            .catch((err) => {
-                console.error("catch err", err);
             });
+
+            // Remove errors record with param
+            const updatedErrors = fieldErrors.filter(
+                (error) => error.param !== response.data.message.param
+            );
+            setFieldErrors(updatedErrors);
+        } catch (error) {
+            if (!error.response) {
+                console.error(error);
+            } else {
+                const uniqueFieldErrors = _.uniqWith(
+                    [...fieldErrors, error.response.data.message],
+                    _.isEqual
+                );
+                setFieldErrors(uniqueFieldErrors);
+            }
+        }
     };
     const getProfile = useCallback(async () => {
         try {
-            const res = await myselfService.getProfile();
+            const res = await getProfileRequest();
             setFirstName(res.data.firstname);
             setLastName(res.data.lastname);
             setEmail(res.data.email);

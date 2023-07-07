@@ -1,12 +1,14 @@
+import React, { useCallback, useRef, useState } from "react";
+import axios from "axios";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import Error from "../../components/common/Error";
-import React, { useCallback, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import SaveIcon from "@mui/icons-material/Save";
-import clientService from "../../services/client.service";
 import useAuth from "../../hooks/useAuth";
 import useEffectOnce from "../../hooks/useEffectOnce";
+import { API_BASE } from "../../utils/constants";
+import authHeader from "../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     pageTitle: {
@@ -23,7 +25,16 @@ const useStyles = makeStyles((theme) => ({
         margin: `${theme.spacing(3, 0, 2)} !important`,
     },
 }));
-
+function getClientRequest(clientId) {
+    return axios.get(`${API_BASE}/client/${clientId}`, {
+        headers: authHeader(),
+    });
+}
+function updateClientRequest(payload, clientId) {
+    return axios.put(`${API_BASE}/client/profile/${clientId}`, payload, {
+        headers: authHeader(),
+    });
+}
 function ClientProfile() {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -49,7 +60,7 @@ function ClientProfile() {
                 name: name.trim(),
                 license: license.trim(),
             };
-            clientService.updateClient(payload, user.client_id).then(
+            updateClientRequest(payload, user.client_id).then(
                 (res) => {
                     enqueueSnackbar(res.data.message, {
                         variant: "success",
@@ -74,7 +85,7 @@ function ClientProfile() {
     };
     const getClient = useCallback(async (id) => {
         try {
-            const res = await clientService.getClient(id);
+            const res = await getClientRequest(id);
             setName(res.data.data.name);
             setLicense(res.data.data.license || "");
         } catch (error) {

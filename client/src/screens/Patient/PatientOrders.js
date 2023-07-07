@@ -13,7 +13,9 @@ import OrderDetails from "../Order/components/OrderDetails";
 import ModelBody from "../../components/common/ModelBody";
 import EditPatientModal from "./components/EditPatientModal";
 import useEffectOnce from "../../hooks/useEffectOnce";
-import patientService from "../../services/patient.service";
+import { API_BASE } from "../../utils/constants";
+import axios from "axios";
+import authHeader from "../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -38,6 +40,19 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
+
+async function getPatientRequest(patientId) {
+    const res = await axios.get(`${API_BASE}/patient/${patientId}`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function getPatientOrdersRequest(patientId) {
+    const res = await axios.get(`${API_BASE}/patient/${patientId}/orders`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
 function PatientOrders() {
     const classes = useStyles();
     const [patient, setPatient] = useState(null);
@@ -69,8 +84,8 @@ function PatientOrders() {
     const fetchPatientPageData = useCallback(async (id) => {
         setIsLoading(true);
         try {
-            const patientResponse = await patientService.getPatient(id);
-            const ordersResponse = await patientService.getPatientOrders(id);
+            const patientResponse = await getPatientRequest(id);
+            const ordersResponse = await getPatientOrdersRequest(id);
             setPatient(patientResponse.data);
             const ordersData = groupOrdersByOrderId(ordersResponse.data);
             setOrders(ordersData);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import axios from "axios";
 import {
     Box,
     Grid,
@@ -16,7 +17,8 @@ import {
 } from "../../../components/common/StyledTable";
 import clsx from "clsx";
 import CancelOrderModal from "./CancelOrderModal";
-import orderService from "../../../services/order.service";
+import { API_BASE } from "../../../utils/constants";
+import authHeader from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -63,6 +65,14 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: "70%",
     },
 }));
+
+async function updateOrderStatusRequest(data) {
+    const res = await axios.put(`${API_BASE}/order/update-order/status`, data, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+
 function OrderDetails(props) {
     const classes = useStyles();
     const { orderItems, cancelOrder: updateOrderState, patientId } = props;
@@ -70,7 +80,7 @@ function OrderDetails(props) {
 
     const handleCancelOrder = async () => {
         try {
-            await orderService.updateOrderStatus({
+            await updateOrderStatusRequest({
                 order_id: orderItems[0].order_id,
             });
             updateOrderState(orderItems[0].order_id);

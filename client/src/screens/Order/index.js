@@ -11,15 +11,15 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import TestTable from "../../components/TestTable";
-import catalogService from "../../services/catalog.service";
 import Search from "../../components/common/Search";
 import LabCompanies from "../../components/LabCompanies";
 import OrderSuccessModal from "./components/OrderSuccessModal";
 import Orders from "./components/Orders";
 import CancelOrderModal from "./components/CancelOrderModal";
-import orderService from "../../services/order.service";
 import useEffectOnce from "../../hooks/useEffectOnce";
-import patientService from "../../services/patient.service";
+import axios from "axios";
+import { API_BASE } from "../../utils/constants";
+import authHeader from "../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -66,7 +66,61 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
+async function searchCatalog(data) {
+    const res = await axios.post(`${API_BASE}/catalog/search`, data, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function getLabCompanies() {
+    const res = await axios.get(`${API_BASE}/catalog/lab-companies`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+async function addFavorite(data) {
+    return axios.post(`${API_BASE}/catalog/lab-company/favorite`, data, {
+        headers: authHeader(),
+    });
+}
 
+async function removeFavorite(id) {
+    return axios.delete(`${API_BASE}/catalog/lab-company/favorite/${id}`, {
+        headers: authHeader(),
+    });
+}
+
+async function createOrdersRequest(patient_id, data) {
+    const res = await axios.post(
+        `${API_BASE}/order/${patient_id}/create-order`,
+        { orders: data },
+        {
+            headers: authHeader(),
+        }
+    );
+    return res.data;
+}
+
+async function updateOrderStatusRequest(data) {
+    const res = await axios.put(`${API_BASE}/order/update-order/status`, data, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+
+async function getOrderItems(orderId) {
+    const res = await axios.get(`${API_BASE}/order/${orderId}/order-items`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
+
+async function getPatientRequest(patientId) {
+    const res = await axios.get(`${API_BASE}/patient/${patientId}`, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
 const Order = () => {
     const classes = useStyles();
     const { patientId, orderId } = useParams();
@@ -89,7 +143,7 @@ const Order = () => {
     const fetchPatient = async () => {
         try {
             setIsLoading(true);
-            const res = await patientService.getPatient(patientId);
+            const res = await getPatientRequest(patientId);
             setPatient({ ...res.data, id: patientId });
             setIsLoading(false);
         } catch (error) {
@@ -99,7 +153,7 @@ const Order = () => {
 
     const fetchOrder = async (data) => {
         try {
-            const res = await orderService.getOrderItems(orderId);
+            const res = await getOrderItems(orderId);
             const filteredItems = data.filter((item) =>
                 res.data.some(
                     (idObj) =>
@@ -132,7 +186,7 @@ const Order = () => {
                 },
             };
             try {
-                const res = await catalogService.searchCatalog(reqBody);
+                const res = await searchCatalog(reqBody);
                 const { data } = res;
 
                 if (data && Array.isArray(data)) {
@@ -144,7 +198,7 @@ const Order = () => {
                     );
                     setFavoriteCatalog(favoriteCatalogs);
                     setCatalog(normalCatalogs);
-                    if (editMode && orders.length === 0) {
+                    if (editMode && orders.length === 0 && data.length > 0) {
                         const orderItems = await fetchOrder(data);
                         const totalPrice = calculateTotalPrice(orderItems);
                         setTotalPrice(totalPrice);
@@ -164,7 +218,7 @@ const Order = () => {
         setIsLoading(true);
 
         try {
-            const res = await catalogService.getLabCompanies();
+            const res = await getLabCompanies();
             setCatalogLabCompanies(res.data);
             setIsLoading(false);
         } catch (error) {
@@ -184,13 +238,11 @@ const Order = () => {
 
     const handleFavorite = (favoriteId, labCompanyTestId) => {
         if (favoriteId) {
-            catalogService
-                .removeFavorite(labCompanyTestId)
+            removeFavorite(labCompanyTestId)
                 .then(() => updateCatalogItem(labCompanyTestId, null))
                 .catch(() => setIsLoading(false));
         } else {
-            catalogService
-                .addFavorite({ labCompanyTestId })
+            addFavorite({ labCompanyTestId })
                 .then((res) =>
                     updateCatalogItem(
                         labCompanyTestId,
@@ -272,7 +324,7 @@ const Order = () => {
     const handleCancelOrder = async () => {
         if (editMode) {
             try {
-                await orderService.updateOrderStatus({
+                await updateOrderStatusRequest({
                     order_id: orderId,
                 });
                 setOrders([]);
@@ -286,7 +338,7 @@ const Order = () => {
     const handleSubmitOrder = async () => {
         try {
             setIsLoading(true);
-            await orderService.createOrders(patient.id, orders);
+            await createOrdersRequest(patient.id, orders);
             setOrderSuccess(true);
             setIsLoading(false);
         } catch (error) {

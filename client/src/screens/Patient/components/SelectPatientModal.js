@@ -11,7 +11,9 @@ import {
 import { makeStyles } from "@mui/styles";
 import ModelHeader from "../../../components/common/ModelHeader";
 import Search from "../../../components/common/Search";
-import patientService from "../../../services/patient.service";
+import { API_BASE } from "../../../utils/constants";
+import axios from "axios";
+import authHeader from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     selectPatientContainer: {
@@ -30,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+async function getPatientsRequest(data) {
+    const res = await axios.post(`${API_BASE}/patient/search`, data, {
+        headers: authHeader(),
+    });
+    return res.data;
+}
 function SelectPatientModal(props) {
     const classes = useStyles();
     const { onClose, handleAddPatient } = props;
@@ -39,7 +47,7 @@ function SelectPatientModal(props) {
     const fetchPatientData = async () => {
         const data = { term: searchText.toLowerCase() };
         try {
-            const res = await patientService.getPatients(data);
+            const res = await getPatientsRequest(data);
             setPatients(res.data);
         } catch (error) {
             setPatients([]);

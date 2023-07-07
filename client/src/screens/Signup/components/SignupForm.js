@@ -7,7 +7,6 @@ import React, { useState } from "react";
 
 import _ from "lodash";
 
-import AuthService from "../../../services/auth.service";
 import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
 import {
@@ -17,6 +16,8 @@ import {
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
+import axios from "axios";
+import { API_BASE } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -34,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
         margin: `${theme.spacing(3, 0, 2)} !important`,
     },
 }));
-
+async function validateRequest(data) {
+    return await axios.post(`${API_BASE}/auth/field/validate`, data);
+}
 const SignupForm = ({ onFormSubmit, ...props }) => {
     const { errors } = props;
     const classes = useStyles();
@@ -107,7 +110,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
         return fieldErrors && fieldErrors.filter((err) => err?.param === value);
     };
 
-    const handleAjaxValidation = (event, target) => {
+    const handleAjaxValidation = async (event, target) => {
         if (!event.target) {
             return;
         }
@@ -118,35 +121,30 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
             }
         }
 
-        AuthService.validate({
-            fieldName: event.target.name,
-            value: event.target.value,
-            target: target || "client",
-        })
-            .then(
-                (response) => {
-                    // Remove errors record with param
-                    const updatedErrors = fieldErrors.filter(
-                        (error) => error.param !== response.data.message.param
-                    );
-                    setFieldErrors(updatedErrors);
-                },
-                (error) => {
-                    if (!error.response) {
-                        // network error
-                        console.error(error);
-                    } else {
-                        const uniqueFieldErrors = _.uniqWith(
-                            [...fieldErrors, error.response.data.message],
-                            _.isEqual
-                        );
-                        setFieldErrors(uniqueFieldErrors);
-                    }
-                }
-            )
-            .catch((err) => {
-                console.error("catch err", err);
+        try {
+            const response = await validateRequest({
+                fieldName: event.target.name,
+                value: event.target.value,
+                target: target || "client",
             });
+
+            // Remove errors record with param
+            const updatedErrors = fieldErrors.filter(
+                (error) => error.param !== response.data.message.param
+            );
+            setFieldErrors(updatedErrors);
+        } catch (error) {
+            if (!error.response) {
+                // network error
+                console.error(error);
+            } else {
+                const uniqueFieldErrors = _.uniqWith(
+                    [...fieldErrors, error.response.data.message],
+                    _.isEqual
+                );
+                setFieldErrors(uniqueFieldErrors);
+            }
+        }
     };
 
     return (

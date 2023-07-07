@@ -15,7 +15,8 @@ import { Link as RouterLink } from "react-router-dom";
 import Logo from "../../assets/img/logo.svg";
 import Dimmer from "../../components/common/Dimmer";
 import Error from "../../components/common/Error";
-import AuthService from "../../services/auth.service";
+import axios from "axios";
+import { API_BASE } from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -65,6 +66,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function passwordChangeRequest(email) {
+    return axios.post(`${API_BASE}/auth/reset_password/user/${email}`);
+}
+
 const ForgetPassword = () => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -76,7 +81,8 @@ const ForgetPassword = () => {
     const sendPasswordResetEmail = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        AuthService.passwordChangeRequest(email).then(
+
+        passwordChangeRequest.then(
             (response) => {
                 setIsLoading(false);
                 enqueueSnackbar(`${response.data.message}`, {

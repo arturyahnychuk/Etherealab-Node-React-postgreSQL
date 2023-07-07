@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/PersonOutlined";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import AddchartIcon from '@mui/icons-material/Addchart';
+import AddchartIcon from "@mui/icons-material/Addchart";
 
 export const client_pages = [
     {
@@ -20,9 +20,7 @@ export const client_pages = [
     },
     {
         id: 3,
-        icon: (
-        <AddchartIcon style={{ color: "#FFF", fontSize: "20px" }} />
-        ),
+        icon: <AddchartIcon style={{ color: "#FFF", fontSize: "20px" }} />,
         title: "New Order",
         href: "/new-order",
     },
