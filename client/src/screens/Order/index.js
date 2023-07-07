@@ -1,14 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import SelectPatientModal from "./component/SelectPatientModal";
+import { useHistory, useParams, Link as RouterLink } from "react-router-dom";
 import ModelBody from "../../components/common/ModelBody";
-import NewPatientModal from "./component/NewPatientModal";
 import {
     Breadcrumbs,
     Button,
     Container,
     Grid,
-    Link,
     Stack,
     Typography,
 } from "@mui/material";
@@ -17,10 +14,12 @@ import TestTable from "../../components/TestTable";
 import catalogService from "../../services/catalog.service";
 import Search from "../../components/common/Search";
 import LabCompanies from "../../components/LabCompanies";
-import OrderSuccessModal from "./component/OrderSuccessModal";
-import Orders from "./component/Orders";
-import CancelOrderModal from "./component/CancelOrderModal";
+import OrderSuccessModal from "./components/OrderSuccessModal";
+import Orders from "./components/Orders";
+import CancelOrderModal from "./components/CancelOrderModal";
 import orderService from "../../services/order.service";
+import useEffectOnce from "../../hooks/useEffectOnce";
+import patientService from "../../services/patient.service";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -59,18 +58,18 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "15px !important",
         marginBottom: theme.spacing(1) + " !important",
     },
+    breadcrumbLink: {
+        color: "inherit",
+        textDecoration: "none",
+        "&:hover": {
+            textDecoration: "underline",
+        },
+    },
 }));
-
-export const StepEnum = {
-    SEARCH: "search",
-    NEW_PATIENT: "new-patient",
-    ORDERS: "orders",
-    DASHBOARD: "dashboard",
-};
 
 const Order = () => {
     const classes = useStyles();
-    const [openedModal, setOpenedModal] = useState(StepEnum.SEARCH);
+    const { patientId, orderId } = useParams();
     const [catalog, setCatalog] = useState([]);
     const [favoriteCatalog, setFavoriteCatalog] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -79,17 +78,48 @@ const Order = () => {
     const [catalogLabCompanies, setCatalogLabCompanies] = useState([]);
     const [selectedCompanies, setSelectedCompanies] = useState([]);
     const [patient, setPatient] = useState(null);
+    const [editMode] = useState(patientId && orderId);
     const [orders, setOrders] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [cancelOrder, setCancelOrder] = useState(false);
-
     const history = useHistory();
+    const inputRef = useRef(null);
 
-    function handleClick(event) {
-        event.preventDefault();
-        // TODO: handle breadcrumb
+    const fetchPatient = async () => {
+        try {
+            setIsLoading(true);
+            const res = await patientService.getPatient(patientId);
+            setPatient({ ...res.data, id: patientId });
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+        }
+    };
+
+    const fetchOrder = async (data) => {
+        try {
+            const res = await orderService.getOrderItems(orderId);
+            const filteredItems = data.filter((item) =>
+                res.data.some(
+                    (idObj) =>
+                        idObj.lab_company_test_id === item.lab_company_test_id
+                )
+            );
+
+            return filteredItems;
+        } catch (error) {
+            setIsLoading(false);
+        }
+    };
+
+    function calculateTotalPrice(data) {
+        return data.reduce(
+            (total, order) => total + parseFloat(order.test_price),
+            0
+        );
     }
+
     const fetchCatalogData = useCallback(
         async (text) => {
             setIsLoading(true);
@@ -104,6 +134,7 @@ const Order = () => {
             try {
                 const res = await catalogService.searchCatalog(reqBody);
                 const { data } = res;
+
                 if (data && Array.isArray(data)) {
                     const favoriteCatalogs = data.filter(
                         (item) => item.favorite_id !== null
@@ -113,6 +144,12 @@ const Order = () => {
                     );
                     setFavoriteCatalog(favoriteCatalogs);
                     setCatalog(normalCatalogs);
+                    if (editMode && orders.length === 0) {
+                        const orderItems = await fetchOrder(data);
+                        const totalPrice = calculateTotalPrice(orderItems);
+                        setTotalPrice(totalPrice);
+                        setOrders(orderItems);
+                    }
                     setIsLoading(false);
                 }
             } catch (error) {
@@ -188,27 +225,22 @@ const Order = () => {
             setSelectedCompanies([...tempSelectedCompanies]);
         }
     };
-    const handleNext = (step, patient = null) => {
-        if (step === StepEnum.DASHBOARD) {
-            return history.push("/dashboard");
-        }
-        setOpenedModal(step);
-        if (step === StepEnum.ORDERS) {
-            setPatient(patient);
-            fetchLabCompanies();
-            fetchCatalogData("");
-        }
+    const handleGoToDashboard = () => {
+        history.push("/dashboard");
     };
-
     const dataFetch = useRef(false);
+
     useEffect(() => {
-        if (dataFetch.current && patient) {
+        if (dataFetch.current) {
             fetchCatalogData(searchText);
         }
         dataFetch.current = true;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCompanies]);
-
+    useEffectOnce(() => {
+        fetchPatient(patientId);
+        fetchLabCompanies();
+    }, [patientId]);
     const handleAddOrder = (item) => {
         const orderIndex = orders.findIndex(
             (order) => order.lab_company_test_id === item.lab_company_test_id
@@ -228,20 +260,28 @@ const Order = () => {
         }
 
         // Calculate the total price
-        const calculatedTotalPrice = updatedOrders.reduce(
-            (total, order) => total + parseFloat(order.test_price),
-            0
-        );
+        const calculatedTotalPrice = calculateTotalPrice(updatedOrders);
         setTotalPrice(calculatedTotalPrice);
     };
     const handleClearFilter = () => {
         setSelectedCompanies([]);
         setSearchText("");
+        inputRef.current.focus();
     };
 
-    const handleCancelOrder = () => {
-        setOrders([]);
-        setCancelOrder(false);
+    const handleCancelOrder = async () => {
+        if (editMode) {
+            try {
+                await orderService.updateOrderStatus({
+                    order_id: orderId,
+                });
+                setOrders([]);
+                setCancelOrder(false);
+            } catch (error) {}
+        } else {
+            setOrders([]);
+            setCancelOrder(false);
+        }
     };
     const handleSubmitOrder = async () => {
         try {
@@ -253,6 +293,7 @@ const Order = () => {
             setIsLoading(false);
         }
     };
+
     return (
         <>
             {patient && patient.id && (
@@ -263,32 +304,27 @@ const Order = () => {
                             variant="h5"
                             className={classes.pageTitle}
                         >
-                            New Order For
+                            {editMode ? "Edit Order" : "New Order"} For
                             {` ${patient.firstname} ${patient.lastname}`}
                         </Typography>
                         <Stack spacing={2} mb={2} mt={1}>
                             <Breadcrumbs separator="›" aria-label="breadcrumb">
-                                <Link
-                                    underline="hover"
+                                <RouterLink
                                     key="1"
-                                    color="inherit"
-                                    href="/"
-                                    onClick={handleClick}
+                                    to="/dashboard"
+                                    className={classes.breadcrumbLink}
                                 >
                                     Dashboard
-                                </Link>
-                                <Link
-                                    underline="hover"
+                                </RouterLink>
+                                <RouterLink
                                     key="2"
-                                    color="inherit"
-                                    href="/dashboard"
-                                    onClick={handleClick}
+                                    to={`/patient/${patient.id}/orders`}
+                                    className={classes.breadcrumbLink}
                                 >
                                     {patient.firstname + " " + patient.lastname}
-                                </Link>
-
+                                </RouterLink>
                                 <Typography key="3" color="text.primary">
-                                    New Order
+                                    {editMode ? "Edit Order" : "New Order"}
                                 </Typography>
                             </Breadcrumbs>
                         </Stack>
@@ -320,6 +356,7 @@ const Order = () => {
                                             handleSearchClick={
                                                 handleSearchClick
                                             }
+                                            inputRef={inputRef}
                                             searchText={searchText}
                                             setSearchText={setSearchText}
                                         />
@@ -361,6 +398,7 @@ const Order = () => {
                             </Grid>
                             <Grid item xs={3}>
                                 <Orders
+                                    editMode={editMode}
                                     orders={orders}
                                     totalPrice={totalPrice}
                                     setCancelOrder={setCancelOrder}
@@ -378,35 +416,13 @@ const Order = () => {
 
                     <ModelBody
                         opened={orderSuccess}
-                        closeModal={() => handleNext(StepEnum.DASHBOARD)}
+                        closeModal={handleGoToDashboard}
                     >
-                        <OrderSuccessModal handleNext={handleNext} />
+                        <OrderSuccessModal
+                            handleGoToDashboard={handleGoToDashboard}
+                        />
                     </ModelBody>
                 </>
-            )}
-
-            {!patient && openedModal === StepEnum.SEARCH && (
-                <ModelBody
-                    opened={openedModal === StepEnum.SEARCH}
-                    closeModal={() => handleNext(StepEnum.DASHBOARD)}
-                >
-                    <SelectPatientModal
-                        handleNext={handleNext}
-                        onClose={() => handleNext(StepEnum.DASHBOARD)}
-                    />
-                </ModelBody>
-            )}
-
-            {!patient && openedModal === StepEnum.NEW_PATIENT && (
-                <ModelBody
-                    opened={openedModal === StepEnum.NEW_PATIENT}
-                    closeModal={() => handleNext(StepEnum.SEARCH)}
-                >
-                    <NewPatientModal
-                        handleNext={handleNext}
-                        onClose={() => handleNext(StepEnum.SEARCH)}
-                    />
-                </ModelBody>
             )}
         </>
     );

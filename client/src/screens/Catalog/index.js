@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     },
     filterButton: {
         padding: theme.spacing(0) + " !important",
-        color: theme.palette.primary.main + " !important",
-        textTransform: "Capitalize !important",
+        color: theme.palette.text.secondary + " !important",
+        textTransform: "none !important",
         fontSize: "12px !important",
     },
     link: {
@@ -94,6 +94,9 @@ const Catalog = () => {
     const [selectedCompanies, setSelectedCompanies] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [favoriteOnly, setFavoriteOnly] = useState(false);
+
+    const dataFetch = useRef(false);
+    const inputRef = useRef(null);
 
     const debouncedSearchTerm = useDebounce(searchText, 500);
 
@@ -166,7 +169,6 @@ const Catalog = () => {
         fetchCatalogData(debouncedSearchTerm);
     };
 
-    const dataFetch = useRef(false);
     useEffect(() => {
         if (dataFetch.current) return fetchCatalogData(searchText);
         dataFetch.current = true;
@@ -199,6 +201,7 @@ const Catalog = () => {
         setSelectedCompanies([]);
         setFavoriteOnly(false);
         setSearchText("");
+        inputRef.current.focus();
     };
 
     const handleSearchClick = () => {
@@ -226,6 +229,7 @@ const Catalog = () => {
                     placeholderText="Search test names..."
                     onFormSubmit={onFormSubmit}
                     handleSearchClick={handleSearchClick}
+                    inputRef={inputRef}
                     searchText={searchText}
                     setSearchText={setSearchText}
                 />

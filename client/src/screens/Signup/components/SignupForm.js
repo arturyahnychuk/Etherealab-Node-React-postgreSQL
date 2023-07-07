@@ -10,12 +10,17 @@ import _ from "lodash";
 import AuthService from "../../../services/auth.service";
 import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
-import { Alert, Button, TextField, Checkbox } from "@mui/material";
+import {
+    Alert,
+    Button,
+    TextField,
+    Checkbox,
+    FormControlLabel,
+} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     form: {
         width: "100%", // Fix IE 11 issue.
-        textAlign: "center",
         marginTop: theme.spacing(3),
         border: "1px solid",
         borderColor: theme.borderColor,
@@ -36,6 +41,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
     const [clientName, setClientName] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [isChecked, setIsChecked] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fieldErrors, setFieldErrors] = useState([]);
@@ -157,7 +163,6 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                         {error.msg}
                     </Alert>
                 ))}
-
             <TextFieldWithError
                 fieldName="name"
                 label="Client Name"
@@ -222,7 +227,6 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                         : ""
                 }`}
             />
-
             <TextFieldWithError
                 fieldName="password"
                 label="Password"
@@ -238,10 +242,15 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                         : ""
                 }`}
             />
-
-            <Checkbox
-                Required
-            /> I agree to the Terms and Conditions
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={isChecked}
+                        onClick={() => setIsChecked(!isChecked)}
+                    />
+                }
+                label="I agree to the Terms and Conditions"
+            />
 
             <Button
                 disabled={
@@ -250,7 +259,8 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                     !password ||
                     !lastName ||
                     !firstName ||
-                    !clientName
+                    !clientName ||
+                    !isChecked
                 }
                 fullWidth
                 variant="contained"
