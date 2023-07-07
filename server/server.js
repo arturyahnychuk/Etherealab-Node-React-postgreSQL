@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const config = require("./config");
-
+const {
+    router: passwordResetRoutes,
+} = require("./app/routes/password-reset.routes");
 const app = express();
 
 app.use(cors());
@@ -29,8 +31,7 @@ app.use(baseAPIPath, require("./app/routes/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/login.routes"));
 app.use(baseAPIPath, require("./app/routes/client.routes"));
 app.use(baseAPIPath, require("./app/routes/myself.routes"));
-app.use(baseAPIPath, require("./app/routes/password-reset.routes"));
-app.use(baseAPIPath, require("./app/routes/index.routes"));
+app.use(baseAPIPath, passwordResetRoutes);
 app.use(baseAPIPath, require("./app/routes/dashboard.routes"));
 app.use(baseAPIPath, require("./app/routes/catalog.routes"));
 app.use(baseAPIPath, require("./app/routes/patient.routes"));
