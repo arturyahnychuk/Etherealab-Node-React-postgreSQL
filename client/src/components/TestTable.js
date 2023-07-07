@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
             top: 3,
         },
     },
+    pointer: {
+        cursor: "pointer",
+    },
 }));
 function TestTable(props) {
     const {
@@ -62,7 +65,7 @@ function TestTable(props) {
                                 <StyledTableCellSm>
                                     {item.lab_company_name}
                                 </StyledTableCellSm>
-                                <StyledTableCellSm>
+                                <StyledTableCellSm className={classes.pointer}>
                                     {item.lab_company_test_name}
                                 </StyledTableCellSm>
                                 <StyledTableCellSm>
