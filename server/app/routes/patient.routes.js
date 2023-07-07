@@ -79,6 +79,7 @@ router.get("/patient/:patient_id", [authJwt.verifyToken], async (req, res) => {
             errorMessage.message = "No patient found";
             return res.status(status.notfound).send(errorMessage);
         }
+        successMessage.message = "Fetched Patient successfully";
         successMessage.data = dbResponse.rows[0];
         return res.status(status.created).send(successMessage);
     } catch (error) {
