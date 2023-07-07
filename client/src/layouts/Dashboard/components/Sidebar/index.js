@@ -2,10 +2,7 @@ import React from "react";
 
 import clsx from "clsx";
 import PropTypes from "prop-types";
-
-import useAuth from "../../../../hooks/useAuth";
 import { client_pages } from "../../../../static/nav-pages";
-import { getAllowedRoutes } from "../../../../utils/helpers";
 import { SidebarNav } from "./components";
 import { makeStyles } from "@mui/styles";
 import { Drawer } from "@mui/material";
@@ -51,12 +48,8 @@ const useStyles = makeStyles((theme) => ({
 const Sidebar = (props) => {
     const { open, variant, onClose, className, ...rest } = props;
     const classes = useStyles();
-    const { user } = useAuth();
     const navPages = client_pages;
-    const allowedPages = getAllowedRoutes(
-        navPages,
-        user && user.permissions ? user.permissions : []
-    );
+
     return (
         <Drawer
             anchor="left"
@@ -69,7 +62,7 @@ const Sidebar = (props) => {
                 <img src={Logo} alt="Logo" className={classes.Logo} />
             </RouterLink>
             <div {...rest} className={clsx(classes.root, className)}>
-                <SidebarNav className={classes.nav} pages={allowedPages} />
+                <SidebarNav className={classes.nav} pages={navPages} />
             </div>
         </Drawer>
     );

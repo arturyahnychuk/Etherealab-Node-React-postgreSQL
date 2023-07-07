@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
         borderColor: theme.palette.black + " !important",
         color: theme.palette.black + " !important",
         padding: theme.spacing(0, 2) + " !important",
-        "& span": {},
     },
     title: {
         fontSize: "16px !important",
