@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
     Button,
     Container,
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Patient = () => {
+const Dashboard = () => {
     const classes = useStyles();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +80,6 @@ const Patient = () => {
     useEffectOnce(() => {
         searchHandler("");
     }, []);
-
     return (
         <Container className={classes.container}>
             <Typography component="h5" variant="h5">
@@ -130,9 +130,9 @@ const Patient = () => {
                     </TableHead>
                     <TableBody>
                         {!isLoading && searchResults.length ? (
-                            searchResults.map((item) => (
+                            searchResults.map((item, idx) => (
                                 <StyledTableRowSm
-                                    key={item.proc_id}
+                                    key={idx}
                                     className={classes.pointer}
                                 >
                                     <StyledTableCellSm>
@@ -151,10 +151,20 @@ const Patient = () => {
                                         {item.updated}
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        View Patient
+                                        <RouterLink
+                                            to={`/patient/${item.patient_id}/orders`}
+                                            className={classes.link}
+                                        >
+                                            View Patient
+                                        </RouterLink>
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
-                                        New Order
+                                        <RouterLink
+                                            to={`/patient/${item.patient_id}/new-order`}
+                                            className={classes.link}
+                                        >
+                                            New Order
+                                        </RouterLink>
                                     </StyledTableCellSm>
                                 </StyledTableRowSm>
                             ))
@@ -176,4 +186,4 @@ const Patient = () => {
     );
 };
 
-export default Patient;
+export default Dashboard;

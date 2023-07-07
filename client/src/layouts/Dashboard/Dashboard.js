@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { Sidebar } from "./components";
 import { makeStyles, useTheme } from "@mui/styles";
 import { Container, useMediaQuery } from "@mui/material";
+import Footer from "../../components/common/Footer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,6 +61,7 @@ const Dashboard = (props) => {
             <Container maxWidth="xl" className={classes.content}>
                 {children}
             </Container>
+            <Footer />
         </div>
     );
 };

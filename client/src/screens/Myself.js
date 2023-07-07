@@ -162,9 +162,9 @@ function Myself() {
                 console.error("catch err", err);
             });
     };
-    const getProfile = useCallback(async (id) => {
+    const getProfile = useCallback(async () => {
         try {
-            const res = await myselfService.getProfile(id);
+            const res = await myselfService.getProfile();
             setFirstName(res.data.firstname);
             setLastName(res.data.lastname);
             setEmail(res.data.email);
@@ -176,8 +176,8 @@ function Myself() {
     }, []);
 
     useEffectOnce(() => {
-        getProfile(user.id);
-    }, [getProfile, user.id]);
+        getProfile();
+    }, [getProfile]);
 
     return (
         <Container className={classes.container}>

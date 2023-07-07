@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 
 import SplashScreen from "../components/SlashScreen";
 import authHeader from "../services/auth-header";
-import { API_BASE } from "../utils/API_BASE";
+import { API_BASE } from "../utils/contants";
 import axios from "../utils/axios";
 import useEffectOnce from "../hooks/useEffectOnce";
 
@@ -117,12 +117,12 @@ export const AuthProvider = ({ children }) => {
                 if (accessToken && isValidToken(accessToken)) {
                     setSession(accessToken);
 
-                    let fetchURL = `${API_BASE}/auth/user`;
+                    let fetchURL = `${API_BASE}/myself/profile`;
 
                     const response = await axios.get(fetchURL, {
                         headers: authHeader(),
                     });
-                    const { user } = response.data.data;
+                    const user = response.data.data;
 
                     dispatch({
                         type: "INITIALIZE",
