@@ -9,12 +9,14 @@ function Search(props) {
         searchText,
         setSearchText,
         placeholderText,
+        inputRef,
     } = props;
     return (
         <form onSubmit={onFormSubmit}>
             <TextField
                 autoFocus
                 fullWidth
+                inputRef={inputRef}
                 size="small"
                 variant="outlined"
                 placeholder={placeholderText}
