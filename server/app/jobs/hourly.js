@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../db");
 const { transporter, sgMail } = require("../routes/password-reset.routes");
 
-const job = nodeCron.schedule("0 * * * * *", async () => {
+const job = nodeCron.schedule("* * * * * *", async () => {
     try {
         sql = `
         select o.id order_id
