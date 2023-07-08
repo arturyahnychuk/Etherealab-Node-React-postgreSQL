@@ -1,6 +1,4 @@
 /*
-David
-July 4 2023
 This job sends an email to patients to purchase lab tests
 Test the job from command line: "node ./server/app/jobs/hourly.js"
 */
@@ -40,7 +38,7 @@ const job = nodeCron.schedule("0 * * * * *", async () => {
                 const secretKey = process.env.JWT_SECRET;
                 return jwt.sign({ order_id }, secretKey);
             }
-            // Generate the URL with the encrypted order_id
+
             const url = `https://app.myeasylabs.com/patient-purchase?oid=${encryptOrderId(
                 order_id
             )}`;
@@ -75,9 +73,7 @@ const job = nodeCron.schedule("0 * * * * *", async () => {
             await db.query(notifyQuery, [order_id]);
         });
 
-        //url = "https://app.myeasylabs.com/patient-purchase?oid=$oid"
-        //$oid is the order_id encrypted.  make it at least 64 characters.
     } catch (error) {
-        console.error("Error in cron job:", error);
+        console.error("Error in cron job: ", error);
     }
 });
