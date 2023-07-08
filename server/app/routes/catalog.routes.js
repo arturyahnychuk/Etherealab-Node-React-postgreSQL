@@ -55,7 +55,7 @@ router.post("/catalog/search", [authJwt.verifyToken], async (req, res) => {
           , lct.price 
           , lctf.lab_company_test_id
         order by lc.name, lct.name
-        limit 100`;
+        limit 10`;
 
         const dbResponse = await db.query($sql, params);
 
@@ -77,7 +77,11 @@ router.get(
     async (req, res) => {
         try {
             const dbResponse = await db.query(
-                `select id, name from lab_company order by name limit 100`
+                `select id, name 
+                from lab_company 
+                order by name 
+                limit 100
+                `
             );
 
             if (!dbResponse) {
