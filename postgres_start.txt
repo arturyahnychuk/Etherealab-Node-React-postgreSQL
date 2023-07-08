@@ -98,7 +98,7 @@ drop table if exists patient cascade;
     create unique index on patient (client_id, lower(email));	--one patients email can be used at several clients
 
     insert into patient values(1, 1, 'John', '', 'Doe', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
-    insert into patient values(2, 1, 'Joe', '', 'Does', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt2@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
+    insert into patient values(2, 1, 'Bill', '', 'Smith', '100 Main St', '#100', 'Concord', 'CA', '94521', 'US', '8184155000', 'pt2@test.com', '1980-01-01', 'M', null, null, null, null, now(), 1, now(), 1);
 
     select setval(pg_get_serial_sequence('patient', 'id'), (select max(id) from patient)); --fix primary key sequence
     --alter table patient add foreign key (created_user_id) references users(id);
@@ -189,6 +189,11 @@ drop table if exists lab_company_test cascade;
     insert into lab_company_test values (21, 6, 'Array 14 - Mucosal Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (22, 6, 'Array 20 - Blood Brain Barrier Permeability', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (23, 6, 'Array 22 - Irritable Bowel/SIBO Screen', null, 50.00, 50.00, null, 'A', now(), now());
+
+    --Vibrant Wellness 22
+    insert into lab_company_test values (24, 22, 'Tickborne Complete 1.0', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (25, 22, 'Tickborne Complete 2.0', null, 50.00, 50.00, null, 'A', now(), now());
+
 
     select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
 
