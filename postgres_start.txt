@@ -181,11 +181,15 @@ drop table if exists lab_company_test cascade;
     insert into lab_company_test values (13, 6, 'Array 3X - Wheat/Gluten Proteome Reactivity & Autoimmunity', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (14, 6, 'Array 4 - Gluten-Associated Cross-Reactive Foods and Foods Sensitivity', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (15, 6, 'Array 5 - Multiple Autoimmune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
-    insert into lab_company_test values (16, 6, 'Array 6', null, 50.00, 50.00, null, 'A', now(), now());
-    insert into lab_company_test values (17, 6, 'Array 7', null, 50.00, 50.00, null, 'A', now(), now());
-    insert into lab_company_test values (18, 6, 'Array 8', null, 50.00, 50.00, null, 'A', now(), now());
-    insert into lab_company_test values (19, 6, 'Array 9', null, 50.00, 50.00, null, 'A', now(), now());
-    insert into lab_company_test values (20, 6, 'Array 10', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (16, 6, 'Array 7X - Neurological Autoimmune Reactivity Screen - Expanded', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (17, 6, 'Array 10 - Multiple Food Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (18, 6, 'Array 10 - Multiple Food Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (19, 6, 'Array 10-90 - Multiple Food Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (20, 6, 'Array 11 - Chemical Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (21, 6, 'Array 12 - Pathogen-Associated Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (22, 6, 'Array 14 - Mucosal Immune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (23, 6, 'Array 20 - Blood Brain Barrier Permeability', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (24, 6, 'Array 22 - Irritable Bowel/SIBO Screen', null, 50.00, 50.00, null, 'A', now(), now());
 
     select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
 
