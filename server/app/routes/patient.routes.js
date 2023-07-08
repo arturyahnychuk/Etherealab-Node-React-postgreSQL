@@ -118,7 +118,9 @@ router.get(
                 where o.patient_id = $1
                 and o.client_id = $2
                 group by o.id, s.name, u.firstname, u.lastname, lc.name, lct.name, s2.name, oi.updated
-                order by 1, 2, 3`,
+                order by 1 desc
+                limit 20
+                `,
                 [patient_id, req.client_id]
             );
 
