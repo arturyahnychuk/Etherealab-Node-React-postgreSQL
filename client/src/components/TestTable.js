@@ -62,16 +62,16 @@ function TestTable(props) {
                                 key={idx}
                                 onClick={() => handleAddOrder(item)}
                             >
-                                <StyledTableCellSm>
+                                <StyledTableCellSm className={classes.pointer}>
                                     {item.lab_company_name}
                                 </StyledTableCellSm>
                                 <StyledTableCellSm className={classes.pointer}>
                                     {item.lab_company_test_name}
                                 </StyledTableCellSm>
-                                <StyledTableCellSm>
+                                <StyledTableCellSm className={classes.pointer}>
                                     {item.sample_type_name}
                                 </StyledTableCellSm>
-                                <StyledTableCellSm>
+                                <StyledTableCellSm className={classes.pointer}>
                                     &#36; {item.test_price}
                                 </StyledTableCellSm>
                                 <StyledTableCellSm>
