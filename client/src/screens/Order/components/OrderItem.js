@@ -30,7 +30,7 @@ function OrderItem(props) {
                 <Typography>{order.sample_type_name}</Typography>
             </Box>
             <Box>
-                <Typography>&#36; {order.test_price}</Typography>
+                <Typography>&#36;{order.test_price}</Typography>
                 <Button
                     className={classes.button}
                     onClick={() => removeOrder(order)}

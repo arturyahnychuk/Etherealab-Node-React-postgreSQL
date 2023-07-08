@@ -75,7 +75,7 @@ function Orders(props) {
                     ))}
                     <Box className={classes.totalRow}>
                         <Typography>Total</Typography>
-                        <Typography>&#36; {totalPrice}</Typography>
+                        <Typography>&#36;{totalPrice}</Typography>
                     </Box>
                     <Box className={classes.orderButtons}>
                         <Button
