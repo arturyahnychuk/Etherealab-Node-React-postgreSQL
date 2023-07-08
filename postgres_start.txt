@@ -163,10 +163,29 @@ drop table if exists lab_company_test cascade;
 
     create unique index on lab_company_test using btree (lab_company_id, lower(name));
 
-    insert into lab_company_test values (1, 11, 'GI Effects', null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (2, 11, 'SIBO', null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (3, 11, 'NutrEval', null, 500.00, 400.00, null, 'A', now(), now());
-    insert into lab_company_test values (4, 11, 'Metabolomix+', null, 500.00, 400.00, null, 'A', now(), now());
+    --Genova 
+    insert into lab_company_test values (1, 11, 'GI Effects', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (2, 11, 'SIBO', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (3, 11, 'NutrEval', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (4, 11, 'Metabolomix+', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (5, 11, 'Methylation Panel', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (6, 11, 'Adrenocortex Stress Profile', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (7, 11, 'One Day Hormone Check', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (8, 11, 'Food Sensitivity+', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (9, 11, 'Celiac Profile', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (10, 11, 'DetoxiGenomic Profile', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (11, 11, 'ION Profile with 40 Amino Acids', null, 50.00, 50.00, null, 'A', now(), now());
+
+    --Cyrex
+    insert into lab_company_test values (12, 6, 'Array 2 - Intestinal Antigenic Permeability Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (13, 6, 'Array 3X - Wheat/Gluten Proteome Reactivity & Autoimmunity', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (14, 6, 'Array 4 - Gluten-Associated Cross-Reactive Foods and Foods Sensitivity', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (15, 6, 'Array 5 - Multiple Autoimmune Reactivity Screen', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (16, 6, 'Array 6', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (17, 6, 'Array 7', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (18, 6, 'Array 8', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (19, 6, 'Array 9', null, 50.00, 50.00, null, 'A', now(), now());
+    insert into lab_company_test values (20, 6, 'Array 10', null, 50.00, 50.00, null, 'A', now(), now());
 
     select setval(pg_get_serial_sequence('lab_company_test', 'id'), (select max(id) from lab_company_test)); --fix primary key sequence
 
@@ -184,7 +203,8 @@ drop table if exists lab_company_test_favorite cascade;
 
     create unique index on lab_company_test_favorite using btree (client_id, lab_company_test_id);
 
-    insert into lab_company_test_favorite values (1, 1, now(), 1);
+    insert into lab_company_test_favorite values (1, 11, now(), 1);
+    insert into lab_company_test_favorite values (1, 12, now(), 1);
 
     --alter table lab_company_test_favorite add foreign key (client_id) references client(id);
     --alter table lab_company_test_favorite add foreign key (lab_company_test_id) references lab_company_test(id);
