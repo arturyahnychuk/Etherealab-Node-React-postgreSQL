@@ -20,8 +20,6 @@ import useEffectOnce from "../../hooks/useEffectOnce";
 import axios from "axios";
 import { API_BASE } from "../../utils/constants";
 import authHeader from "../../utils/helpers";
-import { useDispatch, useSelector } from "react-redux";
-import { setPatient } from "../../store/patient/actions";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -126,7 +124,7 @@ async function getPatientRequest(patientId) {
 const Order = () => {
     const classes = useStyles();
     const { patientId, orderId } = useParams();
-    const patient = useSelector((state) => state.patient.patient);
+    const [patient, setPatient] = useState(null);
     const [catalog, setCatalog] = useState([]);
     const [favoriteCatalog, setFavoriteCatalog] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -141,13 +139,12 @@ const Order = () => {
     const [cancelOrder, setCancelOrder] = useState(false);
     const history = useHistory();
     const inputRef = useRef(null);
-    const dispatch = useDispatch();
 
     const fetchPatient = async () => {
         try {
             setIsLoading(true);
             const res = await getPatientRequest(patientId);
-            dispatch(setPatient({ ...res.data, id: patientId }));
+            setPatient({ ...res.data, id: patientId });
             setIsLoading(false);
         } catch (error) {
             setIsLoading(false);
@@ -293,9 +290,8 @@ const Order = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCompanies]);
     useEffectOnce(() => {
-        if (!patient) {
-            fetchPatient(patientId);
-        }
+        fetchPatient(patientId);
+
         fetchLabCompanies();
     }, [patientId]);
 

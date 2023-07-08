@@ -16,8 +16,6 @@ import useEffectOnce from "../../hooks/useEffectOnce";
 import { API_BASE } from "../../utils/constants";
 import axios from "axios";
 import authHeader from "../../utils/helpers";
-import { useDispatch, useSelector } from "react-redux";
-import { setPatient } from "../../store/patient/actions";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -57,8 +55,7 @@ async function getPatientOrdersRequest(patientId) {
 }
 function PatientOrders() {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const patient = useSelector((state) => state.patient.patient);
+    const [patient, setPatient] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [orders, setOrders] = useState([]);
     const [editPatient, setEditPatient] = useState(false);
@@ -87,13 +84,11 @@ function PatientOrders() {
     const fetchPatientPageData = useCallback(async (patientId) => {
         setIsLoading(true);
         try {
-            if (!patient) {
-                const patientResponse = await getPatientRequest(patientId);
-                dispatch(
-                    setPatient({ ...patientResponse.data, id: patientId })
-                );
-            }
+            const patientResponse = await getPatientRequest(patientId);
+
+            setPatient({ ...patientResponse.data, id: patientId });
             const ordersResponse = await getPatientOrdersRequest(patientId);
+
             const ordersData = groupOrdersByOrderId(ordersResponse.data);
             setOrders(ordersData);
             setIsLoading(false);

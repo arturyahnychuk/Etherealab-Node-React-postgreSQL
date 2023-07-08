@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModelHeader from "../../../components/common/ModelHeader";
 import TextFieldWithError from "../../../components/common/TextFieldWithError";
 import { makeStyles } from "@mui/styles";
@@ -12,7 +12,6 @@ import authHeader from "../../../utils/helpers";
 const useStyles = makeStyles((theme) => ({
     editPatientContainer: {
         minWidth: "550px",
-        // minHeight: "300px",
         padding: theme.spacing(3),
         "& input": {
             maxWidth: "250px !important",
@@ -46,6 +45,7 @@ async function validatePatientEmailRequest(data) {
 function EditPatientModal(props) {
     const classes = useStyles();
     const { onClose } = props;
+    const inputRef = useRef(null);
     const [firstName, setFirstName] = useState(props.firstName);
     const [lastName, setLastName] = useState(props.lastName);
     const [email, setEmail] = useState(props.email);
@@ -59,6 +59,11 @@ function EditPatientModal(props) {
         }
         return fieldErrors && fieldErrors.filter((err) => err?.param === value);
     };
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
     const validateEmail = (event) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         const isValid = emailRegex.test(event.target.value);
@@ -137,6 +142,8 @@ function EditPatientModal(props) {
                 <TextField
                     value={firstName}
                     variant="outlined"
+                    inputRef={inputRef}
+                    autoFocus
                     margin="dense"
                     className={classes.names}
                     id="firstName"

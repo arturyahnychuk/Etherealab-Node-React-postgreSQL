@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Box, Button, TextField } from "@mui/material";
 import ModelHeader from "../../../components/common/ModelHeader";
@@ -14,7 +14,6 @@ import { API_BASE } from "../../../utils/constants";
 const useStyles = makeStyles((theme) => ({
     newPatientContainer: {
         minWidth: "550px",
-        minHeight: "300px",
         padding: theme.spacing(3),
         "& input": {
             maxWidth: "250px !important",
@@ -146,6 +145,7 @@ function NewPatientModal(props) {
             <Box className={classes.newPatientContainer}>
                 <TextField
                     value={firstName}
+                    autoFocus
                     variant="outlined"
                     margin="dense"
                     className={classes.names}
