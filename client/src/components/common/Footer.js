@@ -33,7 +33,7 @@ export default function Footer() {
                     color="textSecondary"
                     align="center"
                 >
-                    Copyright &copy; MyEasyLabs
+                    Copyright &copy; MyEasyLabs - Confidential Proprietary
                 </CustomTypography>
             </Box>
         </Container>
