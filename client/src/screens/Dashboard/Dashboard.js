@@ -130,6 +130,7 @@ const Dashboard = () => {
                             <StyledTableCellSm>Status</StyledTableCellSm>
                             <StyledTableCellSm>Created</StyledTableCellSm>
                             <StyledTableCellSm>Updated</StyledTableCellSm>
+                            <StyledTableCellSm>Edit Order</StyledTableCellSm>
                             <StyledTableCellSm>View Patient</StyledTableCellSm>
                             <StyledTableCellSm>New Order</StyledTableCellSm>
                         </TableRow>
@@ -155,6 +156,14 @@ const Dashboard = () => {
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
                                         {item.updated}
+                                    </StyledTableCellSm>
+                                    <StyledTableCellSm>
+                                        <RouterLink
+                                            to={`/patient/${item.patient_id}/edit-order/${item.order_id}`}
+                                            className={classes.link}
+                                        >
+                                            Edit Order 
+                                        </RouterLink>
                                     </StyledTableCellSm>
                                     <StyledTableCellSm>
                                         <RouterLink
