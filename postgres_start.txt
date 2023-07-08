@@ -115,29 +115,29 @@ drop table if exists lab_company cascade;
 
     create unique index on lab_company using btree (lower(name));
 
-    insert into lab_company values (1, 'Access Medical Labs', True);
-    insert into lab_company values (2, 'Alletess', True);
-    insert into lab_company values (3, 'Ayumetrix', True);
-    insert into lab_company values (4, 'BostonHeart', True);
-    insert into lab_company values (5, 'Cell Science Systems', True);
+    --insert into lab_company values (1, 'Access Medical Labs', True);
+    --insert into lab_company values (2, 'Alletess', True);
+    --insert into lab_company values (3, 'Ayumetrix', True);
+    --insert into lab_company values (4, 'BostonHeart', True);
+    --insert into lab_company values (5, 'Cell Science Systems', True);
     insert into lab_company values (6, 'Cyrex Labs', True);
     insert into lab_company values (7, 'Dutch/Precision Analytical', True);
     insert into lab_company values (8, 'Diagnostic Solutions', True);
     insert into lab_company values (9, 'Doctors Data', True);
-    insert into lab_company values (10, 'ELISA/ACT Biotech', True);
+    --insert into lab_company values (10, 'ELISA/ACT Biotech', True);
     insert into lab_company values (11, 'Genova Diagnostics', True);
     insert into lab_company values (12, 'Great Plains Laboratory', True);
-    insert into lab_company values (13, 'IGeneX', True);
-    insert into lab_company values (14, 'KBMO', True);
-    insert into lab_company values (15, 'Labrix by Doctors Data', True);
-    insert into lab_company values (16, 'Precision Point', True);
-    insert into lab_company values (17, 'Quicksilver Scientific', True);
-    insert into lab_company values (18, 'Sanesco & NeuroLab', True);
+    --insert into lab_company values (13, 'IGeneX', True);
+    --insert into lab_company values (14, 'KBMO', True);
+    --insert into lab_company values (15, 'Labrix by Doctors Data', True);
+    --insert into lab_company values (16, 'Precision Point', True);
+    --insert into lab_company values (17, 'Quicksilver Scientific', True);
+    --insert into lab_company values (18, 'Sanesco & NeuroLab', True);
     insert into lab_company values (19, 'SpectraCell', True);
-    insert into lab_company values (20, 'US Biotek', True);
-    insert into lab_company values (21, 'Vibrant America', True);
+    --insert into lab_company values (20, 'US Biotek', True);
+    --insert into lab_company values (21, 'Vibrant America', True);
     insert into lab_company values (22, 'Vibrant Wellness', True);
-    insert into lab_company values (23, 'ZRT', True);
+    --insert into lab_company values (23, 'ZRT', True);
     --New
     insert into lab_company values (24, 'Prodrome Sciences', True);
     insert into lab_company values (25, 'Immunosciences Lab', True);
@@ -190,7 +190,7 @@ drop table if exists lab_company_test cascade;
     insert into lab_company_test values (22, 6, 'Array 20 - Blood Brain Barrier Permeability', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (23, 6, 'Array 22 - Irritable Bowel/SIBO Screen', null, 50.00, 50.00, null, 'A', now(), now());
 
-    --Vibrant Wellness 22
+    --Vibrant Wellness
     insert into lab_company_test values (24, 22, 'Tickborne Complete 1.0', null, 50.00, 50.00, null, 'A', now(), now());
     insert into lab_company_test values (25, 22, 'Tickborne Complete 2.0', null, 50.00, 50.00, null, 'A', now(), now());
 
