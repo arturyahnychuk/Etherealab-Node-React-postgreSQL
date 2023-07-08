@@ -112,7 +112,7 @@ function OrderDetails(props) {
                         Updated: <span>{orderItems[0].order_updated}</span>
                     </Typography>
                     <Typography>
-                        Order Status: <span>{orderItems[0].order_status}</span>
+                        Status: <span>{orderItems[0].order_status}</span>
                     </Typography>
                 </Grid>
                 <Grid item xs={3.5} className={classes.flex} columnGap={2}>
