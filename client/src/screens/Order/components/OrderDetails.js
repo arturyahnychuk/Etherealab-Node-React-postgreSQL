@@ -115,8 +115,7 @@ function OrderDetails(props) {
                         Order Status: <span>{orderItems[0].order_status}</span>
                     </Typography>
                     <Typography>
-                        Created By:
-                        <span>{orderItems[0].order_created_user}</span>
+                        Created By: <span>{orderItems[0].order_created_user}</span>
                     </Typography>
                 </Grid>
                 <Grid item xs={3.5} className={classes.flex} columnGap={2}>
