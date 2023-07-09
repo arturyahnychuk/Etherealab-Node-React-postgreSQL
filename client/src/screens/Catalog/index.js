@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
     filterButton: {
         padding: theme.spacing(0) + " !important",
-        color: theme.palette.text.secondary + " !important",
+        color: theme.palette.text.blue + " !important",
         textTransform: "none !important",
         fontSize: "12px !important",
     },

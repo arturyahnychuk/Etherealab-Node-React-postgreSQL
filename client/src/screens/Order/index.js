@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
 
     filterButton: {
         padding: theme.spacing(0) + " !important",
-        color: theme.palette.black + " !important",
+        color: theme.palette.blue + " !important",
         textTransform: "none !important",
-        fontSize: "15px !important",
+        fontSize: "12px !important",
         marginBottom: theme.spacing(1) + " !important",
     },
     breadcrumbLink: {
