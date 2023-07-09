@@ -142,7 +142,7 @@ router.post("/patient/search", [authJwt.verifyToken], async (req, res) => {
     try {
         const patients = await db.query(
             `
-            select id, firstname, lastname
+            select id, firstname, lastname, email
             from patient
             where client_id = $1
             and (lower(firstname) like '%' || lower($2) || '%'
