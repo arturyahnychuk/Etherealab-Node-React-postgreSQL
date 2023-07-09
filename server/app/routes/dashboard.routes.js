@@ -23,6 +23,7 @@ router.post(
               , s.name status
               , to_char(o.created::date, 'Mon d, yyyy') created
               , to_char(o.updated::date, 'Mon d, yyyy') updated
+              , o.id order_id
           from orders o
           left join patient p on p.id = o.patient_id
           left join users u on u.id = o.updated_user_id

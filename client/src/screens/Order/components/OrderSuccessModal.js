@@ -30,7 +30,7 @@ function OrderSuccessModal(props) {
         <Box className={classes.orderSuccessContainer}>
             <Typography>Order submitted successfully!</Typography>
             <Typography>
-                An email was sent to the patient explaining the next steps
+                An email will be sent to the patient explaining the next steps
             </Typography>
 
             <Button
