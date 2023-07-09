@@ -142,12 +142,14 @@ router.post("/patient/search", [authJwt.verifyToken], async (req, res) => {
     try {
         const patients = await db.query(
             `
-                select id, firstname, lastname
-                from patient
-                where client_id = $1
-                and (lower(firstname) like '%' || lower($2) || '%'
-                or lower(lastname) like '%' || lower($2) || '%'
-                or lower(email) like '%' || lower($2) || '%')`,
+            select id, firstname, lastname
+            from patient
+            where client_id = $1
+            and (lower(firstname) like '%' || lower($2) || '%'
+            or lower(lastname) like '%' || lower($2) || '%'
+            or lower(email) like '%' || lower($2) || '%')
+            limit 20
+            `,
             [req.client_id, term]
         );
         successMessage.data = patients.rows;
@@ -165,7 +167,12 @@ router.post(
         const { email } = req.body;
         try {
             const selectResponse = await db.query(
-                `select 1 from patient where client_id = $1 and lower(email) = $2 limit 1 `,
+                `
+                select 1 from patient 
+                where client_id = $1 
+                and lower(email) = $2
+                limit 1
+                `,
                 [req.client_id, req.email]
             );
             if (selectResponse.rows.length > 0) {
