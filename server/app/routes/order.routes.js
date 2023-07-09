@@ -85,7 +85,7 @@ router.post(
 );
 
 router.put(
-    "/order/:patient_id/update-order",
+    "/order/:order_id/update-order",
     [authJwt.verifyToken],
     async (req, res) => {
         const pgClient = await db.getClient();
@@ -145,7 +145,7 @@ router.put(
                 const lab_company_test_id = removedOrderItems[i];
                 const deleteOrderItemQuery = `
                     delete from order_item
-                    where id = $1
+                    where order_id = $1
                       and lab_company_test_id = $2
                 `;
                 const deleteOrderItemValues = [order_id, lab_company_test_id];
@@ -181,6 +181,7 @@ router.put(
             }
 
             await pgClient.query("COMMIT");
+            successMessage.data = updatedOrderResponse.rows;
             successMessage.message = "Orders updated successfully";
             return res.status(status.success).send(successMessage);
         } catch (error) {
@@ -200,10 +201,16 @@ router.get(
         const { orderId } = req.params;
         try {
             const orderItemsQuery = `
-                select lab_company_test_id
-                from order_item
-                where order_id = $1
+            select oi.lab_company_test_id
+            , oi.price test_price
+            , lct.name lab_company_test_name
+            , lc.name lab_company_name
+            from order_item oi
+            left join lab_company_test lct on oi.lab_company_test_id = lct.id
+            left join lab_company lc on lc.id = lct.lab_company_id
+            where oi.order_id = $1
             `;
+
             const orderItemsValues = [orderId];
             const orderItemsResponse = await db.query(
                 orderItemsQuery,

@@ -39,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    breadcrumbs: {
+        fontSize: "14px !important",
+        "& p": {
+            fontSize: "14px !important",
+        },
+    },
 }));
 
 async function getPatientRequest(patientId) {
@@ -66,19 +72,19 @@ function PatientOrders() {
     };
 
     const groupOrdersByOrderId = (data) => {
-        const groupedOrders = {};
+        const groupedOrders = new Map();
 
         data.forEach((order) => {
             const orderId = order.order_id;
 
-            if (!groupedOrders[orderId]) {
-                groupedOrders[orderId] = [order];
+            if (!groupedOrders.has(orderId)) {
+                groupedOrders.set(orderId, [order]);
             } else {
-                groupedOrders[orderId].push(order);
+                groupedOrders.get(orderId).push(order);
             }
         });
 
-        return Object.values(groupedOrders);
+        return Array.from(groupedOrders.values());
     };
 
     const fetchPatientPageData = useCallback(async (patientId) => {
@@ -136,7 +142,11 @@ function PatientOrders() {
                     </Button>
                 </Box>
                 <Stack spacing={2} marginY={2}>
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <Breadcrumbs
+                        separator="›"
+                        aria-label="breadcrumb"
+                        className={classes.breadcrumbs}
+                    >
                         <RouterLink
                             key="1"
                             to="/"
@@ -166,10 +176,8 @@ function PatientOrders() {
                 >
                     <EditPatientModal
                         onClose={() => setEditPatient(false)}
-                        firstName={patient.firstname}
-                        lastName={patient.lastname}
-                        email={patient.email}
-                        patientId={patientId}
+                        patient={patient}
+                        setPatient={setPatient}
                     />
                 </ModelBody>
             </Container>

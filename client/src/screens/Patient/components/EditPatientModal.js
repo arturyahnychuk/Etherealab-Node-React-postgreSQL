@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import { API_BASE } from "../../../utils/constants";
 import authHeader from "../../../utils/helpers";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
     editPatientContainer: {
@@ -27,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     names: {
         display: "block !important",
     },
+    disabled: {
+        pointerEvents: "none",
+        borderColor: theme.palette.divider + " !important",
+        color: theme.palette.text.secondary + " !important",
+    },
 }));
 
 async function updatePatientRequest(patientId, data) {
@@ -44,11 +50,11 @@ async function validatePatientEmailRequest(data) {
 }
 function EditPatientModal(props) {
     const classes = useStyles();
-    const { onClose } = props;
+    const { onClose, patient, setPatient } = props;
     const inputRef = useRef(null);
-    const [firstName, setFirstName] = useState(props.firstName);
-    const [lastName, setLastName] = useState(props.lastName);
-    const [email, setEmail] = useState(props.email);
+    const [firstName, setFirstName] = useState(patient.firstname);
+    const [lastName, setLastName] = useState(patient.lastname);
+    const [email, setEmail] = useState(patient.email);
     const [fieldErrors, setFieldErrors] = useState([]);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -123,10 +129,11 @@ function EditPatientModal(props) {
             email: email.trim(),
         };
         try {
-            const res = await updatePatientRequest(props.patientId, data);
+            const res = await updatePatientRequest(patient.id, data);
             enqueueSnackbar(res.message, {
                 variant: "success",
             });
+            setPatient({ ...patient, ...data });
             onClose();
         } catch (error) {
             enqueueSnackbar(error.message, {
@@ -134,77 +141,85 @@ function EditPatientModal(props) {
             });
         }
     };
-
+    function isDisabled() {
+        return (
+            lastName === patient.lastName &&
+            firstName === patient.firstName &&
+            email === patient.email
+        );
+    }
     return (
         <>
             <ModelHeader onClose={onClose} title="Edit Patient" />
             <Box className={classes.editPatientContainer}>
-                <TextField
-                    value={firstName}
-                    variant="outlined"
-                    inputRef={inputRef}
-                    autoFocus
-                    margin="dense"
-                    className={classes.names}
-                    id="firstName"
-                    label="Firstname"
-                    name="firstName"
-                    autoComplete="firstName"
-                    onChange={(event) => setFirstName(event.target.value)}
-                    inputProps={{ maxLength: 35 }}
-                    helperText={`${
-                        firstName.length >= 35
-                            ? "Enter a first name between 35 character"
-                            : ""
-                    }`}
-                />
-                <TextField
-                    value={lastName}
-                    variant="outlined"
-                    margin="dense"
-                    className={classes.names}
-                    id="lastName"
-                    label="Lastname"
-                    name="lastName"
-                    autoComplete="lastName"
-                    onChange={(event) => setLastName(event.target.value)}
-                    inputProps={{ maxLength: 35 }}
-                    helperText={`${
-                        lastName.length >= 35
-                            ? "Enter a last name between 35 character"
-                            : ""
-                    }`}
-                />
-                <TextFieldWithError
-                    id="patientEmail"
-                    fieldName="email"
-                    label="Email"
-                    value={email}
-                    handleOnChange={(event) => setEmail(event.target.value)}
-                    handleOnBlur={(event) =>
-                        handleAjaxValidation(event, "patient")
-                    }
-                    errors={getFieldError("patient", "email")}
-                    inputProps={{ maxLength: 255 }}
-                    helperText={`${
-                        email.length >= 255
-                            ? "Enter an email between 255 character"
-                            : ""
-                    }`}
-                />
+                <form onSubmit={handleFormSubmit} noValidate>
+                    <TextField
+                        value={firstName}
+                        variant="outlined"
+                        inputRef={inputRef}
+                        autoFocus
+                        margin="dense"
+                        className={classes.names}
+                        id="firstName"
+                        label="Firstname"
+                        name="firstName"
+                        autoComplete="firstName"
+                        onChange={(event) => setFirstName(event.target.value)}
+                        inputProps={{ maxLength: 35 }}
+                        helperText={`${
+                            firstName.length >= 35
+                                ? "Enter a first name between 35 character"
+                                : ""
+                        }`}
+                    />
+                    <TextField
+                        value={lastName}
+                        variant="outlined"
+                        margin="dense"
+                        className={classes.names}
+                        id="lastName"
+                        label="Lastname"
+                        name="lastName"
+                        autoComplete="lastName"
+                        onChange={(event) => setLastName(event.target.value)}
+                        inputProps={{ maxLength: 35 }}
+                        helperText={`${
+                            lastName.length >= 35
+                                ? "Enter a last name between 35 character"
+                                : ""
+                        }`}
+                    />
+                    <TextFieldWithError
+                        id="patientEmail"
+                        fieldName="email"
+                        label="Email"
+                        value={email}
+                        handleOnChange={(event) => setEmail(event.target.value)}
+                        handleOnBlur={(event) =>
+                            handleAjaxValidation(event, "patient")
+                        }
+                        errors={getFieldError("patient", "email")}
+                        inputProps={{ maxLength: 255 }}
+                        helperText={`${
+                            email.length >= 255
+                                ? "Enter an email between 255 character"
+                                : ""
+                        }`}
+                    />
 
-                <Button
-                    variant="outlined"
-                    className={classes.customButton}
-                    disabled={
-                        lastName === props.lastName &&
-                        firstName === props.firstName &&
-                        email === props.email
-                    }
-                    onClick={handleFormSubmit}
-                >
-                    Save
-                </Button>
+                    <Button
+                        variant="outlined"
+                        className={
+                            isDisabled()
+                                ? clsx(classes.customButton, classes.disabled)
+                                : classes.customButton
+                        }
+                        disabled={isDisabled()}
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                </form>
             </Box>
         </>
     );

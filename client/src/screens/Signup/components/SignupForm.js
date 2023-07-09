@@ -15,6 +15,7 @@ import {
     TextField,
     Checkbox,
     FormControlLabel,
+    Typography,
 } from "@mui/material";
 import axios from "axios";
 import { API_BASE } from "../../../utils/constants";
@@ -33,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: `${theme.spacing(3, 0, 2)} !important`,
+    },
+    checkboxLabel: {
+        color: theme.palette.text.secondary,
+        marginTop: theme.spacing(1),
+        "& p": {
+            fontSize: "14px",
+        },
     },
 }));
 async function validateRequest(data) {
@@ -213,7 +221,7 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
             <TextFieldWithError
                 id="userEmail"
                 fieldName="email"
-                label="Email Address"
+                label="Email"
                 value={email}
                 handleOnChange={(event) => setEmail(event.target.value)}
                 handleOnBlur={(event) => handleAjaxValidation(event, "users")}
@@ -241,13 +249,17 @@ const SignupForm = ({ onFormSubmit, ...props }) => {
                 }`}
             />
             <FormControlLabel
+                className={classes.checkboxLabel}
                 control={
                     <Checkbox
                         checked={isChecked}
+                        size="small"
                         onClick={() => setIsChecked(!isChecked)}
                     />
                 }
-                label="I agree to the Terms and Conditions"
+                label={
+                    <Typography>I agree to the Terms and Conditions</Typography>
+                }
             />
 
             <Button

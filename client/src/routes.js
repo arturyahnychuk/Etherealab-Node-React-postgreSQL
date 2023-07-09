@@ -15,6 +15,7 @@ import Order from "./screens/Order";
 import PatientOrders from "./screens/Patient/PatientOrders";
 import SelectPatient from "./screens/Patient/SelectPatient";
 import MainLayout from "./layouts/MainLayout/MainLayout";
+import AuthGuard from "./components/AuthGuard";
 
 export const renderRoutes = (routes = []) => (
     <Switch>
@@ -76,54 +77,63 @@ const routes = [
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/dashboard",
         component: Dashboard,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/patient/:patientId/orders",
         component: PatientOrders,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/myself",
         component: Myself,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/client-profile",
         component: ClientProfile,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/catalog",
         component: Catalog,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/new-order",
         component: SelectPatient,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/patient/:patientId/new-order",
         component: Order,
     },
     {
         exact: true,
+        guard: AuthGuard,
         layout: DashboardLayout,
         path: "/patient/:patientId/edit-order/:orderId",
         component: Order,
     },
     {
         path: "*",
+        guard: AuthGuard,
         component: Home,
     },
 ];

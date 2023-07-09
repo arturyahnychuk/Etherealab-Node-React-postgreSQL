@@ -65,6 +65,12 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    breadcrumbs: {
+        fontSize: "14px !important",
+        "& p": {
+            fontSize: "14px !important",
+        },
+    },
 }));
 async function searchCatalog(data) {
     const res = await axios.post(`${API_BASE}/catalog/search`, data, {
@@ -90,7 +96,7 @@ async function removeFavorite(id) {
     });
 }
 
-async function createOrdersRequest(patient_id, data) {
+async function createOrderRequest(patient_id, data) {
     const res = await axios.post(
         `${API_BASE}/order/${patient_id}/create-order`,
         { orders: data },
@@ -100,7 +106,16 @@ async function createOrdersRequest(patient_id, data) {
     );
     return res.data;
 }
-
+async function updateOrderRequest(order_id, data) {
+    const res = await axios.put(
+        `${API_BASE}/order/${order_id}/update-order`,
+        { orders: data },
+        {
+            headers: authHeader(),
+        }
+    );
+    return res.data;
+}
 async function updateOrderStatusRequest(data) {
     const res = await axios.put(`${API_BASE}/order/update-order/status`, data, {
         headers: authHeader(),
@@ -151,17 +166,12 @@ const Order = () => {
         }
     };
 
-    const fetchOrder = async (data) => {
+    const fetchOrder = async (id) => {
         try {
-            const res = await getOrderItems(orderId);
-            const filteredItems = data.filter((item) =>
-                res.data.some(
-                    (idObj) =>
-                        idObj.lab_company_test_id === item.lab_company_test_id
-                )
-            );
-
-            return filteredItems;
+            const res = await getOrderItems(id);
+            const totalPriceCalculated = calculateTotalPrice(res.data);
+            setTotalPrice(totalPriceCalculated);
+            setOrders(res.data);
         } catch (error) {
             setIsLoading(false);
         }
@@ -198,12 +208,6 @@ const Order = () => {
                     );
                     setFavoriteCatalog(favoriteCatalogs);
                     setCatalog(normalCatalogs);
-                    if (editMode && orders.length === 0 && data.length > 0) {
-                        const orderItems = await fetchOrder(data);
-                        const totalPrice = calculateTotalPrice(orderItems);
-                        setTotalPrice(totalPrice);
-                        setOrders(orderItems);
-                    }
                     setIsLoading(false);
                 }
             } catch (error) {
@@ -255,9 +259,7 @@ const Order = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if (searchText.trim() !== "") {
-            fetchCatalogData(searchText.trim());
-        }
+        fetchCatalogData(searchText.trim());
     };
     const handleSearchClick = () => {
         if (searchText.trim() !== "") {
@@ -285,6 +287,9 @@ const Order = () => {
     useEffect(() => {
         if (dataFetch.current) {
             fetchCatalogData(searchText);
+            if (editMode && orders.length === 0) {
+                fetchOrder(orderId);
+            }
         }
         dataFetch.current = true;
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -331,6 +336,7 @@ const Order = () => {
                 });
                 setOrders([]);
                 setCancelOrder(false);
+                history.push("/dashboard");
             } catch (error) {}
         } else {
             setOrders([]);
@@ -340,7 +346,10 @@ const Order = () => {
     const handleSubmitOrder = async () => {
         try {
             setIsLoading(true);
-            await createOrdersRequest(patient.id, orders);
+            editMode
+                ? await updateOrderRequest(orderId, orders)
+                : await createOrderRequest(patient.id, orders);
+
             setOrderSuccess(true);
             setIsLoading(false);
         } catch (error) {
@@ -362,7 +371,11 @@ const Order = () => {
                             {` ${patient.firstname} ${patient.lastname}`}
                         </Typography>
                         <Stack spacing={2} mb={2} mt={1}>
-                            <Breadcrumbs separator="›" aria-label="breadcrumb">
+                            <Breadcrumbs
+                                separator="›"
+                                aria-label="breadcrumb"
+                                className={classes.breadcrumbs}
+                            >
                                 <RouterLink
                                     key="1"
                                     to="/dashboard"
@@ -454,7 +467,7 @@ const Order = () => {
                                 <Orders
                                     editMode={editMode}
                                     orders={orders}
-                                    totalPrice={totalPrice}
+                                    totalPrice={totalPrice.toFixed(2)}
                                     setCancelOrder={setCancelOrder}
                                     handleAddOrder={handleAddOrder}
                                     handleSubmitOrder={handleSubmitOrder}
