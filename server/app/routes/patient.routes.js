@@ -97,8 +97,8 @@ router.get(
             const dbResponse = await db.query(
                 `
                 select o.id order_id
-                    , to_char(o.created::date, 'Mon d, yyyy') order_created
-                    , to_char(o.updated::date, 'Mon d, yyyy') order_updated
+                    , to_char(o.created::date, 'Mon dd, yyyy') order_created
+                    , to_char(o.updated::date, 'Mon dd, yyyy') order_updated
                     , s.name order_status
                     , concat (u.firstname, ' ', u.lastname) order_created_user
                     , lc.name lab_company_name
