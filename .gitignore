@@ -28,6 +28,7 @@ yarn-error.log*
 /client/.pnp
 /client/.pnp.js
 /client/package-lock.json
+/client/*.tgz
 
 # testing
 /client/coverage
